@@ -1,3 +1,15 @@
+-- Heard_About Table
+CREATE TABLE Heard_About (
+  HeardAboutID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
+  Description VARCHAR(25)
+);
+
+-- Sewing_Level Table  
+CREATE TABLE Sewing_Level (
+  SewingID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
+  Description VARCHAR(25)
+);
+
 -- Volunteer Table
 CREATE TABLE Volunteer (
   VolunteerID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
@@ -11,15 +23,24 @@ CREATE TABLE Volunteer (
   FOREIGN KEY (SewingLevel) REFERENCES Sewing_Level(SewingID)
 );
 
--- Heard_About Table
-CREATE TABLE Heard_About (
-  HeardAboutID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
+-- EventAddress Table
+CREATE TABLE EventAddress (
+  EventAddressID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
+  EventStreetAddress VARCHAR(50),
+  EventCity VARCHAR(25),
+  EventState VARCHAR(2),
+  EventZip VARCHAR(15)
+);
+
+-- EventType Table
+CREATE TABLE EventType (
+  EventTypeID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
   Description VARCHAR(25)
 );
 
--- Sewing_Level Table  
-CREATE TABLE Sewing_Level (
-  SewingID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
+-- EventStatus Table
+CREATE TABLE EventStatus (
+  EventStatusID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
   Description VARCHAR(25)
 );
 
@@ -40,25 +61,10 @@ CREATE TABLE Events (
   FOREIGN KEY (EventStatusID) REFERENCES EventStatus(EventStatusID)
 );
 
--- EventType Table
-CREATE TABLE EventType (
-  EventTypeID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
-  Description VARCHAR(25)
-);
-
--- EventStatus Table
-CREATE TABLE EventStatus (
-  EventStatusID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
-  Description VARCHAR(25)
-);
-
--- EventAddress Table
-CREATE TABLE EventAddress (
-  EventAddressID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
-  EventStreetAddress VARCHAR(50),
-  EventCity VARCHAR(25),
-  EventState VARCHAR(2),
-  EventZip VARCHAR(15)
+-- Items Table
+CREATE TABLE Items (
+  ItemID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
+  ItemName VARCHAR(25)
 );
 
 -- ItemsProduced Table
@@ -69,12 +75,6 @@ CREATE TABLE ItemsProduced (
   PRIMARY KEY (EventID, ItemID),  -- Composite PK for ItemsProduced table
   FOREIGN KEY (EventID) REFERENCES Events(EventID),
   FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
-);
-
--- Items Table
-CREATE TABLE Items (
-  ItemID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
-  ItemName VARCHAR(25)
 );
 
 -- EventContacts Table
