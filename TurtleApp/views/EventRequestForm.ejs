@@ -117,43 +117,65 @@
       <label for="phone">Phone Number</label>
       <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
     </div>
-    <!-- Location and Size Details-->
-    <div class="form-group">
-      <label for="NumParticipants">Number of Participants (Can be a rough Estimate...)</label>
-      <input type="integer" id="NumParticipants" name="NumParticipants" placeholder="Enter a Whole number">
-    </div>
 
-    <div class="form-group">
-      <label for="SewingPreference">Type of Event</label>
-      <select id="SewingPreference" name="SewingPreference">
-        <option><%= SewingPreference.Description %></option>
+      <!-- Number of Participants -->
+      <div class="form-group">
+      <label for="numParticipants">How many people will be there?</label>
+      <input type="number" id="numParticipants" name="numParticipants" required>
+      </div>
+      
+      <!-- Sewing Preference -->
+      <div class="form-group">
+      <label for="sewingPreference">Would you like to do sewing, non-sewing, or both?</label>
+      <select id="sewingPreference" name="sewingPreference" required>
+          <% sewingPreferences.forEach(pref => { %>
+              <option value="<%= pref.SewingPreferenceID %>"><%= pref.Description %></option>
+          <% }); %>
+      </select>
+      </div> 
+  
+      <!-- Event Dates -->
+      <div class="form-group">
+      <label for="eventDate">What date (or possible dates) would you like to schedule the event?</label>
+      <select id="eventDate" name="eventDate" required>
+          <% eventDates.forEach(date => { %>
+              <option value="<%= date.EventID %>"><%= date.EventDateType %> - <%= date.EventDate.toISOString().split('T')[0] %></option>
+          <% }); %>
+      </select>
+      </div>
+  
+      <!-- Address -->
+      <div class="form-group">
+      <label for="eventAddress">What’s the address of the event?</label>
+      <select id="eventAddress" name="eventAddress" required>
+          <% addresses.forEach(address => { %>
+              <option value="<%= address.AddressID %>">
+                  <%= address.StreetAddress %>, <%= address.City %>, <%= address.State %>, <%= address.Zip %>
+              </option>
+          <% }); %>
+      </select>
+      </div>
+  
+      <!-- Event Time and Duration -->
+      <div class="form-group">
+      <label for="eventStart">What time do you want the event to start?</label>
+      <input type="time" id="eventStart" name="eventStart" required>
+      </div>
+      
+      <div class="form-group">
+      <label for="eventDuration">How long would you like it to go?</label>
+      <input type="text" id="eventDuration" name="eventDuration" placeholder="e.g., 2 hours" required>
       </div>
 
-    <!-- Dropdown Menu -->
-    <div class="form-group">
-      <label for="inquiry">Type of Inquiry</label>
-      <select id="inquiry" name="inquiry" required>
-        <option value="">Select an option</option>
-        <option value="general">General Inquiry</option>
-        <option value="support">Support</option>
-        <option value="feedback">Feedback</option>
-      </select>
-    </div>
+      <!-- Jen's Story -->
+      <div class="form-group">
+      <label for="jenStory">Would you like Jen to share her story?</label>
+      <input type="checkbox" id="jenStory" name="jenStory" value="1">
+      </div>
 
-    <!-- Checkboxes -->
-    <div class="form-group checkbox-group">
-      <label>Topics of Interest</label>
-      <label><input type="checkbox" name="topic" value="news"> News and Updates</label>
-      <label><input type="checkbox" name="topic" value="events"> Events</label>
-      <label><input type="checkbox" name="topic" value="offers"> Special Offers</label>
-    </div>
-
-    <!-- Text Area -->
-    <div class="form-group">
-      <label for="message">Your Message</label>
-      <textarea id="message" name="message" rows="5" placeholder="Write your message here..."></textarea>
-    </div>
-
+      <button type="submit">Submit</button>
+  </form>
+  
     <!-- Submit Button -->
     <button type="submit" class="form-button">Submit</button>
   </form>
