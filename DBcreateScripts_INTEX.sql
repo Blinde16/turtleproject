@@ -85,7 +85,7 @@ CREATE TABLE Items (
 );;
 
 -- ItemsProduced Table
-CCREATE TABLE ItemsProduced (
+CREATE TABLE ItemsProduced (
     EventID INT REFERENCES Events(EventID),
     ItemID INT REFERENCES Items(ItemID),
     Quantity INTEGER NOT NULL,
