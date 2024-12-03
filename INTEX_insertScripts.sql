@@ -48,11 +48,11 @@ VALUES
   ('Cancelled');
 
 -- Insert data into Events table
-INSERT INTO Events (EventData, EventAddressID, TotalProduced, NumParticipants, EventTypeID, EventStart, EventDuration, JenStory, EventStatusID)
+INSERT INTO Events (EventData, EventAddressID, TotalProduced, NumParticipants, EventTypeID, EventStart, EventDuration, JenStory, EventStatusID, EventDetails)
 VALUES
-  ('2024-12-15', 1, 100, 25, 1, '08:00', '02:00:00', TRUE, 1),
-  ('2024-12-22', 2, 150, 30, 2, '10:00', '03:00:00', FALSE, 2),
-  ('2024-12-30', 3, 200, 40, 3, '09:00', '04:00:00', TRUE, 3);
+  ('2024-12-15', 1, 100, 25, 1, '08:00', '02:00:00', TRUE, 1, 'BYU Campus'),
+  ('2024-12-22', 2, 150, 30, 2, '10:00', '03:00:00', FALSE, 2, 'Provo City Mall'),
+  ('2024-12-30', 3, 200, 40, 3, '09:00', '04:00:00', TRUE, 3, 'Orem Convention Center');
 
 INSERT INTO EventStatus (Description) 
 VALUES 
