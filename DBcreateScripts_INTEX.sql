@@ -67,6 +67,8 @@ CREATE TABLE Events (
     EventDuration INTERVAL,
     JenStory BOOLEAN,
     EventStatusID INT REFERENCES EventStatus(EventStatusID)
+    EventDetails VARCHAR(255)
+);
 
   -- EventDates Table
   CREATE TABLE EventDates (
@@ -83,7 +85,7 @@ CREATE TABLE Items (
 );;
 
 -- ItemsProduced Table
-CCREATE TABLE ItemsProduced (
+CREATE TABLE ItemsProduced (
     EventID INT REFERENCES Events(EventID),
     ItemID INT REFERENCES Items(ItemID),
     Quantity INTEGER NOT NULL,
