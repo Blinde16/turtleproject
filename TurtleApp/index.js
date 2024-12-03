@@ -20,7 +20,7 @@ const knex = require("knex")({
     host: "localhost",
     user: "postgres",
     password: "9174",
-    database: "turtleproject",
+    database: "turtle",
     port: 5432,
   },
 });
@@ -40,10 +40,10 @@ app.get('/eventManagement', (req,res) => {
 
 app.get('/EventRequestForm', async (req, res) => {
     try {
-        const sewingPreferences = await knex('sewingpreferences').select('sewingpreferenceid', 'description');
-        const eventDates = await knex('eventdates').select('eventid', 'eventdatetype', 'eventdate');
-        const addresses = await knex('address').select('addressid', 'streetaddress', 'city', 'state', 'zip');
-        const contacts = await knex('contacts').select('contactid', 'contact_first', 'contact_last', 'contactphone');
+        const sewingPreferences = await knex('sewingpreference').select('sewingpreferenceid', 'description');
+        const eventDates = await knex('eventdates').select('eventdateid','eventid', 'eventdatetype', 'eventdate');
+        const addresses = await knex('address').select('addressid', 'streetaddress', 'city', 'state', 'zip', 'spacesize');
+        const contacts = await knex('eventcontacts').select('contactid', 'contact_first', 'contact_last', 'contactphone', 'addressid');
 
         res.render('EventRequestForm', {
             sewingPreferences,

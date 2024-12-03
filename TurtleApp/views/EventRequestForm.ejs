@@ -123,13 +123,13 @@
       <label for="numParticipants">How many people will be there?</label>
       <input type="number" id="numParticipants" name="numParticipants" required>
       </div>
-      
+
       <!-- Sewing Preference -->
       <div class="form-group">
       <label for="sewingPreference">Would you like to do sewing, non-sewing, or both?</label>
       <select id="sewingPreference" name="sewingPreference" required>
           <% sewingPreferences.forEach(pref => { %>
-              <option value="<%= pref.SewingPreferenceID %>"><%= pref.Description %></option>
+              <option value="<%= pref.sewingpreferenceid %>"><%= pref.description %></option>
           <% }); %>
       </select>
       </div> 
@@ -137,23 +137,12 @@
       <!-- Event Dates -->
       <div class="form-group">
       <label for="eventDate">What date (or possible dates) would you like to schedule the event?</label>
-      <select id="eventDate" name="eventDate" required>
-          <% eventDates.forEach(date => { %>
-              <option value="<%= date.EventID %>"><%= date.EventDateType %> - <%= date.EventDate.toISOString().split('T')[0] %></option>
-          <% }); %>
-      </select>
+      
       </div>
   
       <!-- Address -->
       <div class="form-group">
       <label for="eventAddress">What’s the address of the event?</label>
-      <select id="eventAddress" name="eventAddress" required>
-          <% addresses.forEach(address => { %>
-              <option value="<%= address.AddressID %>">
-                  <%= address.StreetAddress %>, <%= address.City %>, <%= address.State %>, <%= address.Zip %>
-              </option>
-          <% }); %>
-      </select>
       </div>
   
       <!-- Event Time and Duration -->
@@ -172,9 +161,6 @@
       <label for="jenStory">Would you like Jen to share her story?</label>
       <input type="checkbox" id="jenStory" name="jenStory" value="1">
       </div>
-
-      <button type="submit">Submit</button>
-  </form>
   
     <!-- Submit Button -->
     <button type="submit" class="form-button">Submit</button>
