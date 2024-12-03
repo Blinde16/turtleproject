@@ -66,7 +66,7 @@ CREATE TABLE Events (
     EventStart TIME,
     EventDuration INTERVAL,
     JenStory BOOLEAN,
-    EventStatusID INT REFERENCES EventStatus(EventStatusID)
+    EventStatusID INT REFERENCES EventStatus(EventStatusID),
     EventDetails VARCHAR(255)
 );
 
