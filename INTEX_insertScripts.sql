@@ -47,13 +47,6 @@ VALUES
   ('Completed'),
   ('Cancelled');
 
--- Insert data into EventAddress table
-INSERT INTO EventAddress (EventStreetAddress, EventCity, EventState, EventZip)
-VALUES
-  ('123 Main St', 'Springfield', 'IL', '62701'),
-  ('456 Oak Ave', 'Decatur', 'IL', '62521'),
-  ('789 Pine Rd', 'Champaign', 'IL', '61820');
-
 -- Insert data into Events table
 INSERT INTO Events (EventData, EventAddressID, TotalProduced, NumParticipants, EventTypeID, EventStart, EventDuration, JenStory, EventStatusID)
 VALUES
