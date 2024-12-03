@@ -1,0 +1,79 @@
+<%- include('partials/header') %>
+<h1>Event Management</h1>
+
+<div class="status-columns">
+    <% ['Scheduled', 'Completed', 'Cancelled'].forEach((status, index) => { %>
+        <div class="column" id="<%= status.toLowerCase() %>" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
+            <h2><%= status %></h2>
+            <% events
+                .filter(event => event.status === status)
+                .forEach(event => { %>
+                <div class="event-card" id="event-<%= event.eventid %>" draggable="true" ondragstart="handleDrag(event)">
+                    <p><strong>Date:</strong> <%= event.eventdata %></p>
+                    <p><strong>Contact:</strong> <%= event.contact %></p>
+                    <button onclick="viewDetails(<%= event.eventid %>)">View Details</button>
+                </div>
+            <% }); %>
+        </div>
+    <% }); %>
+</div>
+
+<!-- Modal for event details -->
+<div id="event-details-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="event-details"></div>
+    </div>
+</div>
+
+<script>
+    // Drag-and-Drop Handlers
+    let dragged;
+
+    function handleDrag(event) {
+        dragged = event.target;
+    }
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        const newStatus = event.target.id;
+        if (newStatus) {
+            const eventId = dragged.id.split('-')[1];
+            event.target.appendChild(dragged);
+
+            // Update status in the database
+            fetch(`/events/update-status/${eventId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ newStatus }),
+            }).catch(err => console.error(err));
+        }
+    }
+
+    // View Details
+    function viewDetails(eventId) {
+        fetch(`/events/${eventId}`)
+            .then(res => res.json())
+            .then(data => {
+                const details = `
+                    <p><strong>Date:</strong> ${data.eventdata}</p>
+                    <p><strong>Contact:</strong> ${data.contact}</p>
+                    <p><strong>Guests:</strong> ${data.numparticipants}</p>
+                    <p><strong>Event Type:</strong> ${data.eventtype}</p>
+                    <p><strong>Total Produced:</strong> ${data.totalproduced}</p>
+                `;
+                document.getElementById('event-details').innerHTML = details;
+                document.getElementById('event-details-modal').style.display = 'block';
+            })
+            .catch(err => console.error(err));
+    }
+
+    function closeModal() {
+        document.getElementById('event-details-modal').style.display = 'none';
+    }
+</script>
+<%- include('partials/footer') %>
