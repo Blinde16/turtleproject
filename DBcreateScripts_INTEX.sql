@@ -1,35 +1,19 @@
--- Users Table 
-CREATE TABLE Users (
-    UserID SERIAL PRIMARY KEY,
-    UserName VARCHAR(25) NOT NULL,
-    Password VARCHAR(25) NOT NULL,
-    Email VARCHAR(25) NOT NULL
-);
-
 -- HeardAbout Table
-CREATE TABLE Heard_About (
-  HeardAboutID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
-  Description VARCHAR(25) NOT NULL
+CREATE TABLE HeardAbout (
+    HeardAboutID SERIAL PRIMARY KEY,  
+    Description VARCHAR(25) NOT NULL
 );
 
--- SewingLevel Table  
+-- SewingLevel Table
 CREATE TABLE SewingLevel (
-  SewingID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
-  Description VARCHAR(25) NOT NULL
+    SewingLevelID SERIAL PRIMARY KEY,
+    Description VARCHAR(25) NOT NULL
 );
 
--- Volunteer Table
-CREATE TABLE Volunteer (
-    VolunteerID SERIAL PRIMARY KEY,
-    First_Name VARCHAR(50) NOT NULL,
-    Last_Name VARCHAR(50) NOT NULL,
-    Email VARCHAR(50) NOT NULL,
-    Phone_Number VARCHAR(15),
-    HeardAboutID INT REFERENCES HeardAbout(OpportunityID),
-    HoursPerMonth INTEGER,
-    SewingLevelID INT REFERENCES SewingLevel(SewingLevelID),
-    SewingPreferenceID INT REFERENCES SewingPreference(SewingPreferenceID),
-    AddressID INT REFERENCES Address(AddressID)
+-- SewingPreference Table
+CREATE TABLE SewingPreference (
+    SewingPreferenceID SERIAL PRIMARY KEY,
+    Description VARCHAR(25) NOT NULL
 );
 
 -- Address Table
@@ -42,16 +26,33 @@ CREATE TABLE Address (
     SpaceSize VARCHAR(25)
 );
 
--- SewingPreference Table
-CREATE TABLE SewingPreference (
-    SewingPreferenceID SERIAL PRIMARY KEY,
-    Description VARCHAR(25) NOT NULL
-);
-
 -- EventStatus Table
 CREATE TABLE EventStatus (
     EventStatusID SERIAL PRIMARY KEY,
     Description VARCHAR(25) NOT NULL
+);
+
+-- EventContacts Table
+CREATE TABLE EventContacts (
+    ContactID SERIAL PRIMARY KEY,
+    Contact_First VARCHAR(50) NOT NULL,
+    Contact_Last VARCHAR(50) NOT NULL,
+    ContactPhone VARCHAR(10) NOT NULL,
+    AddressID INT REFERENCES Address(AddressID)
+);
+
+-- Volunteer Table
+CREATE TABLE Volunteer (
+    VolunteerID SERIAL PRIMARY KEY,
+    First_Name VARCHAR(50) NOT NULL,
+    Last_Name VARCHAR(50) NOT NULL,
+    Email VARCHAR(50) NOT NULL,
+    Phone_Number VARCHAR(15),
+    HeardAboutID INT REFERENCES HeardAbout(HeardAboutID),
+    HoursPerMonth INTEGER,
+    SewingLevelID INT REFERENCES SewingLevel(SewingLevelID),
+    SewingPreferenceID INT REFERENCES SewingPreference(SewingPreferenceID),
+    AddressID INT REFERENCES Address(AddressID)
 );
 
 -- Events Table
@@ -70,8 +71,8 @@ CREATE TABLE Events (
     EventDetails VARCHAR(255)
 );
 
-  -- EventDates Table
-  CREATE TABLE EventDates (
+-- EventDates Table
+CREATE TABLE EventDates (
     EventDateID SERIAL PRIMARY KEY,
     EventID INT REFERENCES Events(EventID),
     EventDateType VARCHAR(25),
@@ -82,7 +83,7 @@ CREATE TABLE Events (
 CREATE TABLE Items (
     ItemID SERIAL PRIMARY KEY,
     ItemName VARCHAR(25) NOT NULL
-);;
+);
 
 -- ItemsProduced Table
 CREATE TABLE ItemsProduced (
@@ -92,11 +93,11 @@ CREATE TABLE ItemsProduced (
     PRIMARY KEY (EventID, ItemID)
 );
 
--- EventContacts Table
-CREATE TABLE EventContacts (
-    ContactID SERIAL PRIMARY KEY,
-    Contact_First VARCHAR(50) NOT NULL,
-    Contact_Last VARCHAR(50) NOT NULL,
-    ContactPhone VARCHAR(10) NOT NULL,
-    AddressID INT REFERENCES Address(AddressID)
+-- Users Table
+CREATE TABLE Users (
+    UserID SERIAL PRIMARY KEY,
+    UserName VARCHAR(25) NOT NULL,
+    Password VARCHAR(25) NOT NULL,
+    Email VARCHAR(25) NOT NULL
 );
+
