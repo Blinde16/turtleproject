@@ -1,5 +1,6 @@
 Create a view that is an external landing page professionally describing the purpose of the Turtle Project (You can look at their current site and try to make it better)
 -Newsletter down below similar to Habitat for Humanity landing page: https://www.habitat.org/
+-Testimonials on the landding page from users of the life saving fest: 
 
 <section class="newsletter-features">
   <article class="feature-item" style="display: flex;">
@@ -23,10 +24,6 @@ Create a view that is an external landing page professionally describing the pur
 
 
 
--Testimonials on the landding page from users of the life saving fest: 
-
-
-Create a view in the external site that allows anonymous users to fill out the event request form (see Appendix for questions)
 
 
 
