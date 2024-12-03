@@ -4,7 +4,7 @@ let path = require("path");
 let app = express();
 let security = false;  // This will keep track of the login status
 const router = express.Router();
-const port = 5000;
+const port = 3000;
 
 // EJS setup
 app.set("view engine", "ejs");
@@ -41,6 +41,7 @@ app.get('/eventManagement', (req,res) => {
     .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
     .select(
       'events.eventid',
+      'events.eventdate',
       'events.confirmedeventdate',
       'address.streetaddress',
       'address.city',
@@ -59,6 +60,7 @@ app.get('/eventManagement', (req,res) => {
       'eventstatus.eventstatusid',
       'eventstatus.description as status_description',
       'events.eventdetails'
+      
     ) // returns an array of rows 
     .then(events => {
       // Render the index.ejs template and pass the data
