@@ -3,8 +3,8 @@ let path = require("path");
 
 let app = express();
 let security = false;  // This will keep track of the login status
-
-const port = 3000;
+const router = express.Router();
+const port = 5000;
 
 // EJS setup
 app.set("view engine", "ejs");
@@ -19,8 +19,8 @@ const knex = require("knex")({
   connection: {
     host: "localhost",
     user: "postgres",
-    password: "admin",
-    database: "turtle",
+    password: "9174",
+    database: "turtleproject",
     port: 5432,
   },
 });
@@ -37,9 +37,28 @@ app.get('/eventManagement', (req,res) => {
 
 
 
-app.get('/eventRequest', (req,res) => {
-    res.render("eventRequest")
-})
+
+app.get('/EventRequestForm', async (req, res) => {
+    try {
+        const sewingPreferences = await knex('sewingpreferences').select('sewingpreferenceid', 'description');
+        const eventDates = await knex('eventdates').select('eventid', 'eventdatetype', 'eventdate');
+        const addresses = await knex('address').select('addressid', 'streetaddress', 'city', 'state', 'zip');
+        const contacts = await knex('contacts').select('contactid', 'contact_first', 'contact_last', 'contactphone');
+
+        res.render('EventRequestForm', {
+            sewingPreferences,
+            eventDates,
+            addresses,
+            contacts,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching data');
+    }
+});
+
+module.exports = router;
+
 
 app.get('/volunteerRequest', (req, res) => {
   // Query to fetch "heardAboutOptions" from the "HeardAbout" table
