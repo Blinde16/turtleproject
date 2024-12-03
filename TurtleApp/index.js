@@ -4,7 +4,7 @@ let path = require("path");
 let app = express();
 let security = false;  // This will keep track of the login status
 const router = express.Router();
-const port = 5000;
+const port = 3000;
 
 // EJS setup
 app.set("view engine", "ejs");
@@ -41,6 +41,7 @@ app.get('/eventManagement', (req,res) => {
     .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
     .select(
       'events.eventid',
+      'events.eventdate',
       'events.confirmedeventdate',
       'address.streetaddress',
       'address.city',
@@ -59,31 +60,14 @@ app.get('/eventManagement', (req,res) => {
       'eventstatus.eventstatusid',
       'eventstatus.description as status_description',
       'events.eventdetails'
+      
     ) // returns an array of rows 
     .then(events => {
       // Render the index.ejs template and pass the data
       res.render('eventManagement', {events});
     })
 
-
-  const sewingpreference = knex("sewingpreference").select("*")
-  const eventstatus = knex("eventstatus").select('*')
-  const address = knex("address").select('*')
-  const eventcontacts = knex("eventcontacts").select('*')
-  const eventdates = knex('eventdates').select('*')
-    res.render("eventManagement", {
-      events,
-      sewingpreference,
-      eventstatus,
-      address,
-      eventcontacts,
-      eventdates
-    })
-
 })
-
-
-
 
 app.get('/EventRequestForm', async (req, res) => {
     try {
@@ -137,7 +121,33 @@ app.get('/volunteerRequest', (req, res) => {
 
 
 app.get('/volunteerManagement', (req, res) => {
-    res.render("volunteerManagement")
+    const volunteers = knex("volunteer")
+    .join('sewingpreference', 'volunteer.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
+    .join('address', 'volunteer.addressid', '=', 'address.addressid')
+    .join('heard_about', 'volunteer.heardaboutid', '=', 'heard_about.heardaboutid')
+    .select(
+      'volunteer.volunteerid',
+      'volunteer.first_name',
+      'volunteer.last_name',
+      'volunteer.phone_number',
+      'volunteer.email',
+      'heard_about.heardaboutid',
+      'heard_about.description as heardaboutDescription',
+      'volunteer.hourspermonth',
+      'volunteer.sewinglevel',
+      'sewingpreference.sewingpreferenceid',
+      'sewingpreference.description as sewing_description',
+      'address.addressid',
+      'address.streetaddress',
+      'address.city',
+      'address.state',
+      'address.zip',
+    ) // returns an array of rows 
+    .then(volunteers => {
+      // Render the index.ejs template and pass the data
+      res.render('volunteerManagement', {volunteers});
+    })
+
 })
 
 

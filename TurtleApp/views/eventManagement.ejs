@@ -1,15 +1,25 @@
-<h1 style="text-align: center;">Events</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 style="text-align: center;">Events</h1>
   <table>
     <thead>
       <tr>
-        <th>PreferredEventDate</th>
+        <th>Preferred Event Date</th>
         <th>Contact_First</th>
         <th>Contact_Last</th>
         <th>Contact_Phone</th>
         <th>Number of Participants</th>
         <th>EventStart</th>
         <th>EventDuration</th>
-        <th>EventAddress</th>
+        <th>Event State</th>
+        <th>Event City</th>
+        <th>Event Street Address</th>
         <th>SewingPreference</th>
         <th>JenStory</th>
         <th>EventDetails</th>
@@ -21,20 +31,28 @@
         <% events.forEach(row => { %>
           <tr>
             <input type="hidden" value="row.eventid">
-            <td><%= row.description %></td>
-            <td><%= row.base_total %></td>
-            <td><%= new Date(row.date_created).toLocaleDateString('en-US') %></td> <!-- Format date -->
-            <td><%= row.active_poke ? 'Yes' : 'No' %></td>
-            <td><%= row.gender %></td>
-            <td><%= row.poke_type_description %></td>
+            <td>Preferred Date</td> <!-- Format date --> 
+            <td><%= events.contact_first %></td>
+            <td><%= events.contact_last %></td>
+            <td><%= events.contact_phone %></td>
+            <td><%= events.numparticipants %></td>
+            <td><%= events.eventstart %></td>
+            <td><%= events.eventduration %></td>
+            <td><%= events.state %></td>
+            <td><%= events.city %></td>
+            <td><%= events.streetaddress %></td>
+            <td><%= events.sewing_description %></td>
+            <td><%= events.jenstory ? 'Yes' : 'No' %></td>
+            <td><%= events.eventdetails %></td>
+            <td><%= events.status_description %></td>
             <td>
-              <form action="/eventdetails/<%= row.id %>" method="GET" style="display:inline;">
+              <form action="/eventdetails/<%= events.eventid %>" method="GET" style="display:inline;">
                 <button type="submit">View</button>
               </form>
-              <form action="/editevent/<%= row.id %>" method="GET" style="display:inline;">
+              <form action="/editevent/<%= events.eventid %>" method="GET" style="display:inline;">
                 <button type="submit">Edit</button>
               </form>
-              <form action="/deleteevent/<%= row.id %>" method="POST" style="display:inline;">
+              <form action="/deleteevent/<%= events.eventid %>" method="POST" style="display:inline;">
                 <button type="submit" onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
               </form>
             </td>
@@ -47,3 +65,6 @@
       <% } %>
     </tbody>
   </table>
+</body>
+</html>
+
