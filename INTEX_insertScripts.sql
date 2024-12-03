@@ -83,3 +83,10 @@ VALUES
   ('Alice', 'Brown', '555-1234'),
   ('Bob', 'Davis', '555-5678'),
   ('Charlie', 'Wilson', '555-8765');
+
+--Insert data into EventDates table
+INSERT INTO EventDates (EventDateID, EventID, EventDateType, EventDate)
+VALUES 
+  (1, 1, 'Primary', '10-24-24');
+
+
