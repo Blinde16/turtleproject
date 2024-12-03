@@ -11,7 +11,7 @@ CREATE TABLE Volunteer (
   FOREIGN KEY (SewingLevel) REFERENCES Sewing_Level(SewingID)
 );
 
--- Heard_About Table
+-- Heard_About Table, Hi there!
 CREATE TABLE Heard_About (
   HeardAboutID SERIAL PRIMARY KEY,  -- SERIAL for auto-incrementing PK
   Description VARCHAR(25)
