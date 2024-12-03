@@ -33,7 +33,39 @@ app.get("/", (req, res) => {
 
 app.get('/eventManagement', (req,res) => {
 
-  const events = knex("events").select('*')
+  const events = knex("events")
+    .join('eventdates', 'eventdates.eventid', '=', 'events.eventid')
+    .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
+    .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
+    .join('address', 'events.addressid', '=', 'address.addressid')
+    .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
+    .select(
+      'events.eventid',
+      'events.confirmedeventdate',
+      'address.streetaddress',
+      'address.city',
+      'address.state',
+      'address.zip',
+      'eventcontacts.contactid',
+      'eventcontacts.contact_first',
+      'eventcontacts.contact_last',
+      'eventcontacts.contactphone',
+      'events.numparticipants',
+      'sewingpreference.sewingpreferenceid',
+      'sewingpreference.description as sewing_description',
+      'events.eventstart',
+      'events.eventduration',
+      'events.jenstory',
+      'eventstatus.eventstatusid',
+      'eventstatus.description as status_description',
+      'events.eventdetails'
+    ) // returns an array of rows 
+    .then(events => {
+      // Render the index.ejs template and pass the data
+      res.render('eventManagement', {events});
+    })
+
+
   const sewingpreference = knex("sewingpreference").select("*")
   const eventstatus = knex("eventstatus").select('*')
   const address = knex("address").select('*')
