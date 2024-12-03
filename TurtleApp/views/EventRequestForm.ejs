@@ -100,12 +100,12 @@
     <!-- Contact Information -->
     <div class="form-group">
       <label for="name">First Name</label>
-      <input type="text" id="first-name" name="first-name" placeholder="Enter your First Name" required>
+      <input type="text" id="firstName" name="firstName" placeholder="Enter your First Name" required>
     </div>
 
     <div class="form-group">
       <label for="name">Last Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter your Last Name" required>
+      <input type="text" id="lastName" name="lastName" placeholder="Enter your Last Name" required>
     </div>
 
     <div class="form-group">
@@ -120,13 +120,13 @@
 
       <!-- Number of Participants -->
       <div class="form-group">
-      <label for="numParticipants">How many people will be there?</label>
+      <label for="numParticipants">How many people will be participating? (This can a roughe estimate)</label>
       <input type="number" id="numParticipants" name="numParticipants" required>
       </div>
 
       <!-- Sewing Preference -->
       <div class="form-group">
-      <label for="sewingPreference">Would you like to do sewing, non-sewing, or both?</label>
+      <label for="sewingPreference">Would you prefer sew, not sew, or both?</label>
       <select id="sewingPreference" name="sewingPreference" required>
           <% sewingPreferences.forEach(pref => { %>
               <option value="<%= pref.sewingpreferenceid %>"><%= pref.description %></option>
@@ -136,14 +136,42 @@
   
       <!-- Event Dates -->
       <div class="form-group">
-      <label for="eventDate">What date (or possible dates) would you like to schedule the event?</label>
-      
+      <label for="eventDateType">What is your preferred primary date for the event that you would like to schedule?</label>
+      <select id="eventDateType" name="eventDateType" required>
+        <% eventDates.forEach(eventdates => { %>
+            <option value="<%= eventdates.eventid %>"><%= eventdates.eventdate %></option>
+        <% }); %>
+    </select>
+    <label for="eventDateType">What is your preferred secondary date for the event that you would like to schedule?</label>
+      <select id="eventDateType" name="eventDateType" required>
+        <% eventDates.forEach(eventdates => { %>
+            <option value="<%= eventdates.eventid %>"><%= eventdates.eventdate %></option>
+        <% }); %>
+    </select>
+    <label for="eventDateType">What is your preferred tertiary alternative date for the event that you would like to schedule?</label>
+      <select id="eventDateType" name="eventDateType" required>
+        <% eventDates.forEach(eventdates => { %>
+            <option value="<%= eventdates.eventid %>"><%= eventdates.eventdate %></option>
+        <% }); %>
+    </select>
       </div>
   
       <!-- Address -->
       <div class="form-group">
-      <label for="eventAddress">What’s the address of the event?</label>
+      <label for="address">What’s the address of the event?</label>
+      <input type="text" id="address" name="address" required>
       </div>
+
+      <!-- Contact Name and Phone Number for the organizer/lead -->
+      <div class="form-group">
+      <label for="contact_first">What’s the first name of the requester? </label>
+      <input type="text" id="contact_first" name="contact_first" required>
+      <label for="contact_last">What’s the last name of the requester? </label>
+      <input type="text" id="contact_last" name="contact_last" required>
+      <label for="contactphone">What’s the phone number of the requester? </label>
+      <input type="number" id="contactphone" name="contactphone" required>
+      </div>
+  
   
       <!-- Event Time and Duration -->
       <div class="form-group">
