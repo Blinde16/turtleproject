@@ -42,28 +42,33 @@ app.get('/eventRequest', (req,res) => {
 })
 
 app.get('/volunteerRequest', (req, res) => {
-    knex('pokemon')
-    .join('poke_type', 'pokemon.poke_type_id', '=', 'poke_type.id')
-    .select(
-      'pokemon.id',
-      'pokemon.description',
-      'pokemon.base_total',
-      'pokemon.date_created',
-      'pokemon.active_poke',
-      'pokemon.gender',
-      'pokemon.poke_type_id',
-      'poke_type.description as poke_type_description'
-    ) // returns an array of rows 
-    .then(pokemon => {
-      // Render the index.ejs template and pass the data
-      res.render('index', { pokemon, security });
+  // Query to fetch "heardAboutOptions" from the "HeardAbout" table
+  const heardAboutQuery = knex('HeardAbout').select('Description').distinct();
+
+  // Query to fetch "sewingLevelOptions" from the "SewingLevels" table
+  const sewingLevelQuery = knex('SewingLevel').select('Description').distinct();
+
+  // Query to fetch "sewingPreference" from the "SewingPreferences" table
+  const sewingPreferenceQuery = knex('SewingPreference').select('Description').distinct();
+
+  // Execute all queries in parallel
+  Promise.all([heardAboutQuery, sewingLevelQuery, sewingPreferenceQuery])
+    .then(([heardAboutOptions, sewingLevelOptions, sewingPreference]) => {
+      // Render the volunteerRequest.ejs template and pass the data
+      res.render('volunteerRequest', { 
+        heardAboutOptions, 
+        sewingLevelOptions, 
+        sewingPreference, 
+        security 
+      });
     })
-    // .orderby('name', 'asc') // 'asc' for ascending, 'desc' for descending
     .catch(error => {
       console.error('Error querying database:', error);
       res.status(500).send('Internal Server Error');
-    res.render("volunteerRequest")
-})
+    });
+});
+
+
 
 app.get('/volunteerManagement', (req, res) => {
     res.render("volunteerManagement")
