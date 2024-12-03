@@ -1,0 +1,201 @@
+Create a view that is an external landing page professionally describing the purpose of the Turtle Project (You can look at their current site and try to make it better)
+-Newsletter down below similar to Habitat for Humanity landing page: https://www.habitat.org/
+-Testimonials on the landding page from users of the life saving fest: 
+-The website is also missing a search bar icon and option for the user to navigate the website... https://www.who.int/about
+
+<section class="newsletter-features">
+  <article class="feature-item" style="display: flex;">
+    <div class="feature-image">
+      <a href="your-link.html">
+        <img 
+          src="your-image.jpg" 
+          alt="Feature description" 
+          style="width: 100%; height: auto;">
+      </a>
+    </div>
+    <div class="feature-content">
+      <h3 class="feature-title">
+        <a href="your-link.html">Your Feature Title</a>
+      </h3>
+      <p class="feature-description">Your description goes here. Keep it brief and engaging!</p>
+      <a href="your-link.html" class="feature-button" style="display: inline-block; padding: 10px 15px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;">Read More</a>
+    </div>
+  </article>
+</section>
+
+--------------------------------------------------------------------------------------------------------------------------
+Rolling Newsletter CSS: 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rolling Newsletter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .newsletter-features {
+      overflow: hidden;
+      background: #ffffff;
+      padding: 20px;
+    }
+
+    .rolling-container {
+      display: flex;
+      flex-direction: row;
+      animation: scroll 10s linear infinite;
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .feature-item {
+      display: flex;
+      flex: 0 0 33%;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+      margin: 0 10px;
+      background: #ffffff;
+    }
+
+    .feature-image {
+      overflow: hidden;
+      border-radius: 5px 0 0 5px;
+    }
+
+    .feature-image img {
+      max-width: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-image img:hover {
+      transform: scale(1.1);
+    }
+
+    .feature-content {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .feature-title a {
+      font-size: 1.2em;
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    .feature-title a:hover {
+      text-decoration: underline;
+    }
+
+    .feature-description {
+      font-size: 0.9em;
+      color: #555;
+      margin: 10px 0;
+    }
+
+    .feature-button {
+      text-align: center;
+      background-color: #0066cc;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .feature-button:hover {
+      background-color: #005bb5;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .feature-item {
+        flex: 0 0 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section class="newsletter-features">
+  <div class="rolling-container">
+    <article class="feature-item">
+      <div class="feature-image">
+        <a href="#">
+          <img src="example-image-1.jpg" alt="Feature 1">
+        </a>
+      </div>
+      <div class="feature-content">
+        <h3 class="feature-title">
+          <a href="#">Feature Title 1</a>
+        </h3>
+        <p class="feature-description">This is a description for feature 1.</p>
+        <a href="#" class="feature-button">Read More</a>
+      </div>
+    </article>
+
+    <article class="feature-item">
+      <div class="feature-image">
+        <a href="#">
+          <img src="example-image-2.jpg" alt="Feature 2">
+        </a>
+      </div>
+      <div class="feature-content">
+        <h3 class="feature-title">
+          <a href="#">Feature Title 2</a>
+        </h3>
+        <p class="feature-description">This is a description for feature 2.</p>
+        <a href="#" class="feature-button">Read More</a>
+      </div>
+    </article>
+
+    <article class="feature-item">
+      <div class="feature-image">
+        <a href="#">
+          <img src="example-image-3.jpg" alt="Feature 3">
+        </a>
+      </div>
+      <div class="feature-content">
+        <h3 class="feature-title">
+          <a href="#">Feature Title 3</a>
+        </h3>
+        <p class="feature-description">This is a description for feature 3.</p>
+        <a href="#" class="feature-button">Read More</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+</body>
+</html>
+
+
+---------------------------------------------------------
+- Unicef Spotlight Feature For their Links: https://www.unicef.org/
+
+---------------------------------------------------------
+- An approach that is more straight forward: https://www.who.int/about
+- Who we are, what we do, how you can help
+
+---------------------------------------------------------
+Locations: More locations on the way in UT, OR, CA
+
+
+
+
+
+
+
