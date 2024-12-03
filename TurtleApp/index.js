@@ -32,7 +32,22 @@ app.get("/", (req, res) => {
 });
 
 app.get('/eventManagement', (req,res) => {
-    res.render("eventManagement")
+
+  const events = knex("events").select('*')
+  const sewingpreference = knex("sewingpreference").select("*")
+  const eventstatus = knex("eventstatus").select('*')
+  const address = knex("address").select('*')
+  const eventcontacts = knex("eventcontacts").select('*')
+  const eventdates = knex('eventdates').select('*')
+    res.render("eventManagement", {
+      events,
+      sewingpreference,
+      eventstatus,
+      address,
+      eventcontacts,
+      eventdates
+    })
+
 })
 
 
