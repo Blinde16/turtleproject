@@ -37,18 +37,31 @@ app.get('/eventManagement', (req,res) => {
 
 
 
-app.get('/eventRequestForm', (req,res) => {
-    try {
-        // Query HeardAbout options
-        const heardAboutOptions = await knex("HeardAbout").distinct("Description").orderBy("Description");
-        res.render("form", { heardAboutOptions });
-      } catch (err) {
-        console.error(err);
-        res.status(500).send("Error loading form options");
-      }
+app.get('/eventRequest', (req,res) => {
+    res.render("eventRequest")
 })
 
 app.get('/volunteerRequest', (req, res) => {
+    knex('pokemon')
+    .join('poke_type', 'pokemon.poke_type_id', '=', 'poke_type.id')
+    .select(
+      'pokemon.id',
+      'pokemon.description',
+      'pokemon.base_total',
+      'pokemon.date_created',
+      'pokemon.active_poke',
+      'pokemon.gender',
+      'pokemon.poke_type_id',
+      'poke_type.description as poke_type_description'
+    ) // returns an array of rows 
+    .then(pokemon => {
+      // Render the index.ejs template and pass the data
+      res.render('index', { pokemon, security });
+    })
+    // .orderby('name', 'asc') // 'asc' for ascending, 'desc' for descending
+    .catch(error => {
+      console.error('Error querying database:', error);
+      res.status(500).send('Internal Server Error');
     res.render("volunteerRequest")
 })
 
