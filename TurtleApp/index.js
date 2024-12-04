@@ -62,6 +62,7 @@ app.get('/eventManagement', (req,res) => {
       'eventstatus.eventstatusid',
       'eventstatus.description as status_description',
       'events.eventdetails'
+      
     ) // returns an array of rows 
     .then(events => {
       // Render the index.ejs template and pass the data
@@ -72,6 +73,35 @@ app.get('/eventManagement', (req,res) => {
         res.status(500).send('Internal Server Error');
     }
 })
+
+
+app.get('/editevent/:eventid', async (req, res) => {
+  const { eventid } = req.params;
+
+  try {
+    const [events, sewingPreference, eventStatus] = await Promise.all([
+      knex('events')
+        .where('eventid', eventid)
+        .first(), // Fetch only the specific event by ID
+      knex('sewingpreference').select('sewingpreferenceid', 'description'),
+      knex('eventstatus').select('eventstatusid', 'description')
+    ]);
+
+    if (!events) {
+      return res.status(404).send('Event not found');
+    }
+
+    res.render('editevent', {
+      events,
+      sewingPreference,
+      eventStatus
+    });
+  } catch (error) {
+    console.error('Error fetching event:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 app.get('/EventRequestForm', async (req, res) => {
     try {

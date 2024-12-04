@@ -95,73 +95,109 @@
 
 <div class="form-container">
   <h2>Request an Event</h2>
-  <form action="editevent" method="POST">
+  <form action="editevent/<%= events.eventid %>" method="POST">
 
     <!-- Contact Information -->
     <div class="form-group">
-      <label for="name">Confirmed Event Date</label>
-      <input type="text" id="first-name" name="first-name" placeholder="Enter your First Name" required>
+      <label for="confirmeddate">Confirmed Event Date</label>
+      <input type="text" id="confirmeddate" name="confirmeddate" value="<%= events.confirmeddate %>" required>
     </div>
 
     <div class="form-group">
-      <label for="name">Last Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter your Last Name" required>
+      <label for="firstname">Contact First Name</label>
+      <input type="text" id="firstname" name="firstname" value="<%= pokemon.description %>" required>
     </div>
 
+    <div class="form-group">
+        <label for="lastname">Contact Last Name</label>
+        <input type="text" id="lastname" name="lastname" value="<%= pokemon.description %>" required>
+      </div>
+  
     <div class="form-group">
       <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      <input type="email" id="email" name="email" value="<%= pokemon.description %>" required>
     </div>
 
     <div class="form-group">
       <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+      <input type="tel" id="phone" name="phone" value="<%= pokemon.description %>">
     </div>
 
       <!-- Number of Participants -->
       <div class="form-group">
-      <label for="numParticipants">How many people will be there?</label>
-      <input type="number" id="numParticipants" name="numParticipants" required>
+      <label for="numParticipants">Number of Participants</label>
+      <input type="number" id="numParticipants" name="numParticipants" value="<%= pokemon.description %>" required>
       </div>
 
+      
       <!-- Sewing Preference -->
       <div class="form-group">
-      <label for="sewingPreference">Would you like to do sewing, non-sewing, or both?</label>
-      <select id="sewingPreference" name="sewingPreference" required>
-          <% sewingPreferences.forEach(pref => { %>
-              <option value="<%= pref.sewingpreferenceid %>"><%= pref.description %></option>
+        <label for="sewingPreference">Sewing Preference</label>
+        <select id="sewingPreference" name="sewingPreference" required>
+          <% sewingPreference.forEach(pref => { %>
+            <option value="<%= pref.sewingpreferenceid %>" <%= pref.sewingpreferenceid === events.sewingpreferenceid ? 'selected' : '' %>>
+              <%= pref.description %>
+            </option>
           <% }); %>
-      </select>
-      </div> 
-  
-      <!-- Event Dates -->
-      <div class="form-group">
-      <label for="eventDate">What date (or possible dates) would you like to schedule the event?</label>
-      
+        </select>
       </div>
-  
+
       <!-- Address -->
       <div class="form-group">
-      <label for="eventAddress">What’s the address of the event?</label>
-      </div>
-  
-      <!-- Event Time and Duration -->
-      <div class="form-group">
-      <label for="eventStart">What time do you want the event to start?</label>
-      <input type="time" id="eventStart" name="eventStart" required>
+      <label for="streetaddress">Event Street Address</label>
+      <input type="text" id="streetaddress" name="streetaddress" value="<%= address.streetaddress %>" required>
       </div>
       
       <div class="form-group">
-      <label for="eventDuration">How long would you like it to go?</label>
-      <input type="text" id="eventDuration" name="eventDuration" placeholder="e.g., 2 hours" required>
+        <label for="city">Event City</label>
+        <input type="text" id="city" name="city" value="<%= address.city %>"required>
+    </div>
+
+    <div class="form-group">
+        <label for="state">Event State</label>
+        <input type="text" id="state" name="state" value="<%= address.state %>"required>
+    </div>
+
+    <div class="form-group">
+        <label for="zip">Event Zip</label>
+        <input type="text" id="zip" name="zip" value="<%= address.zip %>"required>
+    </div>
+
+      <!-- Event Time and Duration -->
+      <div class="form-group">
+      <label for="eventStart">Event Startime</label>
+      <input type="time" id="eventStart" name="eventStart" value="<%= events.eventstarttime %>"required>
+      </div>
+      
+      <div class="form-group">
+      <label for="eventDuration">Event Duration</label>
+      <input type="text" id="eventDuration" name="eventDuration" value="<%= events.eventduration%>" required>
       </div>
 
       <!-- Jen's Story -->
       <div class="form-group">
-      <label for="jenStory">Would you like Jen to share her story?</label>
-      <input type="checkbox" id="jenStory" name="jenStory" value="1">
+      <label for="jenStory">
+        <input type="checkbox" id="jenStory" name="jenStory" value="true" <%= events.jenstory ? 'checked': '' %>>
+        Jen Story
+      </label>
       </div>
-  
+
+      <div class="form-group">
+        <label for="eventdetails">Event Details</label>
+        <input type="text" id="eventdetails" name="eventdetails" placeholder="Any notes or other details needed for this event" required>
+    </div>
+
+    <!-- Event Status -->
+    <div class="form-group">
+      <label for="eventstatus">Event Status</label>
+      <select id="eventstatus" name="eventstatus" required>
+        <% eventStatus.forEach(status => { %>
+          <option value="<%= status.eventstatusid %>" <%= status.eventstatusid === events.eventstatusid ? 'selected' : '' %>>
+            <%= status.description %>
+          </option>
+        <% }); %>
+      </select>
+    </div>
     <!-- Submit Button -->
     <button type="submit" class="form-button">Submit</button>
   </form>
