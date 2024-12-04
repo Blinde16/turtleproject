@@ -12,8 +12,9 @@
       padding: 0;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      align-items: flex-start;
+      min-height: 100vh;
+      position: relative; /* For positioning the button */
     }
 
     .form-container {
@@ -122,11 +123,6 @@
       <div class="form-group">
       <label for="numParticipants">How many people will be participating? (This can be a rough estimate)</label>
       <input type="number" id="numParticipants" name="numParticipants" required>
-      <select id="numParticipants" name="sewingPreference" required>
-        <% sewingPreferences.forEach(Events => { %>
-            <option value="<%= Events.numParticipants %>"><%= Events.numParticipants %></option>
-        <% }); %>
-    </select>
     </div>
 
       <!-- Sewing Preference -->
@@ -163,9 +159,30 @@
   
       <!-- Address -->
       <div class="form-group">
-      <label for="address">What’s the address of the event?</label>
-      <input type="text" id="address" name="address" required>
+        <label for="streetAddress">What’s the address of the event?</label>
+        <input type="text" id="streetAddress" name="streetAddress" placeholder="Enter event street address" required>
       </div>
+      
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" placeholder="Enter event city" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" placeholder="Enter event state" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="zip">Zip Code</label>
+        <input type="text" id="zip" name="zip" placeholder="Enter event zip code" required>
+      </div>
+
+      <div class="form-group">
+        <label for="SpaceSize">Space Size</label>
+        <input type="text" id="SpaceSize" name="SpaceSize" placeholder="Enter the size of your space: " required>
+      </div>
+
 
       <!-- Contact Name and Phone Number for the organizer/lead -->
       <div class="form-group">
@@ -180,33 +197,21 @@
   
       <!-- Event Time and Duration -->
       <div class="form-group">
-      <label for="eventStart">What time do you want the event to start?</label>
-      <input type="time" id="eventStart" name="eventStart" required>
-      <select id="eventStart" name="eventStart" required>
-        <% eventStart.forEach(Events => { %>
-            <option value="<%= Events.eventStart %>"><%= Events.eventStart %></option>
-        <% }); %>
-    </select>
+        <label for="eventstart">What time do you want the event to start?</label>
+        <input type="time" id="eventstart" name="eventstart" required>
       </div>
       
       <div class="form-group">
-      <label for="eventDuration">How long would you like it to go?</label>
-      <input type="text" id="eventDuration" name="eventDuration" placeholder="e.g., 2 hours" required>
-      <select id="eventDuration" name="eventDuration" required>
-        <% eventDuration.forEach(Events => { %>
-            <option value="<%= Events.eventDuration %>"><%= Events.eventDuration %></option>
-        <% }); %>
-    </select>
+      <label for="eventduration">How long would you like it to go?</label>
+      <input type="text" id="eventduration" name="eventduration" placeholder="e.g., 2 hours" required>
       </div>
 
       <!-- Jen's Story -->
       <div class="form-group">
-      <label for="jenStory">Would you like Jen to share her story?</label>
-      <input type="checkbox" id="jenStory" name="jenStory" value="true">
+      <label for="jenstory">Would you like Jen to share her story?</label>
       <select id="jenstory" name="jenstory" required>
-        <% jenstory.forEach(Events => { %>
-            <option value="<%= Events.jenstory %>"><%= Events.jenstory %></option>
-        <% }); %>
+          <option value=True>Yes</option>
+          <option value=False>No</option>
     </select>
       </div>
   
