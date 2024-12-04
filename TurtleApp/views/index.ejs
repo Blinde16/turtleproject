@@ -8,14 +8,30 @@
     body {
       font-family: Arial, sans-serif;
     }
+
+    /* Navbar Styling */
     .navbar {
+      display: flex;
+      justify-content: space-between; /* Push content to edges */
+      align-items: center; /* Vertically center items */
       background-color: #4CAF50;
       padding: 10px;
     }
+
+    /* Styling for the logo on the left */
+    .navbar .logo {
+      font-size: 1.5em;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* Navbar button form styling */
     .navbar form {
       display: inline-block;
       margin-right: 15px;
     }
+
+    /* Button styling */
     .navbar button {
       color: white;
       background-color: #4CAF50;
@@ -24,9 +40,12 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    /* Hover effect for buttons */
     .navbar button:hover {
       background-color: #45a049;
     }
+
     .container {
       padding: 20px;
     }
@@ -36,35 +55,43 @@
 
   <!-- Navigation Bar -->
   <div class="navbar">
-    <!-- Home Button Form -->
-    <form action="/" method="GET">
-      <button type="submit">Home</button>
-    </form>
+    <!-- Logo on the left side -->
+    <div class="logo">
+      Turtle Shelter
+    </div>
 
-    <!-- Event Management Button Form -->
-    <form action="/eventManagement" method="GET">
-      <button type="submit">Event Management</button>
-    </form>
+    <!-- Navbar Buttons (aligned to the right) -->
+    <div class="nav-buttons">
+      <!-- Home Button Form -->
+      <form action="/" method="GET">
+        <button type="submit">Home</button>
+      </form>
 
-    <!-- Volunteer Request Button Form -->
-    <form action="/volunteerForm" method="GET">
+      <!-- Event Management Button Form -->
+      <form action="/eventManagement" method="GET">
+        <button type="submit">Event Management</button>
+      </form>
+
+      <!-- Volunteer Request Button Form -->
+      <form action="/volunteerForm" method="GET">
         <button type="submit">Volunteer Form</button>
       </form>
 
-    <!-- Event Request Button Form -->
-    <form action="/EventRequestForm" method="GET">
-      <button type="submit">Event Request</button>
-    </form>
+      <!-- Event Request Button Form -->
+      <form action="/EventRequestForm" method="GET">
+        <button type="submit">Event Request</button>
+      </form>
 
-    <!-- Volunteer Management Button Form -->
-    <form action="/volunteerManagement" method="GET">
-      <button type="submit">Volunteer Management</button>
-    </form>
+      <!-- Volunteer Management Button Form -->
+      <form action="/volunteerManagement" method="GET">
+        <button type="submit">Volunteer Management</button>
+      </form>
 
-    <!-- Admin Login Button Form -->
-    <form action="/adminLogin" method="GET">
-      <button type="submit">Admin Login</button>
-    </form>
+      <!-- Admin Login Button Form -->
+      <form action="/adminLogin" method="GET">
+        <button type="submit">Admin Login</button>
+      </form>
+    </div>
   </div>
 
   <!-- Main Content -->
@@ -72,17 +99,21 @@
     <h1>Welcome to the Turtle Shelter Project</h1>
     <h1>Who we are</h1>
     <p>TSP is your organization dedicated to bringing homeless people the protection they need through high-tech winter vests.</p>
-    <p>One winter when Jen was homeless, 7 of her friends froze to death. After surmouting her own journey from the frigid cold, she was determined to figure out a solution to help other with this burden. She created an inexpensive high tech solution with the help of a survival expert that helps SAVE lives and more importantly alleviate suffering</p>
-    <p>There is no need for those in a state of emergency to have pay so much on top of the burden of recovering.</p>
+    <p>One winter when Jen was homeless, 7 of her friends froze to death. After surmounting her own journey from the frigid cold, she was determined to figure out a solution to help others with this burden. She created an inexpensive high-tech solution with the help of a survival expert that helps SAVE lives and more importantly alleviate suffering.</p>
+    <p>There is no need for those in a state of emergency to have to pay so much on top of the burden of recovering.</p>
     <br><br>
     <h1>What we do</h1>
-    <p> We answer the call to spread warmth in the lives the homeless who are vulnerable to harsh winters by creating portable "shelters" that they can carry with them, just like a turtle.</p>
-    <p>Although increased homeless services, especially additional shelter availability, are necessary to accommodate the amplified need in the winter, life threatening hypothermia can set in between 32-50 degrees which is not cold enough for many winter shelters to open</p>
-    <p>Our technology is about more than just making sure that the wearer maintains heat from their core. The warmth that our vests provide restore confidence, energy, and hope</p>
+    <p>We answer the call to spread warmth in the lives of the homeless who are vulnerable to harsh winters by creating portable "shelters" that they can carry with them, just like a turtle.</p>
+    <p>Although increased homeless services, especially additional shelter availability, are necessary to accommodate the amplified need in the winter, life-threatening hypothermia can set in between 32-50 degrees, which is not cold enough for many winter shelters to open.</p>
+    <p>Our technology is about more than just making sure that the wearer maintains heat from their core. The warmth that our vests provide restores confidence, energy, and hope.</p>
     <h1>How you can help</h1>
-    <b><p>"Every life has value, every person can sereve", and you can take the next step to donate, make vests, and organize an event too!</p></b> 
-    <P>Be a part of a powerful campaign that changes lives of those in need</P>
+    <b><p>"Every life has value, every person can serve", and you can take the next step to donate, make vests, and organize an event too!</p></b>
+    <P>Be a part of a powerful campaign that changes lives of those in need.</P>
   </div>
+
+</body>
+</html>
+
 
   
 <!DOCTYPE html>
