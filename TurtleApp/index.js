@@ -72,7 +72,7 @@ app.get('/eventManagement', (req,res) => {
 })
 
 
-app.get('/editevent', (req, res) => {
+app.get('/editevent/:eventid', (req, res) => {
   try {
   const eventid = req.params.eventid;
       knex('events')
@@ -120,16 +120,18 @@ app.get('/editevent', (req, res) => {
   }
 });
 
-app.post('/editevent/:eventid', (req, res) => {
+app.post('/editevent/:eventid/:addressid/:contactid', (req, res) => {
   const eventid = req.params.eventid;
   // Access each value directly from req.body
-  const confirmeddate = req.body.confirmeddate;
+  const confirmedeventdate = req.body.confirmedeventdate;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
-  const email = req.body.email;
   const phone = req.body.phone;
   const numParticipants = req.body.numParticipants;
-  const sewingPreference = req.body.sewingPreference;
+  const sewingpreferenceid = req.body.sewingPreference;
+  const eventaddressid = req.body.addressid;
+  const contactid = req.body.contactid;
+  const totalproduced = req.body.totalproduced;
   const streetaddress = req.body.streetaddress;
   const city = req.body.city;
   const state = req.body.state;
@@ -137,29 +139,44 @@ app.post('/editevent/:eventid', (req, res) => {
   const eventStart = req.body.eventStart;
   const eventDuration = req.body.eventDuration;
   const jenStory = req.body.jenStory === 'true';
+  const eventstatusid = req.body.eventstatusid;
   const eventdetails = req.body.eventdetails === 'true';
   // Update the Pokémon in the database
   knex('events')
     .where('eventid', eventid)
     .update({
-      confirmeddate: confirmeddate,
-      firstname: firstname,
-      lastname: lastname,
-      email: email,
-      phone: phone,
+      confirmedeventdate: confirmedeventdate,
+      eventaddressid: eventaddressid,
+      contactid: contactid,
+      totalproduced: totalproduced,
       numParticipants: numParticipants,
-      sewingPreference: sewingPreference,
-      streetaddress:streetaddress,
-      city:city,
-      state:state,
-      zip:zip,
+      sewingpreferenceid: sewingpreferenceid,
       eventStart:eventStart,
       eventDuration:eventDuration,
       jenStory:jenStory,
+      eventstatusid: eventstatusid,
       eventdetails:eventdetails
+
     })
-  knex('')
     .then(() => {
+      // After updating the volunteer, update the address table
+      return knex('address')
+        .where('addressid', addressid) // Use the correct addressid
+        .update({
+          streetaddress:streetaddress,
+          city:city,
+          state:state,
+          zip:zip,
+        });
+    })
+    .then(() => {
+      return knex('eventcontacts')
+        .where('contactid', contactid)
+        .update({
+          firstname: firstname,
+          lastname: lastname,
+          phone: phone
+          })
       res.redirect('/eventManagment'); // Redirect to the list of Pokémon after saving
     })
     .catch(error => {
@@ -339,43 +356,6 @@ knex('volunteer')
     res.status(500).send('Internal Server Error');
   });
 });
-
-//   knex('volunteer')
-//   .join("address", "address.addressid", '=', "volunteer.addressid")
-//   .select(
-//     "volunteer.volunteerid",
-//     "volunteer.first_name",
-//     "volunteer.last_name",
-//     "volunteer.email",
-//     "volunteer.phone_number",
-//     "volunteer.heardaboutid",
-//     "volunteer.hourspermonth",
-//     "volunteer.sewinglevelid",
-//     "address.city as city",
-//     "address.state as state"
-//   )
-//     .where('volunteerid', volunteerid)
-//     // use .update to change the record
-//     .update({
-//       first_name: first_name, // The first parameter is the column and the second parameter is the value you want to change it to
-//       last_name: last_name,
-//       email: email,
-//       phone_number: phone_number,
-//       heardaboutid: heardaboutid,
-//       hourspermonth: hours_per_month,
-//       sewinglevelid: sewinglevelid,
-//       sewingpreferenceid: sewingpreferenceid,
-//       city: city,
-//       state: state
-//     })
-//     .then(() => {
-//       res.redirect("/volunteerManagement")
-//     })
-//     .catch(error => {
-//       console.error('Error updating volunteer:', error);
-//       res.status(500).send('Internal Server Error');
-//     });
-// });
 
 app.get('/adminLogin', (req,res) => {
     res.render("adminLogin")
