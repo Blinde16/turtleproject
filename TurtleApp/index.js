@@ -3,7 +3,11 @@ let path = require("path");
 let app = express();
 let security = false;  // This will keep track of the login status
 const router = express.Router();
+<<<<<<< HEAD
 const port = 3000;
+=======
+const port = 5500;
+>>>>>>> 0c3493ff9dc2ed9c99094c9f2c6ff6d6be9429ed
 
 // EJS setup
 app.set("view engine", "ejs");
@@ -92,30 +96,31 @@ app.get('/EventRequestForm', async (req, res) => {
 
 module.exports = router;
 
+app.get('/VolunteerForm', async (req, res) => {
+  try {
+      // Fetch data concurrently using Promise.all
+      const [heardAboutOptions, sewingLevelOptions, sewingPreference] = await Promise.all([
+          knex('heardabout').select('description'),
+          knex('sewinglevel').select('description'),
+          knex('sewingpreference').select('description')
+      ]);
+      
+      // Log results for debugging
+      console.log('Heard About Options:', heardAboutOptions);
+      console.log('Sewing Level Options:', sewingLevelOptions);
+      console.log('Sewing Preferences:', sewingPreference);
 
-app.get('/volunteerRequest', (req, res) => {
-    try {
-  // Query to fetch "heardAboutOptions" from the "HeardAbout" table
-  const heardAboutQuery = knex('heardabout').select('description');
-
-  // Query to fetch "sewingLevelOptions" from the "SewingLevels" table
-  const sewingLevelQuery = knex('sewinglevel').select('description');
-
-  // Query to fetch "sewingPreference" from the "SewingPreferences" table
-  const sewingPreferenceQuery = knex('sewingpreference').select('description');
-
-      res.render('volunteerRequest', { 
-        heardAboutOptions, 
-        sewingLevelOptions, 
-        sewingPreference, 
-        security 
+      // Render the VolunteerForm view with the fetched data
+      res.render('VolunteerForm', { 
+          heardAboutOptions, 
+          sewingLevelOptions, 
+          sewingPreference
       });
-    } catch (error) {
-        console.error('Error fetching events:', error);
-        res.status(500).send('Internal Server Error');
-    }
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      res.status(500).send('Internal Server Error');
+  }
 });
-
 
 
 app.get('/volunteerManagement', (req, res) => {
@@ -123,17 +128,17 @@ app.get('/volunteerManagement', (req, res) => {
     const volunteers = knex("volunteer")
     .join('sewingpreference', 'volunteer.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
     .join('address', 'volunteer.addressid', '=', 'address.addressid')
-    .join('heard_about', 'volunteer.heardaboutid', '=', 'heard_about.heardaboutid')
+    .join('heardabout', 'volunteer.heardaboutid', '=', 'heardabout.heardaboutid')
     .select(
       'volunteer.volunteerid',
       'volunteer.first_name',
       'volunteer.last_name',
       'volunteer.phone_number',
       'volunteer.email',
-      'heard_about.heardaboutid',
-      'heard_about.description as heardaboutDescription',
+      'heardabout.heardaboutid',
+      'heardabout.description as heardaboutDescription',
       'volunteer.hourspermonth',
-      'volunteer.sewinglevel',
+      'volunteer.sewinglevelid',
       'sewingpreference.sewingpreferenceid',
       'sewingpreference.description as sewing_description',
       'address.addressid',

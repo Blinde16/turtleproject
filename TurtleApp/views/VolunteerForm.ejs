@@ -13,10 +13,9 @@
       padding: 0;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      align-items: flex-start; /* Change to flex-start to align content to the top */
+      min-height: 100vh; /* Change height to min-height */
     }
-
     .form-container {
       background: #ffffff;
       border-radius: 8px;
@@ -124,7 +123,7 @@
       <select id="heardAbout" name="heardAbout" required>
         <option value="" disabled selected>Select an option</option>
         <% heardAboutOptions.forEach(option => { %>
-          <option value="<%= option.Description %>"><%= option.Description %></option>
+          <option value="<%= option.description %>"><%= option.description %></option>
         <% }) %>
       </select>
     </div>
@@ -134,7 +133,7 @@
       <select id="sewingLevel" name="sewingLevel" required>
         <option value="" disabled selected>Select an option</option>
         <% sewingLevelOptions.forEach(option => { %>
-          <option value="<%= option.Description %>"><%= option.Description %></option>
+          <option value="<%= option.description %>"><%= option.description %></option>
         <% }) %>
       </select>
     </div>
@@ -149,7 +148,7 @@
       <select id="sewingPreference" name="sewingPreference" required>
         <option value="" disabled selected>Select an option</option>
         <% sewingPreference.forEach(option => { %>
-          <option value="<%= option.Description %>"><%= option.Description %></option>
+          <option value="<%= option.description %>"><%= option.description %></option>
         <% }) %>
       </select>
     </div>

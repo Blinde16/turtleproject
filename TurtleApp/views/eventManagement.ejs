@@ -7,6 +7,34 @@
 </head>
 <body>
     <h1 style="text-align: center;">Events</h1>
+<h1 style="text-align: center;">Events</h1>
+
+<style>
+  table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+  h1 {
+    margin-bottom: 20px;
+  }
+  button {
+    margin: 0 5px;
+  }
+</style>
   <table>
     <thead>
       <tr>
@@ -31,20 +59,18 @@
         <% events.forEach(row => { %>
           <tr>
             <input type="hidden" value="row.eventid">
-            <td>Preferred Date</td> <!-- Format date --> 
-            <td><%= events.contact_first %></td>
-            <td><%= events.contact_last %></td>
-            <td><%= events.contact_phone %></td>
-            <td><%= events.numparticipants %></td>
-            <td><%= events.eventstart %></td>
-            <td><%= events.eventduration %></td>
-            <td><%= events.state %></td>
-            <td><%= events.city %></td>
-            <td><%= events.streetaddress %></td>
-            <td><%= events.sewing_description %></td>
-            <td><%= events.jenstory ? 'Yes' : 'No' %></td>
-            <td><%= events.eventdetails %></td>
-            <td><%= events.status_description %></td>
+            <td><%= new Date(row.confirmedeventdate).toLocaleDateString('en-US') %></td>
+            <td><%= row.contact_first %></td>
+            <td><%= row.contact_last %></td>
+            <td><%= row.contact_phone %></td>
+            <td><%= row.numparticipants %></td>
+            <td><%= row.eventstart %></td>
+            <td><%= row.eventduration.hours %> hours, <%= row.eventduration.minutes %> minutes</td>
+            <td><%= row.streetaddress %>, <%= row.city %>, <%= row.state %>, <%= row.zip %></td>
+            <td><%= row.sewing_description %></td>
+            <td><%= row.jenstory ? 'Yes' : 'No' %></td>
+            <td><%= row.eventdetails %></td>
+            <td><%= row.eventstatus %></td>
             <td>
               <form action="/eventdetails/<%= events.eventid %>" method="GET" style="display:inline;">
                 <button type="submit">View</button>
