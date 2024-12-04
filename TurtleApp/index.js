@@ -100,9 +100,9 @@ app.get('/VolunteerForm', async (req, res) => {
       ]);
       
       // Log results for debugging
-      console.log('Heard About Options:', heardAboutOptions);
-      console.log('Sewing Level Options:', sewingLevelOptions);
-      console.log('Sewing Preferences:', sewingPreference);
+      // console.log('Heard About Options:', heardAboutOptions);
+      // console.log('Sewing Level Options:', sewingLevelOptions);
+      // console.log('Sewing Preferences:', sewingPreference);
 
       // Render the VolunteerForm view with the fetched data
       res.render('VolunteerForm', { 
