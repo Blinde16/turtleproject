@@ -94,15 +94,15 @@
 <body>
 
 <div class="form-container">
-  <h2>Request an Event</h2>
-  <form action="editevent/<%= events.eventid %>" method="POST">
+  <h2>Edit Event</h2>
+  <form action="/editevent/<%= events.eventid %>" method="POST">
 
     <!-- Contact Information -->
     <div class="form-group">
-      <label for="confirmeddate">Confirmed Event Date</label>
-      <input type="text" id="confirmeddate" name="confirmeddate" value="<%= events.confirmedeventdate %>" required>
+      <label for="confirmedeventdate">Confirmed Event Date</label>
+      <input type="date" id="confirmedeventdate" name="confirmedeventdate" value="<%= new Date(events.confirmedeventdate).toISOString().split('T')[0] %>" required>
     </div>
-
+    
     <div class="form-group">
       <label for="firstname">Contact First Name</label>
       <input type="text" id="firstname" name="firstname" value="<%= events.contact_first %>" required>
@@ -115,7 +115,19 @@
 
     <div class="form-group">
       <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" value="<%= events.contactphone %>">
+      <input type="tel" id="phone" name="phone" value="<%= (() => {
+        const cleaned = events.contactphone.replace(/\D/g, ''); // Remove non-numeric characters
+        if (cleaned.length === 10) {
+          // Format with area code (e.g., 509-123-4352)
+          return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+        } else if (cleaned.length === 7) {
+          // Format without area code (e.g., 123-4352)
+          return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+        } else {
+          // Return as is if it doesn't match expected lengths
+          return row.contactphone;
+        }
+      })() %>">
     </div>
 
       <!-- Number of Participants -->
@@ -129,7 +141,7 @@
       <div class="form-group">
         <label for="sewingPreference">Sewing Preference</label>
         <select id="sewingPreference" name="sewingPreference" required>
-          <% sewingPreference.forEach(pref => { %>
+          <% sewingPreferenceoptions.forEach(pref => { %>
             <option value="<%= pref.sewingpreferenceid %>" <%= pref.sewingpreferenceid === events.sewingpreferenceid ? 'selected' : '' %>>
               <%= pref.description %>
             </option>
@@ -166,7 +178,7 @@
       
       <div class="form-group">
       <label for="eventDuration">Event Duration</label>
-      <input type="text" id="eventDuration" name="eventDuration" value="<%= events.eventduration%>" required>
+      <input type="text" id="eventDuration" name="eventDuration" value="<%= events.eventduration.hours %> hours, <%= events.eventduration.minutes %> minutes" required>
       </div>
 
       <!-- Jen's Story -->
@@ -186,7 +198,7 @@
     <div class="form-group">
       <label for="eventstatus">Event Status</label>
       <select id="eventstatus" name="eventstatus" required>
-        <% eventStatus.forEach(status => { %>
+        <% eventstatusoptions.forEach(status => { %>
           <option value="<%= status.eventstatusid %>" <%= status.eventstatusid === events.eventstatusid ? 'selected' : '' %>>
             <%= status.description %>
           </option>

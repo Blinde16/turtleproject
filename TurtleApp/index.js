@@ -11,7 +11,6 @@ app.set("views", path.join(__dirname, "views"));
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 // Database setup with Knex
 const knex = require("knex")({
@@ -25,9 +24,6 @@ const knex = require("knex")({
   },
 });
 
-// Import helper functions
-const { getHeardAboutId, getSewingLevelId, getSewingPreferenceId, insertAddress } = require('./js/helpers');
-
 // Landing Page
 app.get("/", (req, res) => {
   // Pass the 'loggedIn' variable to the view
@@ -37,12 +33,14 @@ app.get("/", (req, res) => {
 app.get('/eventManagement', (req,res) => {
     try {
   const events = knex("events")
+    .join('eventdates', 'eventdates.eventid', '=', 'events.eventid')
     .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
     .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
     .join('address', 'events.eventaddressid', '=', 'address.addressid')
     .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
     .select(
       'events.eventid',
+      'events.eventdate',
       'events.confirmedeventdate',
       'address.streetaddress',
       'address.city',
@@ -74,7 +72,7 @@ app.get('/eventManagement', (req,res) => {
 })
 
 
-app.get('/editevent/:eventid', async (req, res) => {
+app.get('/editevent/:eventid', (req, res) => {
   try {
   const eventid = req.params.eventid;
       knex('events')
@@ -82,7 +80,6 @@ app.get('/editevent/:eventid', async (req, res) => {
         .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
         .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
         .join('address', 'events.eventaddressid', '=', 'address.addressid')
-        .where('eventid', eventid)
         .select(
           'events.eventid',
           'events.confirmedeventdate',
@@ -104,30 +101,103 @@ app.get('/editevent/:eventid', async (req, res) => {
           'eventstatus.eventstatusid',
           'eventstatus.description as status_description'
         )
+        .where('eventid', eventid)
+        .first()
       .then(events => {
+        console.log(events)
         knex('sewingpreference').select('sewingpreferenceid', 'description').then(sewingPreferenceoptions => {
+          console.log(sewingPreferenceoptions)
           knex('eventstatus').select('eventstatusid', 'description').then(eventstatusoptions => {
-            res.render('editevent', {events,sewingpreferenceoptions, eventstatusoptions})
+            console.log(eventstatusoptions)
+            res.render('editevent', {events,sewingPreferenceoptions, eventstatusoptions})
           })
         })
       }) // Fetch only the specific event by ID
-
-    if (!events) {
-      return res.status(404).send('Event not found');
-    }
-
-    res.render('editevent', {
-      events,
-      sewingPreference,
-      eventStatus
-    })
   }
     catch (error) {
       console.error('Error fetching event:', error);
       res.status(500).send('Internal Server Error');
-    }
-  });
+  }
+});
 
+app.post('/editevent/:eventid/:addressid/:contactid', (req, res) => {
+  const eventid = req.params.eventid;
+  // Access each value directly from req.body
+  const confirmedeventdate = req.body.confirmedeventdate;
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
+  const phone = req.body.phone;
+  const numParticipants = req.body.numParticipants;
+  const sewingpreferenceid = req.body.sewingPreference;
+  const eventaddressid = req.body.addressid;
+  const contactid = req.body.contactid;
+  const totalproduced = req.body.totalproduced;
+  const streetaddress = req.body.streetaddress;
+  const city = req.body.city;
+  const state = req.body.state;
+  const zip = req.body.zip;
+  const eventStart = req.body.eventStart;
+  const eventDuration = req.body.eventDuration;
+  const jenStory = req.body.jenStory === 'true';
+  const eventstatusid = req.body.eventstatusid;
+  const eventdetails = req.body.eventdetails === 'true';
+  // Update the Pokémon in the database
+  knex('events')
+    .where('eventid', eventid)
+    .update({
+      confirmedeventdate: confirmedeventdate,
+      eventaddressid: eventaddressid,
+      contactid: contactid,
+      totalproduced: totalproduced,
+      numParticipants: numParticipants,
+      sewingpreferenceid: sewingpreferenceid,
+      eventStart:eventStart,
+      eventDuration:eventDuration,
+      jenStory:jenStory,
+      eventstatusid: eventstatusid,
+      eventdetails:eventdetails
+
+    })
+    .then(() => {
+      // After updating the volunteer, update the address table
+      return knex('address')
+        .where('addressid', addressid) // Use the correct addressid
+        .update({
+          streetaddress:streetaddress,
+          city:city,
+          state:state,
+          zip:zip,
+        });
+    })
+    .then(() => {
+      return knex('eventcontacts')
+        .where('contactid', contactid)
+        .update({
+          firstname: firstname,
+          lastname: lastname,
+          phone: phone
+          })
+      res.redirect('/eventManagment'); // Redirect to the list of Pokémon after saving
+    })
+    .catch(error => {
+      console.error('Error updating Pokémon:', error);
+      res.status(500).send('Internal Server Error');
+    });
+});
+
+app.post("/deletevolunteer/:id", (req,res) => {
+  let id = req.params.id;
+  knex("volunteer")
+  .where("volunteerid", id)
+  .del()
+  .then(() => {
+    res.redirect('/volunteerManagement')
+  })
+  .catch(error => {
+    console.error('Error deleting volunteer:', error);
+    res.status(500).send('Internal Server Error');
+  });
+});
 
 app.get('/EventRequestForm', async (req, res) => {
     try {
@@ -152,7 +222,7 @@ app.get('/EventRequestForm', async (req, res) => {
     }
 });
 
-module.exports = router;
+
 
 app.post('/EventRequestForm', async (req, res) => {
   try {
@@ -229,6 +299,11 @@ app.get('/VolunteerForm', async (req, res) => {
           knex('sewinglevel').select('description'),
           knex('sewingpreference').select('description')
       ]);
+      
+      // Log results for debugging
+      console.log('Heard About Options:', heardAboutOptions);
+      console.log('Sewing Level Options:', sewingLevelOptions);
+      console.log('Sewing Preferences:', sewingPreference);
 
       // Render the VolunteerForm view with the fetched data
       res.render('VolunteerForm', { 
@@ -242,82 +317,17 @@ app.get('/VolunteerForm', async (req, res) => {
   }
 });
 
-app.post('/VolunteerFormSubmit', async (req, res) => {
-  const { 
-    firstName, 
-    lastName, 
-    email, 
-    phone, 
-    hoursPerMonth, 
-    heardAbout, 
-    sewingLevel, 
-    sewingPreference, 
-    streetAddress, 
-    city, 
-    state, 
-    zip 
-  } = req.body;
-  console.log('Form submitted');
-  
-  try {
-    // Fetch the IDs for 'heardAbout', 'sewingLevel', and 'sewingPreference'
-    const heardAboutId = await getHeardAboutId(knex, heardAbout);
-    const sewingLevelId = await getSewingLevelId(knex, sewingLevel);
-    const sewingPreferenceId = await getSewingPreferenceId(knex, sewingPreference);
-
-    // Insert address and retrieve address ID
-    const addressId = await insertAddress(knex, streetAddress, city, state, zip);
-
-    // Check if all values are properly set
-    console.log('Heard About ID:', heardAboutId);
-    console.log('Sewing Level ID:', sewingLevelId);
-    console.log('Sewing Preference ID:', sewingPreferenceId);
-    console.log('Address ID:', addressId);
-    
-    // Prepare data for insertion into the volunteer table, without volunteerid
-    const volunteerData = {
-      first_name: firstName, 
-      last_name: lastName, 
-      email: email, 
-      phone_number: phone, 
-      heardaboutid: heardAboutId, 
-      hourspermonth: hoursPerMonth, 
-      sewinglevelid: sewingLevelId, 
-      sewingpreferenceid: sewingPreferenceId, 
-      addressid: addressId
-    };
-    
-    // Log the data to check
-    console.log('Data to insert:', volunteerData);
-
-    // Insert the data without specifying volunteerid (let it auto-increment)
-    const result = await knex('volunteer')
-      .insert(volunteerData)
-      .returning('volunteerid');  // You can return the volunteerid if needed
-
-    // Log the inserted volunteer ID if needed
-    console.log('Inserted volunteer ID:', result[0].volunteerid);
-
-    res.redirect('/thank-you'); // Redirect to a confirmation page
-  } catch (err) {
-    console.error('Error inserting data:', err);
-    res.status(500).send('Error processing your request.');
-  }
-});
-
-app.get('/thank-you', (req, res) => {
-  res.render('thank-you');
-});
-
 
 app.get('/volunteerManagement', (req, res) => {
     try {
     const volunteers = knex("volunteer")
     .join('sewingpreference', 'volunteer.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
+    .join('sewinglevel', 'volunteer.sewinglevelid', '=', 'sewinglevel.sewinglevelid')
     .join('address', 'volunteer.addressid', '=', 'address.addressid')
     .join('heardabout', 'volunteer.heardaboutid', '=', 'heardabout.heardaboutid')
     .select(
       'volunteer.volunteerid',
+      'sewinglevel.description as sewingleveldescription',
       'volunteer.first_name',
       'volunteer.last_name',
       'volunteer.phone_number',
@@ -330,20 +340,183 @@ app.get('/volunteerManagement', (req, res) => {
       'sewingpreference.description as sewing_description',
       'address.addressid',
       'address.streetaddress',
-      'address.city',
-      'address.state',
+      'address.city as city',
+      'address.state as state',
       'address.zip',
     ) // returns an array of rows 
     .then(volunteers => {
-      // Render the index.ejs template and pass the data
-      res.render('volunteerManagement', {volunteers});
-    })
+      res.render('volunteerManagement', {volunteers})
+    });
     } catch (error) {
         console.error('Error fetching events:', error);
         res.status(500).send('Internal Server Error');
     }
 
 })
+
+app.get('/editvolunteer/:id', (req,res) => {
+  let id = req.params.id
+  knex("volunteer").join("heardabout", "heardabout.heardaboutid", "=", "volunteer.heardaboutid")
+  .join("sewinglevel", "sewinglevel.sewinglevelid", '=', 'volunteer.sewinglevelid')
+  .join("sewingpreference", "sewingpreference.sewingpreferenceid", "=", "volunteer.sewingpreferenceid")
+  .join("address", "address.addressid", "=", "volunteer.addressid")
+  .select('volunteerid', 
+    'volunteer.heardaboutid', 
+    'address.city as volunteercity',
+    'address.state as volunteerstate',
+    'sewingpreference.description as sewingpreferencedescription',
+    'sewinglevel.description as sewingleveldescription',
+    'heardabout.description as heardaboutdescription', 
+    'volunteer.first_name', 
+    'volunteer.last_name', 
+    'volunteer.email',
+    'volunteer.phone_number',
+    'volunteer.hourspermonth',
+    'volunteer.sewinglevelid',
+    'volunteer.sewingpreferenceid',
+    'volunteer.addressid'
+  )
+  .where("volunteerid", id).first().then(volunteer => {
+    knex("heardabout").select("heardaboutid", "description").then(heardAboutOptions => {
+    knex("sewinglevel").select("sewinglevelid", "description").then(sewingLevelOptions => {
+      knex("sewingpreference").select("sewingpreferenceid", "description").then(sewingPreferenceOptions => {
+        res.render('editVolunteer', {volunteer, heardAboutOptions, sewingLevelOptions, sewingPreferenceOptions})
+      })
+    })
+    })
+  })
+  .catch(error => {
+    console.error('Error fetching Data:', error);
+    res.status(500).send('Internal Server Error');
+  });
+});
+
+app.post('/editvolunteer/:volunteerid/:addressid', (req, res) => {
+  const volunteerid = req.params.volunteerid;
+  const addressid = req.params.addressid;
+  // Access each value directly from req.body
+  const first_name = req.body.first_name;
+  const last_name = req.body.last_name; // Convert to integer
+  const email = req.body.email;
+  const phone_number = parseInt(req.body.phone_number);
+  const heardaboutid = parseInt(req.body.heard_about_id);
+  const hours_per_month = parseInt(req.body.hours_per_month);
+  const sewinglevelid = parseInt(req.body.sewing_level);
+  const sewingpreferenceid = parseInt(req.body.sewing_preference);
+  const city = req.body.city;
+  const state = req.body.state;
+  
+
+  // Update the Volunteer in the database
+// Update the Volunteer in the database
+knex('volunteer')
+  .where('volunteerid', volunteerid)
+  .update({
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
+    phone_number: phone_number,
+    heardaboutid: heardaboutid,
+    hourspermonth: hours_per_month,
+    sewinglevelid: sewinglevelid,
+    sewingpreferenceid: sewingpreferenceid
+  })
+  .then(() => {
+    // After updating the volunteer, update the address table
+    return knex('address')
+      .where('addressid', addressid) // Use the correct addressid
+      .update({
+        city: city,
+        state: state
+      });
+  })
+  .then(() => {
+    // Redirect after both updates succeed
+    res.redirect("/volunteerManagement");
+  })
+  .catch(error => {
+    console.error('Error updating volunteer or address:', error);
+    res.status(500).send('Internal Server Error');
+  });
+});
+
+app.get("/addVolunteer", (req,res) => {
+  knex("volunteer").join("heardabout", "heardabout.heardaboutid", "=", "volunteer.heardaboutid")
+  .join("sewinglevel", "sewinglevel.sewinglevelid", '=', 'volunteer.sewinglevelid')
+  .join("sewingpreference", "sewingpreference.sewingpreferenceid", "=", "volunteer.sewingpreferenceid")
+  .join("address", "address.addressid", "=", "volunteer.addressid")
+  .select('volunteerid', 
+    'volunteer.heardaboutid', 
+    'address.city as volunteercity',
+    'address.state as volunteerstate',
+    'sewingpreference.description as sewingpreferencedescription',
+    'sewinglevel.description as sewingleveldescription',
+    'heardabout.description as heardaboutdescription', 
+    'volunteer.first_name', 
+    'volunteer.last_name', 
+    'volunteer.email',
+    'volunteer.phone_number',
+    'volunteer.hourspermonth',
+    'volunteer.sewinglevelid',
+    'volunteer.sewingpreferenceid',
+    'volunteer.addressid'
+  )
+  .then(volunteer => {
+    knex("heardabout").select("heardaboutid", "description").then(heardAboutOptions => {
+    knex("sewinglevel").select("sewinglevelid", "description").then(sewingLevelOptions => {
+      knex("sewingpreference").select("sewingpreferenceid", "description").then(sewingPreferenceOptions => {
+        res.render('addVolunteer', {volunteer, heardAboutOptions, sewingLevelOptions, sewingPreferenceOptions})
+      })
+    })
+    })
+  })
+  .catch(error => {
+    console.error('Error fetching Data:', error);
+    res.status(500).send('Internal Server Error');
+  });
+});
+
+app.post("/addVolunteer", (req,res) => {
+      // Extract form values from req.body
+      const first_name = req.body.first_name || ''; // Default to empty string if not provided
+      const last_name = req.body.last_name || ''; // Default to empty string if not provided
+      const email = req.body.email;
+      const phone_number = parseInt(req.body.phone_number);
+      const heardaboutid = parseInt(req.body.heard_about_id);
+      const hours_per_month = parseInt(req.body.hours_per_month);
+      const sewinglevelid = parseInt(req.body.sewing_level);
+      const sewingpreferenceid = parseInt(req.body.sewing_preference);
+      const city = req.body.city;
+      const state = req.body.state;
+      // Insert the new Character into the database
+      knex('volunteer')
+          .insert({
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            phone_number: phone_number,
+            heardaboutid: heardaboutid,
+            hourspermonth: hours_per_month,
+            sewinglevelid: sewinglevelid,
+            sewingpreferenceid: sewingpreferenceid
+          })
+          .then((newRecord) => {
+            let addressid = newRecord.addressid
+            return knex("address")
+            .where("addressid", addressid)
+            .insert({
+              city: city,
+              state: state
+            })
+            .then(() => {
+              res.redirect('/volunteerManagement'); // Redirect to the volunteer list page after adding
+            })
+          })
+          .catch(error => {
+              console.error('Error adding Character:', error);
+              res.status(500).send('Internal Server Error');
+          });
+  });
 
 
 
