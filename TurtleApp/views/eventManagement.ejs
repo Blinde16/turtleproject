@@ -30,8 +30,7 @@
             <td><%= row.eventduration %></td>
             <td><%= row.streetaddress %></td>
             <td><%= row.jenstory ? 'Yes' : 'No' %></td>
-            <td><%= row.gender %></td>
-            <td><%= row.poke_type_description %></td>
+            <td><%= row.eventdetails %></td>
             <td>
               <form action="/eventdetails/<%= row.id %>" method="GET" style="display:inline;">
                 <button type="submit">View</button>
