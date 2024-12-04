@@ -40,6 +40,7 @@ app.get('/eventManagement', (req,res) => {
     .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
     .select(
       'events.eventid',
+      'events.eventdate',
       'events.confirmedeventdate',
       'address.streetaddress',
       'address.city',
@@ -58,6 +59,7 @@ app.get('/eventManagement', (req,res) => {
       'eventstatus.eventstatusid',
       'eventstatus.description as status_description',
       'events.eventdetails'
+      
     ) // returns an array of rows 
     .then(events => {
       // Render the index.ejs template and pass the data
@@ -154,28 +156,31 @@ app.get('/EventRequestForm', async (req, res) => {
 
 module.exports = router;
 
+app.get('/VolunteerForm', async (req, res) => {
+  try {
+      // Fetch data concurrently using Promise.all
+      const [heardAboutOptions, sewingLevelOptions, sewingPreference] = await Promise.all([
+          knex('heardabout').select('description'),
+          knex('sewinglevel').select('description'),
+          knex('sewingpreference').select('description')
+      ]);
+      
+      // Log results for debugging
+      console.log('Heard About Options:', heardAboutOptions);
+      console.log('Sewing Level Options:', sewingLevelOptions);
+      console.log('Sewing Preferences:', sewingPreference);
 
-app.get('/volunteerRequest', (req, res) => {
-    try {
-  // Query to fetch "heardAboutOptions" from the "HeardAbout" table
-  const heardAboutOptions = knex('heardabout').select('description');
-  // Query to fetch "sewingLevelOptions" from the "SewingLevels" table
-  const sewingLevelOptions = knex('sewinglevel').select('description');
-
-  // Query to fetch "sewingPreference" from the "SewingPreferences" table
-  const sewingPreference = knex('sewingpreference').select('description');
-
-      res.render('volunteerRequest', { 
-        heardAboutOptions, 
-        sewingLevelOptions, 
-        sewingPreference, 
+      // Render the VolunteerForm view with the fetched data
+      res.render('VolunteerForm', { 
+          heardAboutOptions, 
+          sewingLevelOptions, 
+          sewingPreference
       });
-    } catch (error) {
-        console.error('Error fetching events:', error);
-        res.status(500).send('Internal Server Error');
-    }
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      res.status(500).send('Internal Server Error');
+  }
 });
-
 
 
 app.get('/volunteerManagement', (req, res) => {
