@@ -180,9 +180,23 @@ app.post('/editevent/:eventid/:addressid/:contactid', (req, res) => {
       res.redirect('/eventManagment'); // Redirect to the list of Pokémon after saving
     })
     .catch(error => {
-      console.error('Error updating events:', error);
+      console.error('Error updating Pokémon:', error);
       res.status(500).send('Internal Server Error');
     });
+});
+
+app.post("/deletevolunteer/:id", (req,res) => {
+  let id = req.params.id;
+  knex("volunteer")
+  .where("volunteerid", id)
+  .del()
+  .then(() => {
+    res.redirect('/volunteerManagement')
+  })
+  .catch(error => {
+    console.error('Error deleting volunteer:', error);
+    res.status(500).send('Internal Server Error');
+  });
 });
 
 app.get('/EventRequestForm', async (req, res) => {
@@ -204,9 +218,7 @@ app.get('/EventRequestForm', async (req, res) => {
     }
 });
 
-app.post
 
-module.exports = router;
 
 app.get('/VolunteerForm', async (req, res) => {
   try {
@@ -356,6 +368,86 @@ knex('volunteer')
     res.status(500).send('Internal Server Error');
   });
 });
+
+app.get("/addVolunteer", (req,res) => {
+  knex("volunteer").join("heardabout", "heardabout.heardaboutid", "=", "volunteer.heardaboutid")
+  .join("sewinglevel", "sewinglevel.sewinglevelid", '=', 'volunteer.sewinglevelid')
+  .join("sewingpreference", "sewingpreference.sewingpreferenceid", "=", "volunteer.sewingpreferenceid")
+  .join("address", "address.addressid", "=", "volunteer.addressid")
+  .select('volunteerid', 
+    'volunteer.heardaboutid', 
+    'address.city as volunteercity',
+    'address.state as volunteerstate',
+    'sewingpreference.description as sewingpreferencedescription',
+    'sewinglevel.description as sewingleveldescription',
+    'heardabout.description as heardaboutdescription', 
+    'volunteer.first_name', 
+    'volunteer.last_name', 
+    'volunteer.email',
+    'volunteer.phone_number',
+    'volunteer.hourspermonth',
+    'volunteer.sewinglevelid',
+    'volunteer.sewingpreferenceid',
+    'volunteer.addressid'
+  )
+  .then(volunteer => {
+    knex("heardabout").select("heardaboutid", "description").then(heardAboutOptions => {
+    knex("sewinglevel").select("sewinglevelid", "description").then(sewingLevelOptions => {
+      knex("sewingpreference").select("sewingpreferenceid", "description").then(sewingPreferenceOptions => {
+        res.render('addVolunteer', {volunteer, heardAboutOptions, sewingLevelOptions, sewingPreferenceOptions})
+      })
+    })
+    })
+  })
+  .catch(error => {
+    console.error('Error fetching Data:', error);
+    res.status(500).send('Internal Server Error');
+  });
+});
+
+app.post("/addVolunteer", (req,res) => {
+      // Extract form values from req.body
+      const first_name = req.body.first_name || ''; // Default to empty string if not provided
+      const last_name = req.body.last_name || ''; // Default to empty string if not provided
+      const email = req.body.email;
+      const phone_number = parseInt(req.body.phone_number);
+      const heardaboutid = parseInt(req.body.heard_about_id);
+      const hours_per_month = parseInt(req.body.hours_per_month);
+      const sewinglevelid = parseInt(req.body.sewing_level);
+      const sewingpreferenceid = parseInt(req.body.sewing_preference);
+      const city = req.body.city;
+      const state = req.body.state;
+      // Insert the new Character into the database
+      knex('volunteer')
+          .insert({
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            phone_number: phone_number,
+            heardaboutid: heardaboutid,
+            hourspermonth: hours_per_month,
+            sewinglevelid: sewinglevelid,
+            sewingpreferenceid: sewingpreferenceid
+          })
+          .then((newRecord) => {
+            let addressid = newRecord.addressid
+            return knex("address")
+            .where("addressid", addressid)
+            .insert({
+              city: city,
+              state: state
+            })
+            .then(() => {
+              res.redirect('/volunteerManagement'); // Redirect to the volunteer list page after adding
+            })
+          })
+          .catch(error => {
+              console.error('Error adding Character:', error);
+              res.status(500).send('Internal Server Error');
+          });
+  });
+
+
 
 app.get('/adminLogin', (req,res) => {
     res.render("adminLogin")
