@@ -82,7 +82,6 @@ app.get('/editevent/:eventid', async (req, res) => {
         .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
         .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
         .join('address', 'events.eventaddressid', '=', 'address.addressid')
-        .where('eventid', eventid)
         .select(
           'events.eventid',
           'events.confirmedeventdate',
@@ -104,23 +103,18 @@ app.get('/editevent/:eventid', async (req, res) => {
           'eventstatus.eventstatusid',
           'eventstatus.description as status_description'
         )
+        .where('eventid', eventid)
+        .first()
       .then(events => {
+        console.log(events)
         knex('sewingpreference').select('sewingpreferenceid', 'description').then(sewingPreferenceoptions => {
+          console.log(sewingPreferenceoptions)
           knex('eventstatus').select('eventstatusid', 'description').then(eventstatusoptions => {
-            res.render('editevent', {events,sewingpreferenceoptions, eventstatusoptions})
+            console.log(eventstatusoptions)
+            res.render('editevent', {events,sewingPreferenceoptions, eventstatusoptions})
           })
         })
       }) // Fetch only the specific event by ID
-
-    if (!events) {
-      return res.status(404).send('Event not found');
-    }
-
-    res.render('editevent', {
-      events,
-      sewingPreference,
-      eventStatus
-    })
   }
     catch (error) {
       console.error('Error fetching event:', error);
