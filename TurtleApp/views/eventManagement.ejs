@@ -51,7 +51,21 @@
             <td><%= new Date(row.confirmedeventdate).toLocaleDateString('en-US') %></td>
             <td><%= row.contact_first %></td>
             <td><%= row.contact_last %></td>
-            <td><%= row.contact_phone %></td>
+            <td> <!-- Phone logic to account for 7 digit and 10 digit phone numbers and if it doesn't fit display the non formatted number-->
+                <%= (() => {
+                  const cleaned = row.contactphone.replace(/\D/g, ''); // Remove non-numeric characters
+                  if (cleaned.length === 10) {
+                    // Format with area code (e.g., 509-123-4352)
+                    return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+                  } else if (cleaned.length === 7) {
+                    // Format without area code (e.g., 123-4352)
+                    return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+                  } else {
+                    // Return as is if it doesn't match expected lengths
+                    return row.contactphone;
+                  }
+                })() %>
+              </td>
             <td><%= row.numparticipants %></td>
             <td><%= row.eventstart %></td>
             <td><%= row.eventduration.hours %> hours, <%= row.eventduration.minutes %> minutes</td>
@@ -59,7 +73,7 @@
             <td><%= row.sewing_description %></td>
             <td><%= row.jenstory ? 'Yes' : 'No' %></td>
             <td><%= row.eventdetails %></td>
-            <td><%= row.eventstatus %></td>
+            <td><%= row.status_description %></td>
             <td>
               <form action="/eventdetails/<%= row.id %>" method="GET" style="display:inline;">
                 <button type="submit">View</button>
