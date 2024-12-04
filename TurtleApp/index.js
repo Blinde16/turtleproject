@@ -11,6 +11,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Database setup with Knex
 const knex = require("knex")({
@@ -23,6 +24,9 @@ const knex = require("knex")({
     port: 5432,
   },
 });
+
+// Import helper functions
+const { getHeardAboutId, getSewingLevelId, getSewingPreferenceId, insertAddress } = require('./js/helpers');
 
 // Landing Page
 app.get("/", (req, res) => {
@@ -98,11 +102,6 @@ app.get('/VolunteerForm', async (req, res) => {
           knex('sewinglevel').select('description'),
           knex('sewingpreference').select('description')
       ]);
-      
-      // Log results for debugging
-      // console.log('Heard About Options:', heardAboutOptions);
-      // console.log('Sewing Level Options:', sewingLevelOptions);
-      // console.log('Sewing Preferences:', sewingPreference);
 
       // Render the VolunteerForm view with the fetched data
       res.render('VolunteerForm', { 
@@ -114,6 +113,73 @@ app.get('/VolunteerForm', async (req, res) => {
       console.error('Error fetching data:', error);
       res.status(500).send('Internal Server Error');
   }
+});
+
+app.post('/VolunteerFormSubmit', async (req, res) => {
+  const { 
+    firstName, 
+    lastName, 
+    email, 
+    phone, 
+    hoursPerMonth, 
+    heardAbout, 
+    sewingLevel, 
+    sewingPreference, 
+    streetAddress, 
+    city, 
+    state, 
+    zip 
+  } = req.body;
+  console.log('Form submitted');
+  
+  try {
+    // Fetch the IDs for 'heardAbout', 'sewingLevel', and 'sewingPreference'
+    const heardAboutId = await getHeardAboutId(knex, heardAbout);
+    const sewingLevelId = await getSewingLevelId(knex, sewingLevel);
+    const sewingPreferenceId = await getSewingPreferenceId(knex, sewingPreference);
+
+    // Insert address and retrieve address ID
+    const addressId = await insertAddress(knex, streetAddress, city, state, zip);
+
+    // Check if all values are properly set
+    console.log('Heard About ID:', heardAboutId);
+    console.log('Sewing Level ID:', sewingLevelId);
+    console.log('Sewing Preference ID:', sewingPreferenceId);
+    console.log('Address ID:', addressId);
+    
+    // Prepare data for insertion into the volunteer table, without volunteerid
+    const volunteerData = {
+      first_name: firstName, 
+      last_name: lastName, 
+      email: email, 
+      phone_number: phone, 
+      heardaboutid: heardAboutId, 
+      hourspermonth: hoursPerMonth, 
+      sewinglevelid: sewingLevelId, 
+      sewingpreferenceid: sewingPreferenceId, 
+      addressid: addressId
+    };
+    
+    // Log the data to check
+    console.log('Data to insert:', volunteerData);
+
+    // Insert the data without specifying volunteerid (let it auto-increment)
+    const result = await knex('volunteer')
+      .insert(volunteerData)
+      .returning('volunteerid');  // You can return the volunteerid if needed
+
+    // Log the inserted volunteer ID if needed
+    console.log('Inserted volunteer ID:', result[0].volunteerid);
+
+    res.redirect('/thank-you'); // Redirect to a confirmation page
+  } catch (err) {
+    console.error('Error inserting data:', err);
+    res.status(500).send('Error processing your request.');
+  }
+});
+
+app.get('/thank-you', (req, res) => {
+  res.render('thank-you');
 });
 
 
