@@ -160,10 +160,10 @@ app.post('/editevent/:eventid', (req, res) => {
     })
   knex('')
     .then(() => {
-      res.redirect('/'); // Redirect to the list of Pokémon after saving
+      res.redirect('/eventManagment'); // Redirect to the list of Pokémon after saving
     })
     .catch(error => {
-      console.error('Error updating Pokémon:', error);
+      console.error('Error updating events:', error);
       res.status(500).send('Internal Server Error');
     });
 });
