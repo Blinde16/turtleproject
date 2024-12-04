@@ -121,17 +121,17 @@ app.get('/volunteerManagement', (req, res) => {
     const volunteers = knex("volunteer")
     .join('sewingpreference', 'volunteer.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
     .join('address', 'volunteer.addressid', '=', 'address.addressid')
-    .join('heard_about', 'volunteer.heardaboutid', '=', 'heard_about.heardaboutid')
+    .join('heardabout', 'volunteer.heardaboutid', '=', 'heardabout.heardaboutid')
     .select(
       'volunteer.volunteerid',
       'volunteer.first_name',
       'volunteer.last_name',
       'volunteer.phone_number',
       'volunteer.email',
-      'heard_about.heardaboutid',
-      'heard_about.description as heardaboutDescription',
+      'heardabout.heardaboutid',
+      'heardabout.description as heardaboutDescription',
       'volunteer.hourspermonth',
-      'volunteer.sewinglevel',
+      'volunteer.sewinglevelid',
       'sewingpreference.sewingpreferenceid',
       'sewingpreference.description as sewing_description',
       'address.addressid',
