@@ -3,7 +3,7 @@ let path = require("path");
 let app = express();
 let security = false;  // This will keep track of the login status
 const router = express.Router();
-const port = 5000;
+const port = 5500;
 
 // EJS setup
 app.set("view engine", "ejs");
@@ -94,19 +94,17 @@ module.exports = router;
 app.get('/volunteerRequest', (req, res) => {
     try {
   // Query to fetch "heardAboutOptions" from the "HeardAbout" table
-  const heardAboutQuery = knex('heardabout').select('description');
-
+  const heardAboutOptions = knex('heardabout').select('description');
   // Query to fetch "sewingLevelOptions" from the "SewingLevels" table
-  const sewingLevelQuery = knex('sewinglevel').select('description');
+  const sewingLevelOptions = knex('sewinglevel').select('description');
 
   // Query to fetch "sewingPreference" from the "SewingPreferences" table
-  const sewingPreferenceQuery = knex('sewingpreference').select('description');
+  const sewingPreference = knex('sewingpreference').select('description');
 
       res.render('volunteerRequest', { 
         heardAboutOptions, 
         sewingLevelOptions, 
         sewingPreference, 
-        security 
       });
     } catch (error) {
         console.error('Error fetching events:', error);
