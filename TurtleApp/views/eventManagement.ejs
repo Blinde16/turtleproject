@@ -21,10 +21,15 @@
         <% events.forEach(row => { %>
           <tr>
             <input type="hidden" value="row.eventid">
-            <td><%= row.description %></td>
-            <td><%= row.base_total %></td>
-            <td><%= new Date(row.date_created).toLocaleDateString('en-US') %></td> <!-- Format date -->
-            <td><%= row.active_poke ? 'Yes' : 'No' %></td>
+            <td><%= row.confirmedeventdate %></td>
+            <td><%= row.contact_first %></td>
+            <td><%= row.contact_last %></td>
+            <td><%= row.contact_phone %></td>
+            <td><%= row.numparticipants %></td>
+            <td><%= row.eventstart %></td>
+            <td><%= row.eventduration %></td>
+            <td><%= row.streetaddress %></td>
+            <td><%= row.jenstory ? 'Yes' : 'No' %></td>
             <td><%= row.gender %></td>
             <td><%= row.poke_type_description %></td>
             <td>
