@@ -221,7 +221,6 @@ app.get('/EventRequestForm', async (req, res) => {
 });
 
 
-
 app.post('/EventRequestForm', async (req, res) => {
   try {
     // Extract data from the form submission
@@ -279,10 +278,11 @@ app.post('/EventRequestForm', async (req, res) => {
       eventstart: eventstart,
       eventduration: eventduration,
       jenstory: jenstory,
+      eventstatusid: 1,
     });
 
     // Redirect to a confirmation page or render a success message
-    res.redirect('/thank-you');
+    res.render('thank-you');
   } catch (err) {
     console.error("Error inserting form data:", err);
     res.status(500).send("An error occurred while processing your request.");
@@ -350,7 +350,76 @@ app.get('/volunteerManagement', (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 
-})
+});
+
+const { getHeardAboutId, getSewingLevelId, getSewingPreferenceId, insertAddress } = require('./js/helpers');
+
+app.post('/VolunteerFormSubmit', async (req, res) => {
+  const { 
+    firstName, 
+    lastName, 
+    email, 
+    phone, 
+    hoursPerMonth, 
+    heardAbout, 
+    sewingLevel, 
+    sewingPreference, 
+    streetAddress, 
+    city, 
+    state, 
+    zip 
+  } = req.body;
+  console.log('Form submitted');
+  
+  try {
+    // Fetch the IDs for 'heardAbout', 'sewingLevel', and 'sewingPreference'
+    const heardAboutId = await getHeardAboutId(knex, heardAbout);
+    const sewingLevelId = await getSewingLevelId(knex, sewingLevel);
+    const sewingPreferenceId = await getSewingPreferenceId(knex, sewingPreference);
+
+    // Insert address and retrieve address ID
+    const addressId = await insertAddress(knex, streetAddress, city, state, zip);
+
+    // Check if all values are properly set
+    console.log('Heard About ID:', heardAboutId);
+    console.log('Sewing Level ID:', sewingLevelId);
+    console.log('Sewing Preference ID:', sewingPreferenceId);
+    console.log('Address ID:', addressId);
+    
+    // Prepare data for insertion into the volunteer table, without volunteerid
+    const volunteerData = {
+      first_name: firstName, 
+      last_name: lastName, 
+      email: email, 
+      phone_number: phone, 
+      heardaboutid: heardAboutId, 
+      hourspermonth: hoursPerMonth, 
+      sewinglevelid: sewingLevelId, 
+      sewingpreferenceid: sewingPreferenceId, 
+      addressid: addressId
+    };
+    
+    // Log the data to check
+    console.log('Data to insert:', volunteerData);
+
+    // Insert the data without specifying volunteerid (let it auto-increment)
+    const result = await knex('volunteer')
+      .insert(volunteerData)
+      .returning('volunteerid');  // You can return the volunteerid if needed
+
+    // Log the inserted volunteer ID if needed
+    console.log('Inserted volunteer ID:', result[0].volunteerid);
+
+    res.redirect('/thank-you'); // Redirect to a confirmation page
+  } catch (err) {
+    console.error('Error inserting data:', err);
+    res.status(500).send('Error processing your request.');
+  }
+});
+
+app.get('/thank-you', (req, res) => {
+  res.render('thank-you');
+});
 
 app.get('/editvolunteer/:id', (req,res) => {
   let id = req.params.id
