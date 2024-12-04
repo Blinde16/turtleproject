@@ -90,30 +90,31 @@ app.get('/EventRequestForm', async (req, res) => {
 
 module.exports = router;
 
+app.get('/VolunteerForm', async (req, res) => {
+  try {
+      // Fetch data concurrently using Promise.all
+      const [heardAboutOptions, sewingLevelOptions, sewingPreference] = await Promise.all([
+          knex('heardabout').select('description'),
+          knex('sewinglevel').select('description'),
+          knex('sewingpreference').select('description')
+      ]);
+      
+      // Log results for debugging
+      console.log('Heard About Options:', heardAboutOptions);
+      console.log('Sewing Level Options:', sewingLevelOptions);
+      console.log('Sewing Preferences:', sewingPreference);
 
-app.get('/volunteerRequest', (req, res) => {
-    try {
-  // Query to fetch "heardAboutOptions" from the "HeardAbout" table
-  const heardAboutQuery = knex('heardabout').select('description');
-
-  // Query to fetch "sewingLevelOptions" from the "SewingLevels" table
-  const sewingLevelQuery = knex('sewinglevel').select('description');
-
-  // Query to fetch "sewingPreference" from the "SewingPreferences" table
-  const sewingPreferenceQuery = knex('sewingpreference').select('description');
-
-      res.render('volunteerRequest', { 
-        heardAboutOptions, 
-        sewingLevelOptions, 
-        sewingPreference, 
-        security 
+      // Render the VolunteerForm view with the fetched data
+      res.render('VolunteerForm', { 
+          heardAboutOptions, 
+          sewingLevelOptions, 
+          sewingPreference
       });
-    } catch (error) {
-        console.error('Error fetching events:', error);
-        res.status(500).send('Internal Server Error');
-    }
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      res.status(500).send('Internal Server Error');
+  }
 });
-
 
 
 app.get('/volunteerManagement', (req, res) => {
