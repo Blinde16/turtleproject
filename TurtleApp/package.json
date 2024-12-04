@@ -1,0 +1,17 @@
+{
+  "name": "turtleapp",
+  "version": "1.0.0",
+  "description": "4.2 Section",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jason Nouannounou, Porter Lyman, Hudson Roney, Blake Linde",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "knex": "^3.1.0",
+    "pg": "^8.13.1"
+  }
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inspired Contact Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .form-container h2 {
+      margin-bottom: 20px;
+      font-size: 1.5em;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      color: #333;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #0066cc;
+      box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .checkbox-group input {
+      margin-right: 10px;
+    }
+
+    .form-button {
+      background-color: #0066cc;
+      color: #ffffff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .form-button:hover {
+      background-color: #005bb5;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Request an Event</h2>
+  <form action="#" method="POST">
+
+    <!-- Contact Information -->
+    <div class="form-group">
+      <label for="name">First Name</label>
+      <input type="text" id="first-name" name="first-name" placeholder="Enter your First Name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Last Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your Last Name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+    </div>
+
+      <!-- Number of Participants -->
+      <div class="form-group">
+      <label for="numParticipants">How many people will be there?</label>
+      <input type="number" id="numParticipants" name="numParticipants" required>
+      </div>
+
+      <!-- Sewing Preference -->
+      <div class="form-group">
+      <label for="sewingPreference">Would you like to do sewing, non-sewing, or both?</label>
+      <select id="sewingPreference" name="sewingPreference" required>
+          <% sewingPreferences.forEach(pref => { %>
+              <option value="<%= pref.sewingpreferenceid %>"><%= pref.description %></option>
+          <% }); %>
+      </select>
+      </div> 
+  
+      <!-- Event Dates -->
+      <div class="form-group">
+      <label for="eventDate">What date (or possible dates) would you like to schedule the event?</label>
+      
+      </div>
+  
+      <!-- Address -->
+      <div class="form-group">
+      <label for="eventAddress">What’s the address of the event?</label>
+      </div>
+  
+      <!-- Event Time and Duration -->
+      <div class="form-group">
+      <label for="eventStart">What time do you want the event to start?</label>
+      <input type="time" id="eventStart" name="eventStart" required>
+      </div>
+      
+      <div class="form-group">
+      <label for="eventDuration">How long would you like it to go?</label>
+      <input type="text" id="eventDuration" name="eventDuration" placeholder="e.g., 2 hours" required>
+      </div>
+
+      <!-- Jen's Story -->
+      <div class="form-group">
+      <label for="jenStory">Would you like Jen to share her story?</label>
+      <input type="checkbox" id="jenStory" name="jenStory" value="1">
+      </div>
+  
+    <!-- Submit Button -->
+    <button type="submit" class="form-button">Submit</button>
+  </form>
+</div>
+
+</body>
+</html>
