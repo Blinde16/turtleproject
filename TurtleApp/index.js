@@ -11,7 +11,6 @@ app.set("views", path.join(__dirname, "views"));
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 // Database setup with Knex
 const knex = require("knex")({
@@ -25,9 +24,6 @@ const knex = require("knex")({
   },
 });
 
-// Import helper functions
-const { getHeardAboutId, getSewingLevelId, getSewingPreferenceId, insertAddress } = require('./js/helpers');
-
 // Landing Page
 app.get("/", (req, res) => {
   // Pass the 'loggedIn' variable to the view
@@ -37,12 +33,14 @@ app.get("/", (req, res) => {
 app.get('/eventManagement', (req,res) => {
     try {
   const events = knex("events")
+    .join('eventdates', 'eventdates.eventid', '=', 'events.eventid')
     .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
     .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
     .join('address', 'events.eventaddressid', '=', 'address.addressid')
     .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
     .select(
       'events.eventid',
+      'events.eventdate',
       'events.confirmedeventdate',
       'address.streetaddress',
       'address.city',
@@ -74,7 +72,7 @@ app.get('/eventManagement', (req,res) => {
 })
 
 
-app.get('/editevent/:eventid', async (req, res) => {
+app.get('/editevent', (req, res) => {
   try {
   const eventid = req.params.eventid;
       knex('events')
@@ -119,9 +117,56 @@ app.get('/editevent/:eventid', async (req, res) => {
     catch (error) {
       console.error('Error fetching event:', error);
       res.status(500).send('Internal Server Error');
-    }
-  });
+  }
+});
 
+app.post('/editevent/:eventid', (req, res) => {
+  const eventid = req.params.eventid;
+  // Access each value directly from req.body
+  const confirmeddate = req.body.confirmeddate;
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
+  const email = req.body.email;
+  const phone = req.body.phone;
+  const numParticipants = req.body.numParticipants;
+  const sewingPreference = req.body.sewingPreference;
+  const streetaddress = req.body.streetaddress;
+  const city = req.body.city;
+  const state = req.body.state;
+  const zip = req.body.zip;
+  const eventStart = req.body.eventStart;
+  const eventDuration = req.body.eventDuration;
+  const jenStory = req.body.jenStory === 'true';
+  const eventdetails = req.body.eventdetails === 'true';
+  // Update the Pokémon in the database
+  knex('events')
+    .where('eventid', eventid)
+    .update({
+      confirmeddate: confirmeddate,
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      phone: phone,
+      numParticipants: numParticipants,
+      sewingPreference: sewingPreference,
+      streetaddress:streetaddress,
+      city:city,
+      state:state,
+      zip:zip,
+      eventStart:eventStart,
+      eventDuration:eventDuration,
+      jenStory:jenStory,
+      eventdetails:eventdetails
+    })
+  knex('')
+    .then(() => {
+      res.redirect('/'); // Redirect to the list of Pokémon after saving
+    })
+    .catch(error => {
+      console.error('Error updating Pokémon:', error);
+      res.status(500).send('Internal Server Error');
+    });
+});
 
 app.get('/EventRequestForm', async (req, res) => {
     try {
@@ -142,6 +187,8 @@ app.get('/EventRequestForm', async (req, res) => {
     }
 });
 
+app.post
+
 module.exports = router;
 
 app.get('/VolunteerForm', async (req, res) => {
@@ -152,6 +199,11 @@ app.get('/VolunteerForm', async (req, res) => {
           knex('sewinglevel').select('description'),
           knex('sewingpreference').select('description')
       ]);
+      
+      // Log results for debugging
+      console.log('Heard About Options:', heardAboutOptions);
+      console.log('Sewing Level Options:', sewingLevelOptions);
+      console.log('Sewing Preferences:', sewingPreference);
 
       // Render the VolunteerForm view with the fetched data
       res.render('VolunteerForm', { 
@@ -163,73 +215,6 @@ app.get('/VolunteerForm', async (req, res) => {
       console.error('Error fetching data:', error);
       res.status(500).send('Internal Server Error');
   }
-});
-
-app.post('/VolunteerFormSubmit', async (req, res) => {
-  const { 
-    firstName, 
-    lastName, 
-    email, 
-    phone, 
-    hoursPerMonth, 
-    heardAbout, 
-    sewingLevel, 
-    sewingPreference, 
-    streetAddress, 
-    city, 
-    state, 
-    zip 
-  } = req.body;
-  console.log('Form submitted');
-  
-  try {
-    // Fetch the IDs for 'heardAbout', 'sewingLevel', and 'sewingPreference'
-    const heardAboutId = await getHeardAboutId(knex, heardAbout);
-    const sewingLevelId = await getSewingLevelId(knex, sewingLevel);
-    const sewingPreferenceId = await getSewingPreferenceId(knex, sewingPreference);
-
-    // Insert address and retrieve address ID
-    const addressId = await insertAddress(knex, streetAddress, city, state, zip);
-
-    // Check if all values are properly set
-    console.log('Heard About ID:', heardAboutId);
-    console.log('Sewing Level ID:', sewingLevelId);
-    console.log('Sewing Preference ID:', sewingPreferenceId);
-    console.log('Address ID:', addressId);
-    
-    // Prepare data for insertion into the volunteer table, without volunteerid
-    const volunteerData = {
-      first_name: firstName, 
-      last_name: lastName, 
-      email: email, 
-      phone_number: phone, 
-      heardaboutid: heardAboutId, 
-      hourspermonth: hoursPerMonth, 
-      sewinglevelid: sewingLevelId, 
-      sewingpreferenceid: sewingPreferenceId, 
-      addressid: addressId
-    };
-    
-    // Log the data to check
-    console.log('Data to insert:', volunteerData);
-
-    // Insert the data without specifying volunteerid (let it auto-increment)
-    const result = await knex('volunteer')
-      .insert(volunteerData)
-      .returning('volunteerid');  // You can return the volunteerid if needed
-
-    // Log the inserted volunteer ID if needed
-    console.log('Inserted volunteer ID:', result[0].volunteerid);
-
-    res.redirect('/thank-you'); // Redirect to a confirmation page
-  } catch (err) {
-    console.error('Error inserting data:', err);
-    res.status(500).send('Error processing your request.');
-  }
-});
-
-app.get('/thank-you', (req, res) => {
-  res.render('thank-you');
 });
 
 
