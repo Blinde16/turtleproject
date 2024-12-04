@@ -33,7 +33,6 @@ app.get("/", (req, res) => {
 app.get('/eventManagement', (req,res) => {
     try {
   const events = knex("events")
-    .join('eventdates', 'eventdates.eventid', '=', 'events.eventid')
     .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
     .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
     .join('address', 'events.eventaddressid', '=', 'address.addressid')
@@ -72,16 +71,42 @@ app.get('/eventManagement', (req,res) => {
 
 
 app.get('/editevent/:eventid', async (req, res) => {
-  const { eventid } = req.params;
-
   try {
-    const [events, sewingPreference, eventStatus] = await Promise.all([
+  const eventid = req.params.eventid;
       knex('events')
+        .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
+        .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
+        .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
+        .join('address', 'events.eventaddressid', '=', 'address.addressid')
         .where('eventid', eventid)
-        .first(), // Fetch only the specific event by ID
-      knex('sewingpreference').select('sewingpreferenceid', 'description'),
-      knex('eventstatus').select('eventstatusid', 'description')
-    ]);
+        .select(
+          'events.eventid',
+          'events.confirmedeventdate',
+          'events.numparticipants',
+          'address.streetaddress',
+          'address.city',
+          'address.state',
+          'address.zip',
+          'address.spacesize',
+          'events.eventstart',
+          'events.eventduration',
+          'events.jenstory',
+          'events.eventdetails',
+          'eventcontacts.contact_first',
+          'eventcontacts.contact_last',
+          'eventcontacts.contactphone',
+          'sewingpreference.sewingpreferenceid',
+          'sewingpreference.description as sewing_description',
+          'eventstatus.eventstatusid',
+          'eventstatus.description as status_description'
+        )
+      .then(events => {
+        knex('sewingpreference').select('sewingpreferenceid', 'description').then(sewingPreferenceoptions => {
+          knex('eventstatus').select('eventstatusid', 'description').then(eventstatusoptions => {
+            res.render('editevent', {events,sewingpreferenceoptions, eventstatusoptions})
+          })
+        })
+      }) // Fetch only the specific event by ID
 
     if (!events) {
       return res.status(404).send('Event not found');
@@ -91,12 +116,13 @@ app.get('/editevent/:eventid', async (req, res) => {
       events,
       sewingPreference,
       eventStatus
-    });
-  } catch (error) {
-    console.error('Error fetching event:', error);
-    res.status(500).send('Internal Server Error');
+    })
   }
-});
+    catch (error) {
+      console.error('Error fetching event:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
 
 
 app.get('/EventRequestForm', async (req, res) => {
