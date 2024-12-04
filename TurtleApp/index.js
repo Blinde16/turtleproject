@@ -1,6 +1,5 @@
 let express = require("express");
 let path = require("path");
-
 let app = express();
 let security = false;  // This will keep track of the login status
 const router = express.Router();
@@ -32,12 +31,12 @@ app.get("/", (req, res) => {
 });
 
 app.get('/eventManagement', (req,res) => {
-
+    try {
   const events = knex("events")
     .join('eventdates', 'eventdates.eventid', '=', 'events.eventid')
     .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
     .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
-    .join('address', 'events.addressid', '=', 'address.addressid')
+    .join('address', 'events.eventaddressid', '=', 'address.addressid')
     .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
     .select(
       'events.eventid',
@@ -64,7 +63,10 @@ app.get('/eventManagement', (req,res) => {
       // Render the index.ejs template and pass the data
       res.render('eventManagement', {events});
     })
-
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        res.status(500).send('Internal Server Error');
+    }
 })
 
 app.get('/EventRequestForm', async (req, res) => {
@@ -90,35 +92,32 @@ module.exports = router;
 
 
 app.get('/volunteerRequest', (req, res) => {
+    try {
   // Query to fetch "heardAboutOptions" from the "HeardAbout" table
-  const heardAboutQuery = knex('HeardAbout').select('Description').distinct();
+  const heardAboutQuery = knex('heardabout').select('description');
 
   // Query to fetch "sewingLevelOptions" from the "SewingLevels" table
-  const sewingLevelQuery = knex('SewingLevel').select('Description').distinct();
+  const sewingLevelQuery = knex('sewinglevel').select('description');
 
   // Query to fetch "sewingPreference" from the "SewingPreferences" table
-  const sewingPreferenceQuery = knex('SewingPreference').select('Description').distinct();
+  const sewingPreferenceQuery = knex('sewingpreference').select('description');
 
-  // Execute all queries in parallel
-  Promise.all([heardAboutQuery, sewingLevelQuery, sewingPreferenceQuery])
-    .then(([heardAboutOptions, sewingLevelOptions, sewingPreference]) => {
-      // Render the volunteerRequest.ejs template and pass the data
       res.render('volunteerRequest', { 
         heardAboutOptions, 
         sewingLevelOptions, 
         sewingPreference, 
         security 
       });
-    })
-    .catch(error => {
-      console.error('Error querying database:', error);
-      res.status(500).send('Internal Server Error');
-    });
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 
 
 app.get('/volunteerManagement', (req, res) => {
+    try {
     const volunteers = knex("volunteer")
     .join('sewingpreference', 'volunteer.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
     .join('address', 'volunteer.addressid', '=', 'address.addressid')
@@ -145,12 +144,16 @@ app.get('/volunteerManagement', (req, res) => {
       // Render the index.ejs template and pass the data
       res.render('volunteerManagement', {volunteers});
     })
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        res.status(500).send('Internal Server Error');
+    }
 
 })
 
 
 
-app.get('adminLogin', (req,res) => {
+app.get('/adminLogin', (req,res) => {
     res.render("adminLogin")
 })
 
