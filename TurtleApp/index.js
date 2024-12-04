@@ -40,7 +40,6 @@ app.get('/eventManagement', (req,res) => {
     .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
     .select(
       'events.eventid',
-      'events.eventdate',
       'events.confirmedeventdate',
       'address.streetaddress',
       'address.city',
@@ -72,68 +71,33 @@ app.get('/eventManagement', (req,res) => {
 })
 
 
-app.get('/editevent', (req, res) => {
+app.get('/editevent/:eventid', async (req, res) => {
+  const { eventid } = req.params;
+
   try {
-// Query to fetch "sewingPreference" from the "SewingPreferences" table
-const sewingPreference = knex('sewingpreference').select('sewingpreferenceid','description');
-const eventStatus = knex('eventstatus').select('eventstatusid','description');
-    res.render('editevent', {  
-      sewingPreference
+    const [events, sewingPreference, eventStatus] = await Promise.all([
+      knex('events')
+        .where('eventid', eventid)
+        .first(), // Fetch only the specific event by ID
+      knex('sewingpreference').select('sewingpreferenceid', 'description'),
+      knex('eventstatus').select('eventstatusid', 'description')
+    ]);
+
+    if (!events) {
+      return res.status(404).send('Event not found');
+    }
+
+    res.render('editevent', {
+      events,
+      sewingPreference,
       eventStatus
     });
   } catch (error) {
-      console.error('Error fetching events:', error);
-      res.status(500).send('Internal Server Error');
+    console.error('Error fetching event:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
-app.post('/editevent/:eventid', (req, res) => {
-  const eventid = req.params.eventid;
-  // Access each value directly from req.body
-  const confirmeddate = req.body.confirmeddate;
-  const firstname = req.body.firstname;
-  const lastname = req.body.lastname;
-  const email = req.body.email;
-  const phone = req.body.phone;
-  const numParticipants = req.body.numParticipants;
-  const sewingPreference = req.body.sewingPreference;
-  const streetaddress = req.body.streetaddress;
-  const city = req.body.city;
-  const state = req.body.state;
-  const zip = req.body.zip;
-  const eventStart = req.body.eventStart;
-  const eventDuration = req.body.eventDuration;
-  const jenStory = req.body.jenStory === 'true';
-  const eventdetails = req.body.eventdetails === 'true';
-  // Update the Pokémon in the database
-  knex('events')
-    .where('eventid', eventid)
-    .update({
-      confirmeddate: confirmeddate,
-      firstname: firstname,
-      lastname: lastname,
-      email: email,
-      phone: phone,
-      numParticipants: numParticipants,
-      sewingPreference: sewingPreference,
-      streetaddress:streetaddress,
-      city:city,
-      state:state,
-      zip:zip,
-      eventStart:eventStart,
-      eventDuration:eventDuration,
-      jenStory:jenStory,
-      eventdetails:eventdetails
-    })
-  knex('')
-    .then(() => {
-      res.redirect('/'); // Redirect to the list of Pokémon after saving
-    })
-    .catch(error => {
-      console.error('Error updating Pokémon:', error);
-      res.status(500).send('Internal Server Error');
-    });
-});
 
 app.get('/EventRequestForm', async (req, res) => {
     try {

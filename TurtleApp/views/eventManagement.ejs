@@ -6,7 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1 style="text-align: center;">Events</h1>
 <h1 style="text-align: center;">Events</h1>
 
 <style>
@@ -45,9 +44,7 @@
         <th>Number of Participants</th>
         <th>EventStart</th>
         <th>EventDuration</th>
-        <th>Event State</th>
-        <th>Event City</th>
-        <th>Event Street Address</th>
+        <th>Event Address</th>
         <th>SewingPreference</th>
         <th>JenStory</th>
         <th>EventDetails</th>
@@ -76,7 +73,7 @@
                     return row.contactphone;
                   }
                 })() %>
-              </td>
+            </td>
             <td><%= row.numparticipants %></td>
             <td><%= row.eventstart %></td>
             <td><%= row.eventduration.hours %> hours, <%= row.eventduration.minutes %> minutes</td>
