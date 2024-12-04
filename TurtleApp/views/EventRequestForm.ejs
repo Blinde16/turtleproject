@@ -177,17 +177,32 @@
       <div class="form-group">
       <label for="eventStart">What time do you want the event to start?</label>
       <input type="time" id="eventStart" name="eventStart" required>
+      <select id="eventStart" name="eventStart" required>
+        <% eventStart.forEach(pref => { %>
+            <option value="<%= Events.eventStart %>"><%= Events.eventStart %></option>
+        <% }); %>
+    </select>
       </div>
       
       <div class="form-group">
       <label for="eventDuration">How long would you like it to go?</label>
       <input type="text" id="eventDuration" name="eventDuration" placeholder="e.g., 2 hours" required>
+      <select id="eventDuration" name="eventDuration" required>
+        <% eventDuration.forEach(pref => { %>
+            <option value="<%= Events.eventDuration %>"><%= Events.eventDuration %></option>
+        <% }); %>
+    </select>
       </div>
 
       <!-- Jen's Story -->
       <div class="form-group">
       <label for="jenStory">Would you like Jen to share her story?</label>
       <input type="checkbox" id="jenStory" name="jenStory" value="true">
+      <select id="jenstory" name="jenstory" required>
+        <% jenstory.forEach(pref => { %>
+            <option value="<%= Events.jenstory %>"><%= Events.jenstory %></option>
+        <% }); %>
+    </select>
       </div>
   
     <!-- Submit Button -->
