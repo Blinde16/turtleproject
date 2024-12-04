@@ -33,14 +33,12 @@ app.get("/", (req, res) => {
 app.get('/eventManagement', (req,res) => {
     try {
   const events = knex("events")
-    .join('eventdates', 'eventdates.eventid', '=', 'events.eventid')
     .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
     .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
     .join('address', 'events.eventaddressid', '=', 'address.addressid')
     .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
     .select(
       'events.eventid',
-      'events.eventdate',
       'events.confirmedeventdate',
       'address.streetaddress',
       'address.city',
