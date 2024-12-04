@@ -3,11 +3,7 @@ let path = require("path");
 let app = express();
 let security = false;  // This will keep track of the login status
 const router = express.Router();
-<<<<<<< HEAD
-const port = 3000;
-=======
 const port = 5500;
->>>>>>> 0c3493ff9dc2ed9c99094c9f2c6ff6d6be9429ed
 
 // EJS setup
 app.set("view engine", "ejs");
