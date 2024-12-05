@@ -39,6 +39,21 @@
     button:hover {
       background-color: #45A049;
     }
+    .btn-edit:hover {
+    background-color: #27408B; /* Darker royal blue */
+    }
+    .btn-view {
+        background-color: #87CEEB; /* Light blue */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    h1 {
+      text-align: center;
+    }
   </style>
   <!-- <style>
     body {
@@ -149,11 +164,10 @@
 <body>
 
   <!-- Back to Home Button -->
-  <a href="/" class="back-to-home">Back to Home</a>
-
+  <h1>Sign-up to be a volunteer!</h1>
+  <a href="/" class="btn-view">Back to Home</a>
   <div class="form-container">
-    <h2>Sign-up to be a volunteer!</h2>
-
+ 
       <form action="/VolunteerFormSubmit" method="POST">
         <!-- Contact Information -->
         <div class="form-group">

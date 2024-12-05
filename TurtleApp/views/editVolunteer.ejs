@@ -37,20 +37,36 @@
     button:hover {
       background-color: #45A049;
     }
+    .btn-view:hover {
+        background-color: #6CA6CD; /* Darker blue */
+    }
+    .btn-view {
+        background-color: #87CEEB; /* Light blue */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    h1 {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <h1 style="text-align: center;">Edit Volunteer</h1>
+  <a href="/volunteerManagement" class="btn-view">Back to Home</a>
   <form action="/editVolunteer/<%= volunteer.volunteerid %>/<%= volunteer.addressid %>" method="POST">
     <!-- Volunteer First Name -->
     <label for="first_name">First Name</label>
-    <input type="text" id="first_name" name="first_name" value="<%= volunteer.first_name %>" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="first_name" name="first_name" value="<%= volunteer.first_name %>" required>
     <!-- Volunteer Last Name -->
     <label for="last_name">Last Name</label>
-    <input type="text" id="last_name" name="last_name" value="<%= volunteer.last_name %>" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="last_name" name="last_name" value="<%= volunteer.last_name %>" required>
     <!-- Volunteer Email -->
     <label for="email">Email</label>
-    <input type="text" id="email" name="email" value="<%= volunteer.email %>" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="email" name="email" value="<%= volunteer.email %>" required>
     <!-- Volunteer Phone Number -->
     <label for="phone_number">Phone Number</label>
     <input type="number" id="phone_number" name="phone_number" value="<%= volunteer.phone_number %>" required>
@@ -85,7 +101,7 @@
       <% }) %>
     </select>
     <label for="city">City</label>
-    <input type="text" id="city" name="city" value="<%= volunteer.volunteercity %>" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="city" name="city" value="<%= volunteer.volunteercity %>" required>
     <!-- Address City (Radio Buttons) -->
     <label for="state">State</label>
     <input type="text" id="state" name="state" value="<%= volunteer.volunteerstate %>" required oninput="this.value = this.value.toUpperCase()">
