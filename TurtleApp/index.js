@@ -19,14 +19,6 @@ app.use('/images', express.static(path.join(__dirname, 'views', 'Images')));
 const knex = require("knex")({
   client: "pg",
   connection: {
-<<<<<<< HEAD
-    host: "localhost",
-    user: "postgres",
-    password: "Mamba925",
-    database: "turtle",
-    port: 5432,
-  },
-=======
     host: process.env.RDS_HOSTNAME || "localhost",
     user: process.env.RDS_USERNAME || "postgres",
     password: process.env.RDS_PASSWORD || "9174",
@@ -34,7 +26,6 @@ const knex = require("knex")({
     port: process.env.RDS_PORT || 5432,
     ssl: process.env.DB_SLL ? {rejectUnauthorized: false}: false
   }
->>>>>>> 21eedd244d794ec69735bf9381d3c651170b9af3
 });
 
 // Landing Page
