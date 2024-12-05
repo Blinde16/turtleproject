@@ -9,30 +9,114 @@
 <h1 style="text-align: center;">Events</h1>
 
 <style>
-  table {
-    width: 90%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
-  }
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
-  th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  tr:hover {
-    background-color: #f1f1f1;
-  }
-  h1 {
-    margin-bottom: 20px;
-  }
-  button {
-    margin: 0 5px;
-  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .actions button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    /* Styling for the View button */
+    .btn-view {
+        background-color: #87CEEB; /* Light blue */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    /* Styling for the Edit button */
+    .btn-edit {
+        background-color: #4169E1; /* Royal blue */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    /* Styling for the Delete button */
+    .btn-delete {
+        background-color: #FF6347; /* Tomato red */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    /* Add hover effects */
+    .btn-view:hover {
+        background-color: #6CA6CD; /* Darker blue */
+    }
+
+    .btn-edit:hover {
+        background-color: #27408B; /* Darker royal blue */
+    }
+
+    .btn-delete:hover {
+        background-color: #CD5C5C; /* Darker red */
+    }
+
+    .edit-btn:hover {
+      background-color: #f57c00;
+    }
+    .del-btn:hover {
+      background-color: #b71c1c;
+    }
+    .buttons {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .buttons button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+    }
+    .download-btn {
+      background-color: #1976d2;
+      color: white;
+    }
+    .add-btn {
+      background-color: #388e3c;
+      color: white;
+    }
+    .download-btn:hover {
+      background-color: #1565c0;
+    }
+    .add-btn:hover {
+      background-color: #2e7d32;
+    }
 </style>
   <table>
     <thead>
@@ -49,6 +133,7 @@
         <th>JenStory</th>
         <th>EventDetails</th>
         <th>EventStatus</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -83,15 +168,17 @@
             <td><%= row.eventdetails %></td>
             <td><%= row.status_description %></td>
             <td>
+              <div class="actions-button">
               <form action="/eventdetails/<%= row.eventid %>" method="GET" style="display:inline;">
-                <button type="submit">View</button>
+                <button type="submit" class="btn-view">View</button>
               </form>
               <form action="/editevent/<%= row.eventid %>" method="GET" style="display:inline;">
-                <button type="submit">Edit</button>
+                <button type="submit" class="btn-edit">Edit</button>
               </form>
               <form action="/deleteevent/<%= row.eventid %>" method="POST" style="display:inline;">
-                <button type="submit" onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
+                <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
               </form>
+            </div>
             </td>
           </tr>
         <% }) %>
