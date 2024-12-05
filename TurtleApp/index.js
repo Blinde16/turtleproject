@@ -18,7 +18,11 @@ const knex = require("knex")({
   connection: {
     host: "localhost",
     user: "postgres",
+<<<<<<< HEAD
     password: "Mamba925",
+=======
+    password: "admin",
+>>>>>>> d59d4e2 (editing the editevent stuff)
     database: "turtle",
     port: 5432,
   },
@@ -120,15 +124,15 @@ app.get('/editevent/:eventid', (req, res) => {
 
 app.post('/editevent/:eventid/:addressid/:contactid', (req, res) => {
   const eventid = req.params.eventid;
+  const addressid = req.params.eventid;
+  const contactid = req.params.contactid;
   // Access each value directly from req.body
   const confirmedeventdate = req.body.confirmedeventdate;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
-  const phone = req.body.phone;
-  const numParticipants = req.body.numParticipants;
-  const sewingpreferenceid = req.body.sewingPreference;
-  const eventaddressid = req.body.addressid;
-  const contactid = req.body.contactid;
+  const phone = parseInt(req.body.phone);
+  const numParticipants = parseInt(req.body.numParticipants);
+  const sewingpreferenceid = parseInt(req.body.sewingPreference);
   const totalproduced = req.body.totalproduced;
   const streetaddress = req.body.streetaddress;
   const city = req.body.city;
@@ -137,20 +141,19 @@ app.post('/editevent/:eventid/:addressid/:contactid', (req, res) => {
   const eventStart = req.body.eventStart;
   const eventDuration = req.body.eventDuration;
   const jenStory = req.body.jenStory === 'true';
-  const eventstatusid = req.body.eventstatusid;
-  const eventdetails = req.body.eventdetails === 'true';
+  const eventstatusid = parseInt(req.body.eventstatus);
+  const eventdetails = req.body.eventdetails;
   // Update the Pokémon in the database
   knex('events')
     .where('eventid', eventid)
     .update({
       confirmedeventdate: confirmedeventdate,
       eventaddressid: eventaddressid,
-      contactid: contactid,
       totalproduced: totalproduced,
-      numParticipants: numParticipants,
+      numparticipants: numParticipants,
       sewingpreferenceid: sewingpreferenceid,
-      eventStart:eventStart,
-      eventDuration:eventDuration,
+      eventstart:eventStart,
+      eventdduration:eventDuration,
       jenStory:jenStory,
       eventstatusid: eventstatusid,
       eventdetails:eventdetails
@@ -171,14 +174,14 @@ app.post('/editevent/:eventid/:addressid/:contactid', (req, res) => {
       return knex('eventcontacts')
         .where('contactid', contactid)
         .update({
-          firstname: firstname,
-          lastname: lastname,
-          phone: phone
+          contact_first: firstname,
+          contact_last: lastname,
+          contactphone: phone
           })
       res.redirect('/eventManagment'); // Redirect to the list of Pokémon after saving
     })
     .catch(error => {
-      console.error('Error updating Pokémon:', error);
+      console.error('Error updating event:', error);
       res.status(500).send('Internal Server Error');
     });
 });
