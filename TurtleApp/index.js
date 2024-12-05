@@ -726,22 +726,120 @@ app.get('/adminLogin', (req,res) => {
 app.post('/adminLogin', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    try {
         // Query the user table to find the record
-        const user = knex('user')
+        const user = knex('users')
             .select('*')
-            .where({ username, password }) // Replace with hashed password comparison in production
-            .first(); // Returns the first matching record
-        if (user) {
-            security = true;
-        } else {
-            security = false;
-        }
-    } catch (error) {
-        res.status(500).send('Database query failed: ' + error.message);
-    }
-    res.redirect("/")
+            .where({ username:username, password:password }) // Replace with hashed password comparison in production
+            .first() // Returns the first matching record
+            .then(user => {
+              if (user) {
+                security = true;
+            } else {
+                security = false;
+            }
+            res.render('index', {security})
+            })
+            .catch(error => {
+              console.error('Error adding Character:', error);
+              res.status(500).send('Internal Server Error');
+          })
   });
 
+  app.get("/userManagement", (req,res) => {
+    knex('users')
+    .select(
+      'userid',
+      'username',
+      'password',
+      'email'
+    )
+    .then(userinfo => {
+      res.render('userManagement', {userinfo})
+    })
+  })
+
+  app.get("/editUser/:id", (req,res) => {
+const id = req.params.id;
+    knex('users')
+    .select(
+      "userid",
+      "username",
+      "password",
+      "email"
+    )
+    .where('userid',id)
+    .first()
+    .then(user => {
+      res.render("editUser", {user})
+    })
+  })
+
+  app.post("/editUser/:id", (req,res) => {
+    const id = req.params.id;
+    const username = req.body.username;
+    const password = req.body.password;
+    const email = req.body.email
+    knex('users')
+    .where('userid', id)
+    .update({
+      username: username,
+      password: password,
+      email:email
+  })
+  .then(() => {
+    res.redirect('/userManagement')
+  })
+  .catch(error => {
+    console.error('Error updating user', error);
+    res.status(500).send('Internal Server Error');
+  })
+  });
+
+ app.get("/addUser", (req,res) => {
+  knex('users')
+  .select(
+    'userid',
+    'username',
+    'password',
+    'email'
+  )
+  .then(userinfo => {
+    res.render('addUser', {userinfo})
+  })
+ });
+
+ app.post("/addUser", (req,res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const email = req.body.email
+  knex('users')
+  .insert({
+    username: username,
+    password: password,
+    email:email
+})
+.then(() => {
+  res.redirect('/userManagement')
+})
+.catch(error => {
+  console.error('Error updating user', error);
+  res.status(500).send('Internal Server Error');
+})
+});
+ 
+app.post("/deleteUser/:id", (req,res) => {
+  let id = req.params.id;
+  knex('users')
+  .where('userid', id)
+  .del()
+  .then(() => {
+    res.redirect('/userManagement')
+  })
+  .catch(error => {
+    console.error('Error deleting volunteer:', error);
+    res.status(500).send('Internal Server Error');
+  });
+});
+ 
 // Start Server
 app.listen(port, () => console.log("Server listening on port", port));
