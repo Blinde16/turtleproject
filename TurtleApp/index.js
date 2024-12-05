@@ -118,69 +118,107 @@ app.get('/editevent/:eventid', (req, res) => {
   }
 });
 
-app.post('/editevent/:eventid/:addressid/:contactid', (req, res) => {
-  const eventid = req.params.eventid;
-  const addressid = req.params.eventid;
-  const contactid = req.params.contactid;
-  // Access each value directly from req.body
-  const confirmedeventdate = req.body.confirmedeventdate;
-  const firstname = req.body.firstname;
-  const lastname = req.body.lastname;
-  const phone = parseInt(req.body.phone);
-  const numParticipants = parseInt(req.body.numParticipants);
-  const sewingpreferenceid = parseInt(req.body.sewingPreference);
-  const totalproduced = req.body.totalproduced;
-  const streetaddress = req.body.streetaddress;
-  const city = req.body.city;
-  const state = req.body.state;
-  const zip = req.body.zip;
-  const eventStart = req.body.eventStart;
-  const eventDuration = req.body.eventDuration;
-  const jenStory = req.body.jenStory === 'true';
-  const eventstatusid = parseInt(req.body.eventstatus);
-  const eventdetails = req.body.eventdetails;
-  // Update the Pokémon in the database
-  knex('events')
-    .where('eventid', eventid)
-    .update({
-      confirmedeventdate: confirmedeventdate,
-      eventaddressid: eventaddressid,
-      totalproduced: totalproduced,
-      numparticipants: numParticipants,
-      sewingpreferenceid: sewingpreferenceid,
-      eventstart:eventStart,
-      eventdduration:eventDuration,
-      jenStory:jenStory,
-      eventstatusid: eventstatusid,
-      eventdetails:eventdetails
+app.post('/editevent', async (req, res) => {
+  try {
+    // Extract data from the request body
+    const {
+      confirmedeventdate,
+      firstname,
+      lastname,
+      phone,
+      numParticipants,
+      sewingPreference,
+      totalproduced,
+      streetaddress,
+      city,
+      state,
+      zip,
+      eventStart,
+      eventDuration,
+      jenStory,
+      eventstatus,
+      eventdetails
+    } = req.body;
 
-    })
-    .then(() => {
-      // After updating the volunteer, update the address table
-      return knex('address')
-        .where('addressid', addressid) // Use the correct addressid
-        .update({
-          streetaddress:streetaddress,
-          city:city,
-          state:state,
-          zip:zip,
-        });
-    })
-    .then(() => {
-      return knex('eventcontacts')
-        .where('contactid', contactid)
-        .update({
-          contact_first: firstname,
-          contact_last: lastname,
-          contactphone: phone
-          })
-      res.redirect('/eventManagment'); // Redirect to the list of Pokémon after saving
-    })
-    .catch(error => {
-      console.error('Error updating event:', error);
-      res.status(500).send('Internal Server Error');
-    });
+    // Parse data
+    const parsedPhone = phone.replace(/\D/g, ''); // Remove non-numeric characters
+    const eventDurationParts = eventDuration.split(',').map(part => parseInt(part.replace(/\D/g, ''), 10));
+    const [eventHours, eventMinutes] = eventDurationParts || [0, 0];
+
+    // Step 1: Find the IDs based on user input
+    const contact = await knex('eventcontacts')
+      .select('contactid')
+      .where({ contact_first: firstname, contact_last: lastname, contactphone: parsedPhone })
+      .first();
+
+    if (!contact) {
+      return res.status(400).send('Contact not found');
+    }
+    const contactid = contact.contactid;
+
+    const address = await knex('address')
+      .select('addressid')
+      .where({ streetaddress: streetaddress, city: city, state: state, zip: zip })
+      .first();
+
+    if (!address) {
+      return res.status(400).send('Address not found');
+    }
+    const addressid = address.addressid;
+
+    const event = await knex('events')
+      .select('eventid')
+      .where({ addressid, contactid })
+      .first();
+
+    if (!event) {
+      return res.status(400).send('Event not found');
+    }
+    const eventid = event.eventid;
+
+    // Step 2: Update the events table
+    await knex('events')
+      .where('eventid', eventid)
+      .update({
+        confirmedeventdate: confirmedeventdate,
+        addressid: addressid,
+        totalproduced: parseInt(totalproduced, 10) || 0,
+        numparticipants: parseInt(numParticipants, 10) || 0,
+        sewingpreferenceid: parseInt(sewingPreference, 10) || null,
+        eventstart: eventStart,
+        eventduration: JSON.stringify({ hours: eventHours, minutes: eventMinutes }), // Storing as JSON for clarity
+        jenstory: jenStory === 'true',
+        eventstatusid: parseInt(eventstatus, 10) || null,
+        eventdetails: eventdetails
+      });
+
+    // Step 3: Update the address table
+    await knex('address')
+      .where('addressid', addressid)
+      .update({
+        streetaddress: streetaddress,
+        city: city,
+        state: state,
+        zip: zip
+      });
+
+    // Step 4: Update the contact table
+    await knex('eventcontacts')
+      .where('contactid', contactid)
+      .update({
+        contact_first: firstname,
+        contact_last: lastname,
+        contactphone: parsedPhone
+      });
+
+    // Redirect or respond with success
+    res.redirect('/eventManagement');
+  } catch (error) {
+    console.error('Error updating event:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
+
 
 app.post("/deletevolunteer/:id", (req,res) => {
   let id = req.params.id;
@@ -626,8 +664,6 @@ app.post('/adminLogin', (req, res) => {
     }
     res.redirect("/")
   });
-
-  
 
 // Start Server
 app.listen(port, () => console.log("Server listening on port", port));
