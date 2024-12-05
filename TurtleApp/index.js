@@ -272,6 +272,26 @@ app.get('/eventdetails/:eventid', async (req, res) => {
   }
 });
 
+// Delete route with success confirmation
+app.post('/deleteevent/:eventid', async (req, res) => {
+  const eventId = req.params.eventid;
+
+  try {
+      // Delete from related tables first (if needed)
+      await knex('itemsproduced').where('eventid', eventId).del();
+
+      // Delete from the main events table
+      await knex('events').where('eventid', eventId).del();
+
+      console.log(`Event with ID ${eventId} deleted successfully.`);
+      res.redirect('/eventmanagement?deletesuccess=true'); // Redirect with query parameter
+  } catch (error) {
+      console.error('Error deleting event:', error);
+      res.status(500).send('An error occurred while deleting the event.');
+  }
+});
+
+
 app.post("/deletevolunteer/:id", (req,res) => {
   let id = req.params.id;
   knex("volunteer")
