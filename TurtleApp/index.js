@@ -21,7 +21,7 @@ const knex = require("knex")({
   connection: {
     host: "localhost",
     user: "postgres",
-    password: "admin",
+    password: "9174",
     database: "turtle",
     port: 5432,
   },
@@ -102,8 +102,6 @@ app.get('/editevent/:eventid', (req, res) => {
           'sewingpreference.description as sewing_description',
           'eventstatus.eventstatusid',
           'eventstatus.description as status_description',
-          'itemsproduced.itemid',
-          'itemsproduced.quantity'
         )
         .where('eventid', eventid)
         .first()
@@ -112,11 +110,13 @@ app.get('/editevent/:eventid', (req, res) => {
         knex('sewingpreference').select('sewingpreferenceid', 'description').then(sewingPreferenceoptions => {
           console.log(sewingPreferenceoptions)
           knex('eventstatus').select('eventstatusid', 'description').then(eventstatusoptions => {
+            console.log(eventstatusoptions)
               knex('itemsproduced')
               .join('items', 'itemsproduced.itemid', '=', 'items.itemid')
               .select('items.itemname', 'itemsproduced.itemid', 'itemsproduced.quantity')
+              .where('itemsproduced.eventid', eventid)
               .then(iteminfo => {
-                console.log(eventstatusoptions)
+                console.log(iteminfo)
                 res.render('editevent', {events,sewingPreferenceoptions, eventstatusoptions, iteminfo})
               })
           })
