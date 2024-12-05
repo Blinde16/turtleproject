@@ -78,11 +78,27 @@
         .form-group.inline input, .form-group.inline select {
             width: 48%;
         }
+        .btn-edit:hover {
+        background-color: #27408B; /* Darker royal blue */
+        }
+        .btn-view {
+            background-color: #87CEEB; /* Light blue */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        h1 {
+        text-align: center;
+        }
     </style>
 </head>
 <body>
+    <h1>Request an Event</h1>
+    <a href="/" class="btn-view">Back to Home</a>
     <div class="container">
-        <h1>Create New Event</h1>
         <form action="/addevent" method="POST">
             <!-- First and Last Name -->
             <div class="form-group">

@@ -102,7 +102,7 @@
 <body>
     <div class="container">
         <h1>Event Details</h1>
-        <p><strong>Date:</strong> <%= event.eventdata %></p>
+        <p><strong>Date:</strong> <%= new Date(event.eventdata).toISOString().split('T')[0] %></p>
         <p><strong>Contact:</strong> <%= event.contact_first %> <%= event.contact_last %></p>
 
         <h2>Items Produced</h2>
