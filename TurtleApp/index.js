@@ -101,7 +101,9 @@ app.get('/editevent/:eventid', (req, res) => {
           'sewingpreference.sewingpreferenceid',
           'sewingpreference.description as sewing_description',
           'eventstatus.eventstatusid',
-          'eventstatus.description as status_description'
+          'eventstatus.description as status_description',
+          'itemsproduced.itemid',
+          'itemsproduced.quantity'
         )
         .where('eventid', eventid)
         .first()
@@ -110,8 +112,13 @@ app.get('/editevent/:eventid', (req, res) => {
         knex('sewingpreference').select('sewingpreferenceid', 'description').then(sewingPreferenceoptions => {
           console.log(sewingPreferenceoptions)
           knex('eventstatus').select('eventstatusid', 'description').then(eventstatusoptions => {
-            console.log(eventstatusoptions)
-            res.render('editevent', {events,sewingPreferenceoptions, eventstatusoptions})
+              knex('itemsproduced')
+              .join('items', 'itemsproduced.itemid', '=', 'items.itemid')
+              .select('items.itemname', 'itemsproduced.itemid', 'itemsproduced.quantity')
+              .then(iteminfo => {
+                console.log(eventstatusoptions)
+                res.render('editevent', {events,sewingPreferenceoptions, eventstatusoptions, iteminfo})
+              })
           })
         })
       }) // Fetch only the specific event by ID
@@ -212,7 +219,8 @@ app.post('/editevent', async (req, res) => {
       .update({
         contact_first: firstname,
         contact_last: lastname,
-        contactphone: parsedPhone
+        contactphone: parsedPhone,
+        addressid: addressid,  // Use the addressID we got above
       });
 
     // Redirect or respond with success

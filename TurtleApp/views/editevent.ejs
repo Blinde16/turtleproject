@@ -199,6 +199,28 @@
         <textarea type="text" id="eventdetails" name="eventdetails" required><%= events.eventdetails%></textarea>
     </div>
 
+
+      <div class="form-group">
+        <label for="pockets">Pockets Produced</label>
+        <input type="number" id="pockets" name="pockets" value="<%= itemsproduced.find(item => item.itemid === 1)?.quantity || 0 %>">
+      </div>
+    </form>
+    
+    <div class="form-group">
+      <label for="collars">Collars Produced</label>
+      <input type="time" id="collars" name="collars" value="<%= itemsproduced.find(item => item.itemid === 2)?.quantity || 0 %>">
+    </div>
+      
+    <div class="form-group">
+      <label for="envelopes">Envelopes Produced</label>
+      <input type="time" id="envelopes" name="envelopes" value="<%= itemsproduced.find(item => item.itemid === 3)?.quantity || 0 %>">
+    </div>
+      
+    <div class="form-group">
+      <label for="vests">Vests Produced</label>
+      <input type="time" id="vests" name="vests" value="<%= itemsproduced.find(item => item.itemid === 4)?.quantity || 0 %>">
+    </div>
+            
     <!-- Event Status -->
     <div class="form-group">
       <label for="eventstatus">Event Status</label>
