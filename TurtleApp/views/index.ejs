@@ -3,26 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Turtle Shelter Project</title>
+  <title>Slideshow Example</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     /* Navbar Styling */
     .navbar {
+      position: absolute; /* Ensure the navbar is always on top */
+      top: 0;
+      left: 0;
+      width: 100%;
       display: flex;
       justify-content: space-between; /* Push content to edges */
       align-items: center; /* Vertically center items */
       background-color: #4CAF50;
       padding: 10px;
+      z-index: 10; /* Ensure navbar is above the banner */
     }
 
     /* Styling for the logo on the left */
     .navbar .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar .logo img {
+      height: 40px; /* Adjust the height of the logo */
+      width: auto; /* Ensure the aspect ratio is maintained */
+    }
+
+    .navbar .logo span {
       font-size: 1.5em;
       color: white;
       font-weight: bold;
+      margin-left: 10px;
     }
 
     /* Navbar button form styling */
@@ -46,157 +64,62 @@
       background-color: #45a049;
     }
 
+    /* Banner Styling */
+    .banner {
+      position: relative; /* Position elements inside the banner */
+      width: 100%;
+      height: 400px; /* Height of the banner */
+      background: url('your-banner-image.jpg') no-repeat center center;
+      background-size: cover;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-direction: column; /* Arrange items in a vertical column */
+    }
+
+    .banner .banner-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .banner h1 {
+      font-size: 36px; /* Adjust font size for the title */
+      margin: 0 0 20px; /* Add margin below the title */
+    }
+
+    .banner p {
+      font-size: 18px; /* Adjust font size for the description */
+      margin: 0 0 20px; /* Add margin below the paragraph */
+    }
+
+    .banner .button-container {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    .banner button {
+      background-color: #ffffff;
+      color: #4CAF50;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .banner button:hover {
+      background-color: #45a049;
+      color: white;
+    }
+
     .container {
       padding: 20px;
     }
-body {
-  font-family: Arial, sans-serif;
-}
 
-.navbar {
-  background-color: #4CAF50;
-  padding: 10px;
-}
-
-.navbar form {
-  display: inline-block;
-  margin-right: 15px;
-}
-
-.navbar button {
-  color: white;
-  background-color: #4CAF50;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.navbar button:hover {
-  background-color: #45a049;
-}
-
-.container {
-  padding: 20px;
-}
-
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Center the header and image horizontally */
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Center header text */
-}
-
-.header-content h1 {
-  margin-right: 20px; /* Add some space between the header and the image */
-}
-
-.header-container img {
-  max-width: 200px; /* Limit the image size */
-  height: auto;
-}
-
-
-  </style>
-</head>
-<body>
-
-  <!-- Navigation Bar -->
-  <div class="navbar">
-    <!-- Logo on the left side -->
-    <div class="logo">
-      Turtle Shelter
-    </div>
-
-    <!-- Navbar Buttons (aligned to the right) -->
-    <div class="nav-buttons">
-      <!-- Home Button Form -->
-      <form action="/" method="GET">
-        <button type="submit">Home</button>
-      </form>
-
-      <!-- Event Management Button Form -->
-      <form action="/eventManagement" method="GET">
-        <button type="submit">Event Management</button>
-      </form>
-
-      <!-- Volunteer Request Button Form -->
-      <form action="/volunteerForm" method="GET">
-        <button type="submit">Volunteer Form</button>
-      </form>
-
-      <!-- Event Request Button Form -->
-      <form action="/EventRequestForm" method="GET">
-        <button type="submit">Event Request</button>
-      </form>
-
-      <!-- Volunteer Management Button Form -->
-      <form action="/volunteerManagement" method="GET">
-        <button type="submit">Volunteer Management</button>
-      </form>
-
-      <!-- Admin Login Button Form -->
-      <form action="/adminLogin" method="GET">
-        <button type="submit">Admin Login</button>
-      </form>
-    </div>
-  </div>
-<!-- Main Content -->
-<div class="container">
-  <div class="header-container">
-    <h1>Welcome to the Turtle Shelter Project</h1>
-    <h1>Who we are</h1>
-    <p>TSP is your organization dedicated to bringing homeless people the protection they need through high-tech winter vests.</p>
-    <p>One winter when Jen was homeless, 7 of her friends froze to death. After surmounting her own journey from the frigid cold, she was determined to figure out a solution to help others with this burden. She created an inexpensive high-tech solution with the help of a survival expert that helps SAVE lives and more importantly alleviate suffering.</p>
-    <p>There is no need for those in a state of emergency to have to pay so much on top of the burden of recovering.</p>
-    <br><br>
-    <h1>What we do</h1>
-    <p>We answer the call to spread warmth in the lives of the homeless who are vulnerable to harsh winters by creating portable "shelters" that they can carry with them, just like a turtle.</p>
-    <p>Although increased homeless services, especially additional shelter availability, are necessary to accommodate the amplified need in the winter, life-threatening hypothermia can set in between 32-50 degrees, which is not cold enough for many winter shelters to open.</p>
-    <p>Our technology is about more than just making sure that the wearer maintains heat from their core. The warmth that our vests provide restores confidence, energy, and hope.</p>
-    <h1>How you can help</h1>
-    <b><p>"Every life has value, every person can serve", and you can take the next step to donate, make vests, and organize an event too!</p></b>
-    <P>Be a part of a powerful campaign that changes lives of those in need.</P>
-    <img src="/images/turtleshelterlogo.png" alt="Turtle Shelter Logo">
-  </div>
-     
-  <h1>Who we are</h1>
-  <p>TSP is your organization dedicated to bringing homeless people the protection they need through high-tech winter vests.</p>
-  <p>One winter when Jen was homeless, 7 of her friends froze to death. After surmounting her own journey from the frigid cold, she was determined to figure out a solution to help others with this burden. She created an inexpensive high-tech solution with the help of a survival expert that helps SAVE lives and, more importantly, alleviate suffering.</p>
-  <p>There is no need for those in a state of emergency to have to pay so much on top of the burden of recovering.</p>
-  <br><br>
-  <h1>What we do</h1>
-  <p>We answer the call to spread warmth in the lives of the homeless who are vulnerable to harsh winters by creating portable "shelters" that they can carry with them, just like a turtle.</p>
-  <p>Although increased homeless services, especially additional shelter availability, are necessary to accommodate the amplified need in the winter, life-threatening hypothermia can set in between 32-50 degrees, which is not cold enough for many winter shelters to open.</p>
-  <p>Our technology is about more than just making sure that the wearer maintains heat from their core. The warmth that our vests provide restores confidence, energy, and hope.</p>
-
-  <h1>How you can help</h1>
-  <b><p>"Every life has value, every person can serve", and you can take the next step to donate, make vests, and organize an event too!</p></b> 
-  <p>Be a part of a powerful campaign that changes the lives of those in need.</p>
-</div>
-
-  <img src="/images/vestsdistributed1.jpg" alt="Vests distributed 1">
-  <img src="/images/vestsdistributed2.jpg" alt="Vests distributed 2">
-  <img src="/images/vestsdistributed3.jpeg" alt="Vests distributed 3">
-  <img src="/images/vestsdistributed4.jpeg" alt="Vests distributed 4">
-  <img src="/images/vestsdistributed3.jpg" alt="Vests distributed 5">
-  <img src="/images/volunteers.jpg" alt="Volunteers">
-
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slideshow Example</title>
-  <style>
     /* Container for the slideshow */
     .slideshow-container {
       width: 100%;
@@ -274,230 +197,64 @@ body {
 </head>
 <body>
 
-<!-- Slideshow container -->
-<div class="slideshow-container">
-  <!-- Slides -->
-  <div class="slides">
-    <div class="slide"><img src="image1.jpg" alt="Image 1"></div>
-    <div class="slide"><img src="image2.jpg" alt="Image 2"></div>
-    <div class="slide"><img src="image3.jpg" alt="Image 3"></div>
-    <div class="slide"><img src="image4.jpg" alt="Image 4"></div>
-    <div class="slide"><img src="image5.jpg" alt="Image 5"></div>
-    <div class="slide"><img src="image6.jpg" alt="Image 6"></div>
-  </div>
-
-  <!-- Navigation arrows -->
-  <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
-  <button class="next" onclick="moveSlide(1)">&#10095;</button>
-
-  <!-- Dots for navigation -->
-  <div class="dot-container">
-    <span class="dot" onclick="currentSlide(1)"></span>
-    <span class="dot" onclick="currentSlide(2)"></span>
-    <span class="dot" onclick="currentSlide(3)"></span>
-    <span class="dot" onclick="currentSlide(4)"></span>
-    <span class="dot" onclick="currentSlide(5)"></span>
-    <span class="dot" onclick="currentSlide(6)"></span>
-  </div>
-</div>
-
-<script>
-  let slideIndex = 1;
-
-  // Show the current slide
-  function showSlide(index) {
-    const slides = document.querySelectorAll('.slide');
-    const dots = document.querySelectorAll('.dot');
-    
-    if (index > slides.length) slideIndex = 1;
-    if (index < 1) slideIndex = slides.length;
-    
-    for (let i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-      dots[i].classList.remove('active');
-    }
-
-    slides[slideIndex - 1].style.display = "block";
-    dots[slideIndex - 1].classList.add('active');
-  }
-
-  // Move to a specific slide
-  function currentSlide(index) {
-    showSlide(slideIndex = index);
-  }
-
-  // Move to the next/previous slide
-  function moveSlide(n) {
-    showSlide(slideIndex += n);
-  }
-
-  // Automatically change slides every 3 seconds
-  setInterval(function() {
-    moveSlide(1);
-  }, 3000);
-
-  // Initialize the slideshow
-  showSlide(slideIndex);
-</script>
-
+    <!-- Navigation Bar -->
+    <div class="navbar">
+      <!-- Logo on the left side -->
+      <div class="logo">
+        <img src="logo.png" alt="Turtle Shelter Logo">
+        <span>Turtle Shelter</span>
+      </div>
+  
+      <!-- Navbar Buttons (aligned to the right) -->
+      <div class="nav-buttons">
+        <form action="/" method="GET">
+          <button type="submit">Home</button>
+        </form>
+        <form action="/eventManagement" method="GET">
+          <button type="submit">Event Management</button>
+        </form>
+        <form action="/volunteerForm" method="GET">
+          <button type="submit">Volunteer Form</button>
+        </form>
+        <form action="/EventRequestForm" method="GET">
+          <button type="submit">Event Request</button>
+        </form>
+        <form action="/volunteerManagement" method="GET">
+          <button type="submit">Volunteer Management</button>
+        </form>
+        <form action="/adminLogin" method="GET">
+          <button type="submit">Admin Login</button>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Banner Section -->
+    <div class="banner">
+      <div class="banner-content">
+        <h1>Welcome to Turtle Shelter</h1>
+        <p>Helping the homeless survive harsh winters with innovative technology.</p>
+      </div>
+      <div class="button-container">
+        <button>Learn More</button>
+      </div>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="container">
+      <h1>Welcome to the Turtle Shelter Project</h1>
+      <h1>Who we are</h1>
+      <p>TSP is your organization dedicated to bringing homeless people the protection they need through high-tech winter vests.</p>
+      <p>One winter when Jen was homeless, 7 of her friends froze to death. After surmounting her own journey from the frigid cold, she was determined to figure out a solution to help others with this burden. She created an inexpensive high-tech solution with the help of a survival expert that helps SAVE lives and more importantly alleviate suffering.</p>
+      <p>There is no need for those in a state of emergency to have to pay so much on top of the burden of recovering.</p>
+      <br>
+      <h1>What we do</h1>
+      <p>We answer the call to spread warmth in the lives of the homeless who are vulnerable to harsh winters by creating portable "shelters" that they can carry with them, just like a turtle.</p>
+      <p>Although increased homeless services, especially additional shelter availability, are necessary to accommodate the amplified need in the winter, life-threatening hypothermia can set in between 32-50 degrees, which is not cold enough for many winter shelters to open.</p>
+      <p>Our technology is about more than just making sure that the wearer maintains heat from their core. The warmth that our vests provide restores confidence, energy, and hope.</p>
+      <h1>How you can help</h1>
+      <b><p>"Every life has value, every person can serve", and you can take the next step to donate, make vests, and organize an event too!</p></b>
+      <P>Be a part of a powerful campaign that changes lives of those in need.</P>
+    </div>
+  
 </body>
 </html>
-
-
-  
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rolling Newsletter</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    .newsletter-features {
-      overflow: hidden;
-      background: #ffffff;
-      padding: 20px;
-    }
-
-    .rolling-container {
-      display: flex;
-      flex-direction: row;
-      animation: scroll 10s linear infinite;
-    }
-
-    @keyframes scroll {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
-    }
-
-    .feature-item {
-      display: flex;
-      flex: 0 0 33%;
-      border: 1px solid #e0e0e0;
-      border-radius: 5px;
-      margin: 0 10px;
-      background: #ffffff;
-    }
-
-    .feature-image {
-      overflow: hidden;
-      border-radius: 5px 0 0 5px;
-    }
-
-    .feature-image img {
-      max-width: 100%;
-      transition: transform 0.3s ease;
-    }
-
-    .feature-image img:hover {
-      transform: scale(1.1);
-    }
-
-    .feature-content {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .feature-title a {
-      font-size: 1.2em;
-      color: #0066cc;
-      text-decoration: none;
-    }
-
-    .feature-title a:hover {
-      text-decoration: underline;
-    }
-
-    .feature-description {
-      font-size: 0.9em;
-      color: #555;
-      margin: 10px 0;
-    }
-
-    .feature-button {
-      text-align: center;
-      background-color: #0066cc;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .feature-button:hover {
-      background-color: #005bb5;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .feature-item {
-        flex: 0 0 100%;
-      }
-    }
-  </style>
-</head>
-<body>
-
-<section class="newsletter-features">
-  <div class="rolling-container">
-    <article class="feature-item">
-      <div class="feature-image">
-        <a href="#">
-          <img src="example-image-1.jpg" alt="Feature 1">
-        </a>
-      </div>
-      <div class="feature-content">
-        <h3 class="feature-title">
-          <a href="#">Feature Title 1</a>
-        </h3>
-        <p class="feature-description">This is a description for feature 1.</p>
-        <a href="#" class="feature-button">Read More</a>
-      </div>
-    </article>
-
-    <article class="feature-item">
-      <div class="feature-image">
-        <a href="#">
-          <img src="example-image-2.jpg" alt="Feature 2">
-        </a>
-      </div>
-      <div class="feature-content">
-        <h3 class="feature-title">
-          <a href="#">Feature Title 2</a>
-        </h3>
-        <p class="feature-description">This is a description for feature 2.</p>
-        <a href="#" class="feature-button">Read More</a>
-      </div>
-    </article>
-
-    <article class="feature-item">
-      <div class="feature-image">
-        <a href="#">
-          <img src="example-image-3.jpg" alt="Feature 3">
-        </a>
-      </div>
-      <div class="feature-content">
-        <h3 class="feature-title">
-          <a href="#">Feature Title 3</a>
-        </h3>
-        <p class="feature-description">This is a description for feature 3.</p>
-        <a href="#" class="feature-button">Read More</a>
-      </div>
-    </article>
-  </div>
-</section>
-
-</body>
-</html> -->
