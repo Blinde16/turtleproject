@@ -1,7 +1,131 @@
-<%- include('partials/header') %>
-<h1>Event Details</h1>
-<p><strong>Date:</strong> <%= event.eventdata %></p>
-<p><strong>Contact:</strong> <%= event.contact_first %> <%= event.contact_last %></p>
-<p><strong>Status:</strong> <%= event.eventstatusid %></p>
-<p><strong>Type:</strong> <%= event.eventtypeid %></p>
-<%- include('partials/footer') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+    <style>
+        /* Reset some default styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        /* Container styling */
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Heading styles */
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        /* Paragraph styling */
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            table th, table td {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Event Details</h1>
+        <p><strong>Date:</strong> <%= event.eventdata %></p>
+        <p><strong>Contact:</strong> <%= event.contact_first %> <%= event.contact_last %></p>
+
+        <h2>Items Produced</h2>
+        <% if (itemsProduced.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% itemsProduced.forEach(item => { %>
+                        <tr>
+                            <td><%= item.itemname %></td>
+                            <td><%= item.quantity %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No items were produced for this event.</p>
+        <% } %>
+    </div>
+</body>
+</html>
