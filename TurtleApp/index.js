@@ -397,6 +397,116 @@ app.post('/EventRequestForm', async (req, res) => {
   }
 });
 
+// Add event form for Jen
+app.get('/addevent', async (req, res) => {
+  try {
+      // Fetch the necessary data for the form
+      const sewingPreferences = await knex('sewingpreference').select('sewingpreferenceid', 'description');
+      const eventDates = await knex('eventdates').select('eventdateid','eventid', 'eventdatetype', 'eventdate');
+      const addresses = await knex('address').select('addressid', 'streetaddress', 'city', 'state', 'zip', 'spacesize');
+      const contacts = await knex('eventcontacts').select('contactid', 'contact_first', 'contact_last', 'contactphone', 'addressid');
+      
+      // Render the Add Event page
+      res.render('AddEvent', {
+          sewingPreferences,
+          eventDates,
+          addresses,
+          contacts
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Error fetching data');
+  }
+});
+
+app.post('/addevent', async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      numParticipants,
+      sewingPreference,
+      eventDate,
+      streetAddress,
+      city,
+      state,
+      zip,
+      spaceSize,
+      contactphone,
+      eventStart,
+      eventDuration,
+      jenStory
+    } = req.body;
+
+    console.log('Form Data:', req.body);
+
+    // Insert into the address table
+    const [addressResult] = await knex('address')
+      .insert({
+        streetaddress: streetAddress,
+        city: city,
+        state: state,
+        zip: zip,
+        spacesize: spaceSize
+      })
+      .returning('addressid');
+    const addressID = addressResult.addressid;
+
+    // Insert into the eventcontacts table
+    const [contactResult] = await knex('eventcontacts')
+      .insert({
+        contact_first: firstName,
+        contact_last: lastName,
+        contactphone: contactphone,
+        addressid: addressID
+      })
+      .returning('contactid');
+    const contactID = contactResult.contactid;
+
+    // Insert into the events table
+    await knex('events').insert({
+      confirmedeventdate: eventDate,
+      eventaddressid: addressID,
+      contactid: contactID,
+      numparticipants: numParticipants,
+      sewingpreferenceid: sewingPreference,
+      eventstart: eventStart,
+      eventduration: eventDuration,
+      jenstory: jenStory,
+      eventstatusid: 1
+    });
+
+    // Fetch events data for eventManagement page
+    const events = await knex('events')
+      .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
+      .join('address', 'events.eventaddressid', '=', 'address.addressid')
+      .select(
+        'events.eventid',
+        'events.confirmedeventdate',
+        'events.numparticipants',
+        'eventcontacts.contact_first',
+        'eventcontacts.contact_last',
+        'eventcontacts.contactphone',
+        'address.streetaddress',
+        'address.city',
+        'address.state',
+        'address.zip'
+      );
+
+    // Render eventManagement.ejs with events data
+    res.redirect('/admin-thank-you');
+  } catch (err) {
+    console.error("Error inserting event data:", err);
+    res.status(500).send("An error occurred while processing your request.");
+  }
+});
+
+app.get('/admin-thank-you', (req, res) => {
+  res.render('adminThankYou');
+});
+
+
+
 app.get('/VolunteerForm', async (req, res) => {
   try {
       // Fetch data concurrently using Promise.all
