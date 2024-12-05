@@ -153,26 +153,15 @@
   <h2>Request an Event</h2>
   <form action="#" method="POST">
 
-    <!-- Contact Information -->
-    <div class="form-group">
-      <label for="name">First Name</label>
-      <input type="text" id="firstName" name="firstName" placeholder="Enter your First Name" required>
-    </div>
-
-    <div class="form-group">
-      <label for="name">Last Name</label>
-      <input type="text" id="lastName" name="lastName" placeholder="Enter your Last Name" required>
-    </div>
-
-    <div class="form-group">
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" required>
-    </div>
-
-    <div class="form-group">
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
-    </div>
+    <!-- Contact Name and Phone Number for the organizer/lead -->
+      <div class="form-group">
+      <label for="contact_first">First Name: </label>
+      <input type="text" id="contact_first" name="contact_first" required>
+      <label for="contact_last">Last Name: </label>
+      <input type="text" id="contact_last" name="contact_last" required>
+      <label for="contactphone">Phone Number: </label>
+      <input type="number" id="contactphone" name="contactphone" required>
+      </div>
 
       <!-- Number of Participants -->
       <div class="form-group">
@@ -191,73 +180,59 @@
       </div> 
   
       <!-- Event Dates -->
+       <!-- Preferred Primary Date -->
       <div class="form-group">
-      <label for="eventDateType">What is your preferred primary date for the event that you would like to schedule?</label>
-      <select id="eventDateType" name="eventDateType" required>
-        <% eventDates.forEach(eventdates => { %>
-            <option value="<%= eventdates.eventid %>"><%= eventdates.eventdate %></option>
-        <% }); %>
-    </select>
-    <label for="eventDateType">What is your preferred secondary date for the event that you would like to schedule?</label>
-      <select id="eventDateType" name="eventDateType" required>
-        <% eventDates.forEach(eventdates => { %>
-            <option value="<%= eventdates.eventid %>"><%= eventdates.eventdate %></option>
-        <% }); %>
-    </select>
-    <label for="eventDateType">What is your preferred tertiary alternative date for the event that you would like to schedule?</label>
-      <select id="eventDateType" name="eventDateType" required>
-        <% eventDates.forEach(eventdates => { %>
-            <option value="<%= eventdates.eventid %>"><%= eventdates.eventdate %></option>
-        <% }); %>
-    </select>
+        <label for="primaryDate">What is your preferred primary date for the event that you would like to schedule?</label>
+        <input type="date" id="primaryDate" name="primaryDate" required>
+      </div>
+
+      <!-- Preferred Secondary Date -->
+      <div class="form-group">
+        <label for="secondaryDate">What is your preferred secondary date for the event that you would like to schedule?</label>
+        <input type="date" id="secondaryDate" name="secondaryDate" required>
+      </div>
+
+      <!-- Preferred Tertiary Alternative Date -->
+      <div class="form-group">
+        <label for="tertiaryDate">What is your preferred tertiary alternative date for the event that you would like to schedule?</label>
+        <input type="date" id="tertiaryDate" name="tertiaryDate" required>
       </div>
   
       <!-- Address -->
       <div class="form-group">
-        <label for="streetAddress">What’s the address of the event?</label>
+        <label for="streetAddress">Address of the event: </label>
         <input type="text" id="streetAddress" name="streetAddress" placeholder="Enter event street address" required>
       </div>
       
       <div class="form-group">
-        <label for="city">City</label>
+        <label for="city">City: </label>
         <input type="text" id="city" name="city" placeholder="Enter event city" required>
       </div>
       
       <div class="form-group">
-        <label for="state">State</label>
+        <label for="state">State (Use two letter abbreviation): </label>
         <input type="text" id="state" name="state" placeholder="Enter event state" required>
       </div>
       
       <div class="form-group">
-        <label for="zip">Zip Code</label>
+        <label for="zip">Zip Code: </label>
         <input type="text" id="zip" name="zip" placeholder="Enter event zip code" required>
       </div>
 
       <div class="form-group">
-        <label for="SpaceSize">Space Size</label>
+        <label for="SpaceSize">Space Size: </label>
         <input type="text" id="SpaceSize" name="SpaceSize" placeholder="Enter the size of your space: " required>
       </div>
-
-
-      <!-- Contact Name and Phone Number for the organizer/lead -->
-      <div class="form-group">
-      <label for="contact_first">What’s the first name of the requester? </label>
-      <input type="text" id="contact_first" name="contact_first" required>
-      <label for="contact_last">What’s the last name of the requester? </label>
-      <input type="text" id="contact_last" name="contact_last" required>
-      <label for="contactphone">What’s the phone number of the requester? </label>
-      <input type="number" id="contactphone" name="contactphone" required>
-      </div>
-  
+ 
   
       <!-- Event Time and Duration -->
       <div class="form-group">
-        <label for="eventstart">What time do you want the event to start?</label>
+        <label for="eventstart">Event start time: </label>
         <input type="time" id="eventstart" name="eventstart" required>
       </div>
       
       <div class="form-group">
-      <label for="eventduration">How long would you like it to go?</label>
+      <label for="eventduration">Event duration: </label>
       <input type="text" id="eventduration" name="eventduration" placeholder="e.g., 2 hours" required>
       </div>
 
