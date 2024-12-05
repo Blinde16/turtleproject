@@ -3,7 +3,7 @@ let path = require("path");
 let app = express();
 let security = false;  // This will keep track of the login status
 const router = express.Router();
-const port = 5500;
+const port = process.env.PORT || 5500;
 
 // EJS setup
 app.set("view engine", "ejs");
@@ -19,12 +19,13 @@ app.use('/images', express.static(path.join(__dirname, 'views', 'Images')));
 const knex = require("knex")({
   client: "pg",
   connection: {
-    host: "localhost",
-    user: "postgres",
-    password: "9174",
-    database: "turtle",
-    port: 5432,
-  },
+    host: process.env.RDS_HOSTNAME || "localhost",
+    user: process.env.RDS_USERNAME || "postgres",
+    password: process.env.RDS_PASSWORD || "9174",
+    database: process.env.RDS_DB_NAME || "turtle",
+    port: process.env.RDS_PORT || 5432,
+    ssl: process.env.DB_SLL ? {rejectUnauthorized: false}: false
+  }
 });
 
 // Landing Page
