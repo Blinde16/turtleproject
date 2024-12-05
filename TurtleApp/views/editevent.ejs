@@ -95,7 +95,7 @@
 
 <div class="form-container">
   <h2>Edit Event</h2>
-  <form action="/editevent/<%= events.eventid %>" method="POST">
+  <form action="/editevent/<%= events.eventid %>/<%= events.addressid %>/<%= events.contactid %>" method="POST">
 
     <!-- Contact Information -->
     <div class="form-group">
@@ -135,7 +135,11 @@
       <label for="numParticipants">Number of Participants</label>
       <input type="number" id="numParticipants" name="numParticipants" value="<%= events.numparticipants %>" required>
       </div>
-
+      <!-- Total Produced -->
+      <div class="form-group">
+        <label for="totalproduced">Total Produced</label>
+        <input type="number" id="totalproduced" name="totalproduced" value="<%= events.totalproduced %>" required>
+        </div>
       
       <!-- Sewing Preference -->
       <div class="form-group">
