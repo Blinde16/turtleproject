@@ -231,6 +231,46 @@ app.post('/editevent', async (req, res) => {
   }
 });
 
+// Route to handle viewing event details
+app.get('/eventdetails/:eventid', async (req, res) => {
+  const eventId = req.params.eventid;
+
+  try {
+      // Query the database using Knex with joins
+      const event = await knex('events')
+          .join('eventcontacts', 'events.contactid', 'eventcontacts.contactid')
+          .select(
+              'events.confirmedeventdate',
+              'eventcontacts.contact_first',
+              'eventcontacts.contact_last'
+          )
+          .where('events.eventid', eventId)
+          .first(); // Fetch the first (and only) result for the event details
+
+      if (!event) {
+          return res.status(404).send('Event not found');
+      }
+
+      // Query to get items produced and their quantities
+      const itemsProduced = await knex('itemsproduced')
+          .join('items', 'itemsproduced.itemid', 'items.itemid')
+          .select('items.itemname', 'itemsproduced.quantity')
+          .where('itemsproduced.eventid', eventId);
+
+      // Render the view and pass both the event details and items produced
+      res.render('eventdetails', {
+          event: {
+              eventdata: event.confirmedeventdate,
+              contact_first: event.contact_first,
+              contact_last: event.contact_last
+          },
+          itemsProduced
+      });
+  } catch (error) {
+      console.error('Error fetching event details:', error);
+      res.status(500).send('Server error');
+  }
+});
 
 app.post("/deletevolunteer/:id", (req,res) => {
   let id = req.params.id;
