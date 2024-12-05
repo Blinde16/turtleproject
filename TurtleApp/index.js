@@ -11,6 +11,9 @@ app.set("views", path.join(__dirname, "views"));
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
+// Serve static files from the 'views/Images' directory
+app.use('/images', express.static(path.join(__dirname, 'views', 'Images')));
+
 
 // Database setup with Knex
 const knex = require("knex")({
@@ -56,9 +59,10 @@ app.get('/eventManagement', (req,res) => {
       'events.jenstory',
       'eventstatus.eventstatusid',
       'eventstatus.description as status_description',
-      'events.eventdetails'
-      
+      'events.eventdetails'  
     ) // returns an array of rows 
+    .orderBy('events.confirmedeventdate', 'desc')
+    .orderBy('events.eventstart', 'asc')
     .then(events => {
       // Render the index.ejs template and pass the data
       res.render('eventManagement', {events});
