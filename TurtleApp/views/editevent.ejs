@@ -139,8 +139,8 @@
   
     .form-button:hover {
       background-color: #005bb5;
-    }
-  </style>
+  }
+  </style> -->
 </head>
 <body>
 
@@ -148,9 +148,9 @@
     <h2>Edit Event</h2>
     <form action="/editevent/<%= events.eventid %>/<%= events.addressid %>/<%= events.contactid %>" method="POST">
       <input type="hidden" name="addressid" value="<%= events.addressid %>">
-      <input type="hidden" name="contactid" value="<%= events.contactid %>">
+      <input type="hidden" name="contactid" value="<%= events.contactid %>"> 
       
-      <!-- Contact Information (Two columns layout) -->
+      <!--Contact Information (Two columns layout) -->
       <div class="flex-container">
         <div class="form-group">
           <label for="confirmedeventdate">Confirmed Event Date</label>
@@ -306,7 +306,6 @@
         </div>
       </div>
   
-      <button type="submit" class="form-button">Update Event</button>
     </form>
   </div>
 
