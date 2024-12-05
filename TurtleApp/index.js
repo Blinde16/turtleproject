@@ -18,7 +18,6 @@ const knex = require("knex")({
   connection: {
     host: "localhost",
     user: "postgres",
-    password: "Mamba925",
     password: "admin",
     database: "turtle",
     port: 5432,
@@ -28,7 +27,7 @@ const knex = require("knex")({
 // Landing Page
 app.get("/", (req, res) => {
   // Pass the 'loggedIn' variable to the view
-  res.render("index");
+  res.render("index", {security});
 });
 
 app.get('/eventManagement', (req,res) => {
@@ -627,6 +626,8 @@ app.post('/adminLogin', (req, res) => {
     }
     res.redirect("/")
   });
+
+  
 
 // Start Server
 app.listen(port, () => console.log("Server listening on port", port));
