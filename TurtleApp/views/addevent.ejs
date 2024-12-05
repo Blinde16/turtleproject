@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Event</title>
+</head>
+<body>
+    <h1>Create New Event</h1>
+    <form action="/addevent" method="POST">
+        <!-- First and Last Name -->
+        <label for="firstName">First Name:</label>
+        <input type="text" name="firstName" required><br><br>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" name="lastName" required><br><br>
+
+        <!-- Phone number -->
+        <label for="contactphone">Contact Phone:</label>
+        <input type="tel" id="contactphone" name="contactphone" placeholder="Enter contact phone" required />
+
+
+        <!-- Number of Participants -->
+        <label for="numParticipants">Number of Participants:</label>
+        <input type="number" name="numParticipants" required><br><br>
+
+        <!-- Sewing Preference -->
+        <label for="sewingPreference">Sewing Preference:</label>
+        <select name="sewingPreference" required>
+            <% sewingPreferences.forEach(preference => { %>
+                <option value="<%= preference.sewingpreferenceid %>"><%= preference.description %></option>
+            <% }); %>
+        </select><br><br>
+
+        <!-- Event Date (Interval) -->
+        <label for="eventDate">Event Date (Interval):</label>
+        <input type="text" name="eventDate" placeholder="e.g., 2024-12-10 14:00:00" required><br><br>
+
+        <!-- Event Start (Time) -->
+        <label for="eventStart">Event Start (Time):</label>
+        <input type="time" name="eventStart" required><br><br>
+
+        <!-- Event Duration -->
+        <label for="eventDuration">Event Duration:</label>
+        <input type="text" name="eventDuration" placeholder="e.g., 4 hours" required><br><br>
+
+        <!-- Address -->
+        <label for="streetAddress">Street Address:</label>
+        <input type="text" name="streetAddress" required><br><br>
+
+        <label for="city">City:</label>
+        <input type="text" name="city" required><br><br>
+
+        <label for="state">State:</label>
+        <input type="text" name="state" maxlength="2" required><br><br>
+
+        <label for="zip">ZIP Code:</label>
+        <input type="text" name="zip" required><br><br>
+
+        <label for="spaceSize">Space Size:</label>
+        <input type="text" name="spaceSize" placeholder="e.g., Small, Medium, Large" required><br><br>
+
+        <!-- JenStory -->
+        <label for="jenStory">Jen Story:</label>
+        <select name="jenStory" required>
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select><br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Add Event</button>
+    </form>
+</body>
+</html>
