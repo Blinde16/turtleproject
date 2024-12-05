@@ -192,6 +192,13 @@
   <form action="/" method="GET">
     <button type="submit">Return to Home Page</button>
 </form>
+<script>
+  // Check for the 'deletesuccess' parameter in the URL
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('deletesuccess') === 'true') {
+      alert('Event was deleted successfully!');
+  }
+</script>
 </body>
 </html>
 
