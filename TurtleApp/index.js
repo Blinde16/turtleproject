@@ -101,7 +101,9 @@ app.get('/editevent/:eventid', (req, res) => {
           'sewingpreference.sewingpreferenceid',
           'sewingpreference.description as sewing_description',
           'eventstatus.eventstatusid',
-          'eventstatus.description as status_description'
+          'eventstatus.description as status_description',
+          'itemsproduced.itemid',
+          'itemsproduced.quantity'
         )
         .where('eventid', eventid)
         .first()
@@ -110,8 +112,13 @@ app.get('/editevent/:eventid', (req, res) => {
         knex('sewingpreference').select('sewingpreferenceid', 'description').then(sewingPreferenceoptions => {
           console.log(sewingPreferenceoptions)
           knex('eventstatus').select('eventstatusid', 'description').then(eventstatusoptions => {
-            console.log(eventstatusoptions)
-            res.render('editevent', {events,sewingPreferenceoptions, eventstatusoptions})
+              knex('itemsproduced')
+              .join('items', 'itemsproduced.itemid', '=', 'items.itemid')
+              .select('items.itemname', 'itemsproduced.itemid', 'itemsproduced.quantity')
+              .then(iteminfo => {
+                console.log(eventstatusoptions)
+                res.render('editevent', {events,sewingPreferenceoptions, eventstatusoptions, iteminfo})
+              })
           })
         })
       }) // Fetch only the specific event by ID
@@ -212,7 +219,8 @@ app.post('/editevent', async (req, res) => {
       .update({
         contact_first: firstname,
         contact_last: lastname,
-        contactphone: parsedPhone
+        contactphone: parsedPhone,
+        addressid: addressid,  // Use the addressID we got above
       });
 
     // Redirect or respond with success
@@ -220,6 +228,66 @@ app.post('/editevent', async (req, res) => {
   } catch (error) {
     console.error('Error updating event:', error);
     res.status(500).send('Internal Server Error');
+  }
+});
+
+// Route to handle viewing event details
+app.get('/eventdetails/:eventid', async (req, res) => {
+  const eventId = req.params.eventid;
+
+  try {
+      // Query the database using Knex with joins
+      const event = await knex('events')
+          .join('eventcontacts', 'events.contactid', 'eventcontacts.contactid')
+          .select(
+              'events.confirmedeventdate',
+              'eventcontacts.contact_first',
+              'eventcontacts.contact_last'
+          )
+          .where('events.eventid', eventId)
+          .first(); // Fetch the first (and only) result for the event details
+
+      if (!event) {
+          return res.status(404).send('Event not found');
+      }
+
+      // Query to get items produced and their quantities
+      const itemsProduced = await knex('itemsproduced')
+          .join('items', 'itemsproduced.itemid', 'items.itemid')
+          .select('items.itemname', 'itemsproduced.quantity')
+          .where('itemsproduced.eventid', eventId);
+
+      // Render the view and pass both the event details and items produced
+      res.render('eventdetails', {
+          event: {
+              eventdata: event.confirmedeventdate,
+              contact_first: event.contact_first,
+              contact_last: event.contact_last
+          },
+          itemsProduced
+      });
+  } catch (error) {
+      console.error('Error fetching event details:', error);
+      res.status(500).send('Server error');
+  }
+});
+
+// Delete route with success confirmation
+app.post('/deleteevent/:eventid', async (req, res) => {
+  const eventId = req.params.eventid;
+
+  try {
+      // Delete from related tables first (if needed)
+      await knex('itemsproduced').where('eventid', eventId).del();
+
+      // Delete from the main events table
+      await knex('events').where('eventid', eventId).del();
+
+      console.log(`Event with ID ${eventId} deleted successfully.`);
+      res.redirect('/eventmanagement?deletesuccess=true'); // Redirect with query parameter
+  } catch (error) {
+      console.error('Error deleting event:', error);
+      res.status(500).send('An error occurred while deleting the event.');
   }
 });
 
