@@ -11,6 +11,10 @@
       padding: 0;
     }
 
+    h1 {
+      padding: 5px;
+    }
+
     /* Navbar Styling */
     .navbar {
       position: absolute; /* Ensure the navbar is always on top */
@@ -71,15 +75,27 @@
       height: 400px; /* Height of the banner */
       background: url('your-banner-image.jpg') no-repeat center center;
       background-size: cover;
-      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
       flex-direction: column; /* Arrange items in a vertical column */
+      color: white; /* Text color */
+    }
+
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+      z-index: 1; /* Ensure overlay is above the background image */
     }
 
     .banner .banner-content {
+      position: relative;
+      z-index: 2; /* Ensure content is above the overlay */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -98,9 +114,16 @@
     .banner .button-container {
       position: absolute;
       bottom: 20px;
-      right: 20px;
+      right: 100px;
     }
 
+    .action button-container {
+    display: flex;
+    justify-content: center;  /* Centers the button horizontally */
+    width: 100%;
+    padding-top: 20px; /* Optional: Adjust if needed to position the button correctly */
+  }
+  
     .banner button {
       background-color: #ffffff;
       color: #4CAF50;
@@ -116,9 +139,6 @@
       color: white;
     }
 
-    .container {
-      padding: 20px;
-    }
 
     /* Container for the slideshow */
     .slideshow-container {
@@ -193,6 +213,86 @@
     .active {
       background-color: #717171;
     }
+
+    .split-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    background-color: #a09a9a;
+    border-radius: 8px;
+  }
+
+  .text-content {
+    width: 50%;
+    padding-right: 20px;
+  }
+
+  .text-content h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .text-content p {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .divider {
+    width: 2px; /* Divider width */
+    background-color: #ccc; /* Divider color */
+    height: 100%;
+    margin: 0 20px;
+  }
+
+  .image-content {
+    width: 45%;
+    display: flex;
+    justify-content: flex-end; /* Ensures image is aligned to the right */
+  }
+
+  .image-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .carousel-container {
+  width: 100%;
+  padding: 45px 0;
+  background-color: #f1f1f1;
+  }
+
+  h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 30px;
+  }
+
+  .carousel {
+  display: flex;
+  overflow-x: hidden; /* Hide items that move out of view */
+  transition: transform 1s ease; /* Smooth transition for sliding */
+  }
+
+.carousel-item {
+flex-shrink: 0;
+width: 200px;
+height: 275px;
+background-color: #ddd;
+border-radius: 4px;
+text-align: center;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.carousel-item p {
+margin: 0;
+}
+
   </style>
 </head>
 <body>
@@ -202,7 +302,6 @@
       <!-- Logo on the left side -->
       <div class="logo">
         <img src="logo.png" alt="Turtle Shelter Logo">
-        <span>Turtle Shelter</span>
       </div>
   
       <!-- Navbar Buttons (aligned to the right) -->
@@ -229,19 +328,23 @@
     </div>
   
     <!-- Banner Section -->
-    <div class="banner">
-      <div class="banner-content">
-        <h1>Welcome to Turtle Shelter</h1>
+    <div class="banner" style="position: relative; background-color: #f8f8f8; padding: 50px;">
+      <div class="banner-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1;"></div> <!-- Overlay for better text visibility -->
+      <div class="banner-content" style="position: relative; z-index: 2; color: white;">
+        <h1>Welcome to The Turtle Shelter Project</h1>
         <p>Helping the homeless survive harsh winters with innovative technology.</p>
-      </div>
-      <div class="button-container">
-        <button>Learn More</button>
+    </div>
+    <div class="button-container" style="position: absolute; bottom: 20px; right: 165px; z-index: 2;">
+        <button style="background-color: #ffffff; color: #4CAF50; border: none; padding: 15px 30px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;" 
+                onmouseover="this.style.backgroundColor='#45a049'; this.style.color='white';" 
+                onmouseout="this.style.backgroundColor='#ffffff'; this.style.color='#4CAF50';">
+          Learn More
+        </button>
       </div>
     </div>
   
     <!-- Main Content -->
     <div class="container">
-      <h1>Welcome to the Turtle Shelter Project</h1>
       <h1>Who we are</h1>
       <p>TSP is your organization dedicated to bringing homeless people the protection they need through high-tech winter vests.</p>
       <p>One winter when Jen was homeless, 7 of her friends froze to death. After surmounting her own journey from the frigid cold, she was determined to figure out a solution to help others with this burden. She created an inexpensive high-tech solution with the help of a survival expert that helps SAVE lives and more importantly alleviate suffering.</p>
@@ -251,10 +354,61 @@
       <p>We answer the call to spread warmth in the lives of the homeless who are vulnerable to harsh winters by creating portable "shelters" that they can carry with them, just like a turtle.</p>
       <p>Although increased homeless services, especially additional shelter availability, are necessary to accommodate the amplified need in the winter, life-threatening hypothermia can set in between 32-50 degrees, which is not cold enough for many winter shelters to open.</p>
       <p>Our technology is about more than just making sure that the wearer maintains heat from their core. The warmth that our vests provide restores confidence, energy, and hope.</p>
-      <h1>How you can help</h1>
-      <b><p>"Every life has value, every person can serve", and you can take the next step to donate, make vests, and organize an event too!</p></b>
-      <P>Be a part of a powerful campaign that changes lives of those in need.</P>
     </div>
+    <br>
+    <div class="split-banner">
+      <div class="text-content">
+        <h1>How you can help</h1>
+        <b><p>"Every life has value, every person can serve", and you can take the next step to donate, make vests, and organize an event too!</p></b>
+        <P>Be a part of a powerful campaign that changes lives of those in need.</P>
+        <br>
+        <div class="action button-container">
+          <button style="background-color: #ffffff; color: #4CAF50; border: none; padding: 15px 30px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;" 
+                  onmouseover="this.style.backgroundColor='#45a049'; this.style.color='white';" 
+                  onmouseout="this.style.backgroundColor='#ffffff'; this.style.color='#4CAF50';">
+            Take Action
+          </button>
+        </div>
+        
+      </div>
+        <div class="divider"></div>
+        <div class="image-content">
+          <img src="your-image-url.jpg" alt="Description of image">
+        </div>
+      </div>
+
+    <!-- Carousel Section -->
+    <div class="carousel-container" style="width: 100%; padding: 45px 0; background-color: #f1f1f1;">
+      <h1 style="text-align: center; font-size: 2rem; color: #333; margin-bottom: 30px;">Testimonials</h1>
+      <div class="carousel" style="display: flex; overflow-x: auto; gap: 40px;">
+        <!-- Add carousel items here -->
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
+          <p>Item 1</p>
+        </div>
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
+          <p>Item 2</p>
+        </div>
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
+          <p>Item 3</p>
+        </div>
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
+          <p>Item 4</p>
+        </div>
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
+          <p>Item 5</p>
+        </div>
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
+          <p>Item 6</p>
+        </div>
+    </div>
+
+
+      </div>
+    </div>
+
+    
+    
   
 </body>
 </html>
+
