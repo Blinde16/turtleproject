@@ -11,6 +11,9 @@ app.set("views", path.join(__dirname, "views"));
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
+// Serve static files from the 'views/Images' directory
+app.use('/images', express.static(path.join(__dirname, 'views', 'Images')));
+
 
 // Database setup with Knex
 const knex = require("knex")({
