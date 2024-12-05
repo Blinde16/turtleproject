@@ -218,48 +218,88 @@
     }
 
     .split-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: #a09a9a;
-    border-radius: 0px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #a09a9a;
+  border-radius: 0px;
+  position: relative; /* Ensure that shading is applied relative to the split-banner */
+  overflow: hidden; /* Prevent shading from spilling outside */
+}
 
-  .text-content {
-    width: 50%;
-    padding-right: 20px;
-  }
+/* Shading at the bottom */
+.split-banner::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 190px; /* Controls the height of the shading */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* Gradient for shading */
+  z-index: 1; /* Make sure the shading appears beneath the text content */
+}
 
-  .text-content h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-  }
+/* Text content styling */
+.text-content {
+  width: 50%;
+  padding-right: 20px;
+  z-index: 2; /* Ensure the text appears above the shading */
+}
 
-  .text-content p {
-    font-size: 1rem;
-    color: #333;
-  }
+.text-content h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
 
-  .divider {
-    width: 100px; /* Divider width */
-    background-color: #ccc; /* Divider color */
-    height: 100%;
-    margin: 0 20px;
-  }
+.text-content p {
+  font-size: 1rem;
+  color: #333;
+}
 
-  .image-content {
-    width: 45%;
-    display: flex;
-    justify-content: flex-end; /* Ensures image is aligned to the right */
-  }
+.divider {
+  width: 100px; /* Divider width */
+  background-color: #ccc; /* Divider color */
+  height: 100%;
+  margin: 0 20px;
+}
 
-  .image-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+.image-content {
+  width: 45%;
+  display: flex;
+  justify-content: flex-end; /* Ensures image is aligned to the right */
+  z-index: 2; /* Ensure the image content is above the shading */
+}
+
+.image-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Styling */
+button {
+  background-color: #ffffff;
+  color: #4CAF50;
+  border: none;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 2; /* Ensure the button is above the shading */
+}
+
+button:hover {
+  background-color: #45a049;
+  color: white;
+}
+
+button:focus {
+  outline: none;
+}
+
 
   .carousel-container {
   width: 100%;
@@ -456,24 +496,25 @@ p {
         <div class="text-content">
           <h1 style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color:#f1f1f1">How you can help</h1>
           <b><p>"Every life has value, every person can serve", and you can take the next step to donate, make vests, and organize an event too!</p></b>
-          <P>Link arms, lend a hand, and catch the vision of service to for a debilitating need that is growing in the community. Be a part of a powerful campaign that changes lives of those in need.</P>
+          <p>Link arms, lend a hand, and catch the vision of service for a debilitating need that is growing in the community. Be a part of a powerful campaign that changes lives of those in need.</p>
           <br>
           <div class="action button-container">
             <form action="/VolunteerForm" method="GET">
-            <button type="submit" style="background-color: #ffffff; color: #4CAF50; border: none; padding: 15px 30px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;" 
-                    onmouseover="this.style.backgroundColor='#45a049'; this.style.color='white';" 
-                    onmouseout="this.style.backgroundColor='#ffffff'; this.style.color='#4CAF50';">
-              Take Action
-            </button>
+              <button type="submit">
+                Take Action
+              </button>
             </form>
           </div>
-          
         </div>
-          <div class="divider"></div>
-          <div class="image-content">
-            <img src="/images/volunteers.jpg" alt="Description of image">
-          </div>
+        
+        <div class="divider"></div>
+        
+        <div class="image-content">
+          <img src="/images/volunteers.jpg" alt="Description of image">
         </div>
+      </div>
+      
+      
 
       
    <!-- Carousel Section -->
