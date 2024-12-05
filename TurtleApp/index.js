@@ -3,7 +3,7 @@ let path = require("path");
 let app = express();
 let security = false;  // This will keep track of the login status
 const router = express.Router();
-const port = 5500;
+const port = process.env.PORT || 5500;
 
 // EJS setup
 app.set("view engine", "ejs");
@@ -19,58 +19,28 @@ app.use('/images', express.static(path.join(__dirname, 'views', 'Images')));
 const knex = require("knex")({
   client: "pg",
   connection: {
+<<<<<<< HEAD
     host: "localhost",
     user: "postgres",
     password: "Mamba925",
     database: "turtle",
     port: 5432,
   },
+=======
+    host: process.env.RDS_HOSTNAME || "localhost",
+    user: process.env.RDS_USERNAME || "postgres",
+    password: process.env.RDS_PASSWORD || "9174",
+    database: process.env.RDS_DB_NAME || "turtle",
+    port: process.env.RDS_PORT || 5432,
+    ssl: process.env.DB_SLL ? {rejectUnauthorized: false}: false
+  }
+>>>>>>> 21eedd244d794ec69735bf9381d3c651170b9af3
 });
 
 // Landing Page
 app.get("/", (req, res) => {
   // Pass the 'loggedIn' variable to the view
   res.render("index", {security});
-});
-
-
-app.get('/eventManagementNew', (req, res) => {
-  try {
-  const volunteers = knex("events")
-  .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
-  .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
-  .join('contacts', 'events.contactid', '=', 'contacts.contactid')
-  .join("address", 'address.addressid', '=', 'events.addressid')
-  .join('itemsproduced', 'itemsproduced.eventid', '=', 'events.eventid')
-  .select(
-    'events.eventID as eventID',
-    'events.confirmedeventdate as confirmedeventdate',
-    'events.eventaddressid as eventaddressid',
-    'address.city as city',
-    'address.state as state',
-    'address.spacesize as spacesize',
-    'events.contactid as eventcontactid',
-    'contacts.contact_first as contactfirst',
-    'contacts.contact_last as contactlast',
-    'contacts.contactphone as contactphone',
-    'events.totalproduced as totalproduced',
-    'events.numparticipants as numparticipants',
-    'events.sewingpreferenceid as sewingpreferenceid',
-    'events.eventstart as eventstart',
-    'events.eventduration as eventduration',
-    'events.jenstory as jenstory',
-    'events.eventstatusid as eventstatusid',
-    'eventstatus.description as eventstatusdescription',
-    'events.eventdetails as eventdetials'
-  ) // returns an array of rows 
-  .then(events => {
-    res.render('eventManagementNew', {events})
-  });
-  } catch (error) {
-      console.error('Error fetching events:', error);
-      res.status(500).send('Internal Server Error');
-  }
-
 });
 
 app.get('/eventManagement', (req,res) => {
@@ -148,7 +118,7 @@ app.get('/editevent/:eventid', (req, res) => {
       .where('eventid', eventid)
       .first()
       .then(events => {
-        knex('sewingpreference').select('sewingpreferenceid', 'description').then(sewingPreferenceoptions => {
+        knex('sewingpreference').select('sewingpreferenceid', 'description').distinct().then(sewingPreferenceoptions => {
           knex('eventstatus').select('eventstatusid', 'description').then(eventstatusoptions => {
             knex('itemsproduced')
               .join('items', 'itemsproduced.itemid', '=', 'items.itemid')
@@ -175,7 +145,7 @@ app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
       lastname,
       phone,
       numParticipants,
-      sewingPreference,
+      sewingPreferenceid,
       totalproduced,
       streetaddress,
       city,
@@ -192,7 +162,7 @@ app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
       lastname,
       phone,
       numParticipants,
-      sewingPreference,
+      sewingPreferenceid,
       totalproduced,
       streetaddress,
       city,
@@ -205,21 +175,6 @@ app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
       eventdetails)
 
     const parsedPhone = phone.replace(/\D/g, ''); // Remove non-numeric characters
-
-    if (eventDuration) {
-      const eventDurationParts = eventDuration.split(',').map(part => parseInt(part.replace(/\D/g, ''), 10));
-    } else {
-      console.error('eventDuration is undefined or empty');
-    }
-    
-    const [eventHours, eventMinutes] = eventDurationParts || [0, 0];
-
-    // Construct the interval string (e.g., '4 hours', '4 hours 30 minutes')
-    let eventDurationString = `${eventHours} hours`;
-    if (eventMinutes > 0) {
-      eventDurationString += ` ${eventMinutes} minutes`;
-    }
-
     const eventid = parseInt(req.params.eventid, 10);  // Ensure eventid is a number
     const addressid = req.params.addressid;
     const contactid = req.params.contactid;
@@ -242,9 +197,9 @@ app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
         eventaddressid: addressid, // Use eventaddressid directly instead of addressid
         totalproduced: parseInt(totalproduced, 10) || 0,
         numparticipants: parseInt(numParticipants, 10) || 0,
-        sewingpreferenceid: parseInt(sewingPreference, 10) || null,
+        sewingpreferenceid: parseInt(sewingPreferenceid, 10) || null,
         eventstart: eventStart,
-        eventduration: eventDurationString, // Store as a string representing the interval
+        eventduration: eventDuration, // Store as a string representing the interval
         jenstory: jenStory === 'true',
         eventstatusid: parseInt(eventstatus, 10) || null,
         eventdetails: eventdetails
@@ -450,6 +405,116 @@ app.post('/EventRequestForm', async (req, res) => {
     res.status(500).send("An error occurred while processing your request.");
   }
 });
+
+// Add event form for Jen
+app.get('/addevent', async (req, res) => {
+  try {
+      // Fetch the necessary data for the form
+      const sewingPreferences = await knex('sewingpreference').select('sewingpreferenceid', 'description');
+      const eventDates = await knex('eventdates').select('eventdateid','eventid', 'eventdatetype', 'eventdate');
+      const addresses = await knex('address').select('addressid', 'streetaddress', 'city', 'state', 'zip', 'spacesize');
+      const contacts = await knex('eventcontacts').select('contactid', 'contact_first', 'contact_last', 'contactphone', 'addressid');
+      
+      // Render the Add Event page
+      res.render('AddEvent', {
+          sewingPreferences,
+          eventDates,
+          addresses,
+          contacts
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Error fetching data');
+  }
+});
+
+app.post('/addevent', async (req, res) => {
+  try {
+    const {
+      firstName,
+      lastName,
+      numParticipants,
+      sewingPreference,
+      eventDate,
+      streetAddress,
+      city,
+      state,
+      zip,
+      spaceSize,
+      contactphone,
+      eventStart,
+      eventDuration,
+      jenStory
+    } = req.body;
+
+    console.log('Form Data:', req.body);
+
+    // Insert into the address table
+    const [addressResult] = await knex('address')
+      .insert({
+        streetaddress: streetAddress,
+        city: city,
+        state: state,
+        zip: zip,
+        spacesize: spaceSize
+      })
+      .returning('addressid');
+    const addressID = addressResult.addressid;
+
+    // Insert into the eventcontacts table
+    const [contactResult] = await knex('eventcontacts')
+      .insert({
+        contact_first: firstName,
+        contact_last: lastName,
+        contactphone: contactphone,
+        addressid: addressID
+      })
+      .returning('contactid');
+    const contactID = contactResult.contactid;
+
+    // Insert into the events table
+    await knex('events').insert({
+      confirmedeventdate: eventDate,
+      eventaddressid: addressID,
+      contactid: contactID,
+      numparticipants: numParticipants,
+      sewingpreferenceid: sewingPreference,
+      eventstart: eventStart,
+      eventduration: eventDuration,
+      jenstory: jenStory,
+      eventstatusid: 1
+    });
+
+    // Fetch events data for eventManagement page
+    const events = await knex('events')
+      .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
+      .join('address', 'events.eventaddressid', '=', 'address.addressid')
+      .select(
+        'events.eventid',
+        'events.confirmedeventdate',
+        'events.numparticipants',
+        'eventcontacts.contact_first',
+        'eventcontacts.contact_last',
+        'eventcontacts.contactphone',
+        'address.streetaddress',
+        'address.city',
+        'address.state',
+        'address.zip'
+      );
+
+    // Render eventManagement.ejs with events data
+    res.redirect('/admin-thank-you');
+  } catch (err) {
+    console.error("Error inserting event data:", err);
+    res.status(500).send("An error occurred while processing your request.");
+  }
+});
+
+app.get('/admin-thank-you', (req, res) => {
+  res.render('adminThankYou');
+});
+
+
 
 app.get('/VolunteerForm', async (req, res) => {
   try {
