@@ -16,44 +16,55 @@
       min-height: 100vh;
       position: relative; 
     }
-
+  
     .form-container {
       background: #ffffff;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      width: 100%;
-      max-width: 500px;
+      width: 90%; /* Form takes 90% of the available width */
+      max-width: 1000px;  /* Increased max-width for larger screens */
+      box-sizing: border-box; /* Ensures padding is included in the width */
+      overflow: hidden;  /* Prevents form from overflowing */
     }
-
+  
     .form-container h2 {
       margin-bottom: 20px;
-      font-size: 1.5em;
+      font-size: 1.8em;  /* Increased font size for better visibility */
       color: #333;
+      text-align: center;
     }
-
+  
+    .flex-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;  /* Creates space between columns */
+    }
+  
     .form-group {
-      margin-bottom: 15px;
+      flex: 1 1 calc(50% - 20px); /* Makes each input take half the width */
+      min-width: 250px;  /* Ensures inputs don't become too small */
+      margin-bottom: 15px; /* Adds space below each input field */
     }
-
+  
     .form-group label {
       display: block;
       font-weight: bold;
       margin-bottom: 5px;
       color: #555;
     }
-
+  
     .form-group input,
     .form-group select,
     .form-group textarea {
       width: 100%;
-      padding: 10px;
+      padding: 12px;  /* Increased padding for larger inputs */
       border: 1px solid #ccc;
       border-radius: 4px;
-      font-size: 1em;
+      font-size: 1.1em;  /* Slightly larger font for inputs */
       color: #333;
     }
-
+  
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
@@ -61,182 +72,176 @@
       border-color: #0066cc;
       box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
     }
-
+  
     .checkbox-group {
       display: flex;
       flex-direction: column;
     }
-
+  
     .checkbox-group label {
       display: flex;
       align-items: center;
       margin-bottom: 5px;
     }
-
+  
     .checkbox-group input {
       margin-right: 10px;
     }
-
+  
     .form-button {
       background-color: #0066cc;
       color: #ffffff;
-      padding: 10px 15px;
+      padding: 12px 20px;  /* Increased padding for a larger button */
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 1em;
+      font-size: 1.2em;  /* Larger font for the button */
+      display: block;
+      width: 100%; /* Make the button full width */
+      margin-top: 20px; /* Adds space above the button */
     }
-
+  
     .form-button:hover {
       background-color: #005bb5;
     }
   </style>
+  
+  
+
 </head>
 <body>
 
-<div class="form-container">
-  <h2>Edit Event</h2>
-  <form action="/editevent/<%= events.eventid %>/<%= events.addressid %>/<%= events.contactid %>" method="POST">
-
-    <!-- Contact Information -->
-    <div class="form-group">
-      <label for="confirmedeventdate">Confirmed Event Date</label>
-      <input type="date" id="confirmedeventdate" name="confirmedeventdate" value="<%= new Date(events.confirmedeventdate).toISOString().split('T')[0] %>" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="firstname">Contact First Name</label>
-      <input type="text" id="firstname" name="firstname" value="<%= events.contact_first %>" required>
-    </div>
-
-    <div class="form-group">
-        <label for="lastname">Contact Last Name</label>
-        <input type="text" id="lastname" name="lastname" value="<%= events.contact_last %>" required>
+  <div class="form-container">
+    <h2>Edit Event</h2>
+    <form action="/editevent/<%= events.eventid %>/<%= events.addressid %>/<%= events.contactid %>" method="POST">
+  
+      <!-- Contact Information (Two columns layout) -->
+      <div class="flex-container">
+        <div class="form-group">
+          <label for="confirmedeventdate">Confirmed Event Date</label>
+          <input type="date" id="confirmedeventdate" name="confirmedeventdate" value="<%= new Date(events.confirmedeventdate).toISOString().split('T')[0] %>" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="firstname">Contact First Name</label>
+          <input type="text" id="firstname" name="firstname" value="<%= events.contact_first %>" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="lastname">Contact Last Name</label>
+          <input type="text" id="lastname" name="lastname" value="<%= events.contact_last %>" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" value="<%= (() => {
+            const cleaned = events.contactphone.replace(/\D/g, '');
+            if (cleaned.length === 10) {
+              return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+            } else if (cleaned.length === 7) {
+              return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+            } else {
+              return row.contactphone;
+            }
+          })() %>">
+        </div>
       </div>
-
-    <div class="form-group">
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" value="<%= (() => {
-        const cleaned = events.contactphone.replace(/\D/g, ''); // Remove non-numeric characters
-        if (cleaned.length === 10) {
-          // Format with area code (e.g., 509-123-4352)
-          return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
-        } else if (cleaned.length === 7) {
-          // Format without area code (e.g., 123-4352)
-          return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
-        } else {
-          // Return as is if it doesn't match expected lengths
-          return row.contactphone;
-        }
-      })() %>">
-    </div>
-
-      <!-- Number of Participants -->
-      <div class="form-group">
-      <label for="numParticipants">Number of Participants</label>
-      <input type="number" id="numParticipants" name="numParticipants" value="<%= events.numparticipants %>" required>
+  
+      <!-- Event Address (Two columns layout) -->
+      <div class="flex-container">
+        <div class="form-group">
+          <label for="streetaddress">Event Street Address</label>
+          <input type="text" id="streetaddress" name="streetaddress" value="<%= events.streetaddress %>" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="city">Event City</label>
+          <input type="text" id="city" name="city" value="<%= events.city %>" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="state">Event State</label>
+          <input type="text" id="state" name="state" value="<%= events.state %>" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="zip">Event Zip</label>
+          <input type="text" id="zip" name="zip" value="<%= events.zip %>" required>
+        </div>
       </div>
-      
-      <!-- Sewing Preference -->
+  
+      <!-- Event Time Container -->
+      <div class="flex-container">
+        <div class="form-group">
+          <label for="eventStart">Event Start Time</label>
+          <input type="time" id="eventStart" name="eventStart" value="<%= events.eventstart %>" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="eventDuration">Event Duration</label>
+          <input type="text" id="eventDuration" name="eventDuration" value="<%= events.eventduration.hours %> hours, <%= events.eventduration.minutes %> minutes" required>
+        </div>
+      </div>
+  
+      <!-- Items Produced Container -->
+      <div class="flex-container">
+        <div class="form-group">
+          <label for="pockets">Pockets Produced</label>
+          <input type="number" id="pockets" name="pockets" value="<%= iteminfo.find(item => item.itemid === 1)?.quantity || 0 %>">
+        </div>
+  
+        <div class="form-group">
+          <label for="collars">Collars Produced</label>
+          <input type="number" id="collars" name="collars" value="<%= iteminfo.find(item => item.itemid === 2)?.quantity || 0 %>">
+        </div>
+  
+        <div class="form-group">
+          <label for="envelopes">Envelopes Produced</label>
+          <input type="number" id="envelopes" name="envelopes" value="<%= iteminfo.find(item => item.itemid === 3)?.quantity || 0 %>">
+        </div>
+  
+        <div class="form-group">
+          <label for="vests">Vests Produced</label>
+          <input type="number" id="vests" name="vests" value="<%= iteminfo.find(item => item.itemid === 4)?.quantity || 0 %>">
+        </div>
+  
+        <div class="form-group">
+          <label for="totalproduced">Total Produced</label>
+          <input type="number" id="totalproduced" name="totalproduced" value="<%= events.totalproduced %>" required>
+        </div>
+      </div>
+  
+      <!-- Jen's Story -->
       <div class="form-group">
-        <label for="sewingPreference">Sewing Preference</label>
-        <select id="sewingPreference" name="sewingPreference" required>
-          <% sewingPreferenceoptions.forEach(pref => { %>
-            <option value="<%= pref.sewingpreferenceid %>" <%= pref.sewingpreferenceid === events.sewingpreferenceid ? 'selected' : '' %>>
-              <%= pref.description %>
+        <label for="jenStory">
+          Jen's Story
+          <input type="checkbox" id="jenStory" name="jenStory" value="true" <%= events.jenstory ? 'checked': '' %> >
+        </label>
+      </div>
+  
+      <!-- Event Details -->
+      <div class="form-group">
+        <label for="eventdetails">Event Details</label>
+        <textarea id="eventdetails" name="eventdetails" required><%= events.eventdetails %></textarea>
+      </div>
+  
+      <!-- Event Status -->
+      <div class="form-group">
+        <label for="eventstatus">Event Status</label>
+        <select id="eventstatus" name="eventstatus" required>
+          <% eventstatusoptions.forEach(status => { %>
+            <option value="<%= status.eventstatusid %>" <%= status.eventstatusid === events.eventstatusid ? 'selected' : '' %> >
+              <%= status.description %>
             </option>
           <% }); %>
         </select>
       </div>
-
-      <!-- Address -->
-      <div class="form-group">
-      <label for="streetaddress">Event Street Address</label>
-      <input type="text" id="streetaddress" name="streetaddress" value="<%= events.streetaddress %>" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="city">Event City</label>
-        <input type="text" id="city" name="city" value="<%= events.city %>"required>
-    </div>
-
-    <div class="form-group">
-        <label for="state">Event State</label>
-        <input type="text" id="state" name="state" value="<%= events.state %>"required>
-    </div>
-
-    <div class="form-group">
-        <label for="zip">Event Zip</label>
-        <input type="text" id="zip" name="zip" value="<%= events.zip %>"required>
-    </div>
-
-      <!-- Event Time and Duration -->
-      <div class="form-group">
-      <label for="eventStart">Event Startime</label>
-      <input type="time" id="eventStart" name="eventStart" value="<%= events.eventstart %>"required>
-      </div>
-      
-      <div class="form-group">
-      <label for="eventDuration">Event Duration</label>
-      <input type="text" id="eventDuration" name="eventDuration" value="<%= events.eventduration.hours %> hours, <%= events.eventduration.minutes %> minutes" required>
-      </div>
-
-      <!-- Jen's Story -->
-      <div class="form-group">
-      <label for="jenStory">
-        Jen Story
-        <input type="checkbox" id="jenStory" name="jenStory" value="true" <%= events.jenstory ? 'checked': '' %>>
-      </label>
-      </div>
-
-      <div class="form-group">
-        <label for="eventdetails">Event Details</label>
-        <textarea type="text" id="eventdetails" name="eventdetails" required><%= events.eventdetails%></textarea>
-    </div>
-
-
-      <div class="form-group">
-        <label for="pockets">Pockets Produced</label>
-        <input type="number" id="pockets" name="pockets" value="<%= iteminfo.find(item => item.itemid === 1)?.quantity || 0 %>">
-      </div>
+  
+      <!-- Submit Button -->
+      <button type="submit" class="form-button">Submit</button>
+  
     </form>
-    
-    <div class="form-group">
-      <label for="collars">Collars Produced</label>
-      <input type="number" id="collars" name="collars" value="<%= iteminfo.find(item => item.itemid === 2)?.quantity || 0 %>">
-    </div>
-      
-    <div class="form-group">
-      <label for="envelopes">Envelopes Produced</label>
-      <input type="number" id="envelopes" name="envelopes" value="<%= iteminfo.find(item => item.itemid === 3)?.quantity || 0 %>">
-    </div>
-      
-    <div class="form-group">
-      <label for="vests">Vests Produced</label>
-      <input type="number" id="vests" name="vests" value="<%= iteminfo.find(item => item.itemid === 4)?.quantity || 0 %>">
-    </div>
-    
-    <!-- Total Produced -->
-    <div class="form-group">
-    <label for="totalproduced">Total Produced</label>
-    <input type="number" id="totalproduced" name="totalproduced" value="<%= events.totalproduced %>" required>
-    </div>
-    
-    <!-- Event Status -->
-    <div class="form-group">
-      <label for="eventstatus">Event Status</label>
-      <select id="eventstatus" name="eventstatus" required>
-        <% eventstatusoptions.forEach(status => { %>
-          <option value="<%= status.eventstatusid %>" <%= status.eventstatusid === events.eventstatusid ? 'selected' : '' %>>
-            <%= status.description %>
-          </option>
-        <% }); %>
-      </select>
-    </div>
-    <!-- Submit Button -->
-    <button type="submit" class="form-button">Submit</button>
-  </form>
-</div>
-
+  </div>
+  
 </body>
 </html>

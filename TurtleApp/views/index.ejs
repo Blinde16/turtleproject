@@ -318,6 +318,9 @@ margin: 0;
         <form action="/volunteerManagement" method="GET">
           <button type="submit">Volunteer Management</button>
         </form>
+        <form action="/userManagement" method="GET">
+          <button type="submit">User Management</button>
+        </form>
         <% } %>
         <form action="/volunteerForm" method="GET">
           <button type="submit">Volunteer Form</button>
@@ -388,11 +391,13 @@ margin: 0;
         <P>Be a part of a powerful campaign that changes lives of those in need.</P>
         <br>
         <div class="action button-container">
-          <button style="background-color: #ffffff; color: #4CAF50; border: none; padding: 15px 30px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;" 
+          <form action="/VolunteerForm" method="GET">
+          <button type="submit" style="background-color: #ffffff; color: #4CAF50; border: none; padding: 15px 30px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;" 
                   onmouseover="this.style.backgroundColor='#45a049'; this.style.color='white';" 
                   onmouseout="this.style.backgroundColor='#ffffff'; this.style.color='#4CAF50';">
             Take Action
           </button>
+          </form>
         </div>
         
       </div>
