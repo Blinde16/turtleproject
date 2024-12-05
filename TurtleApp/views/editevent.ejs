@@ -208,14 +208,7 @@
           <input type="text" id="zip" name="zip" value="<%= events.zip %>" required>
         </div>
       </div>
-  
-      <!-- Event Details and Preferences -->
-      <div class="flex-container">
-        <div class="form-group">
-          <label for="eventdetails">Event Details</label>
-          <textarea id="eventdetails" name="eventdetails" rows="5" required><%= events.eventdetails %></textarea>
-        </div>
-  
+
         <div class="form-group">
           <label for="sewingpreferenceid">Sewing Preference</label>
           <select id="sewingpreferenceid" name="sewingpreferenceid" required>
@@ -225,15 +218,7 @@
             <% }); %>
           </select>
         </div>
-  
-        <div class="form-group">
-          <label for="eventstatusid">Event Status</label>
-          <select id="eventstatusid" name="eventstatusid" required>
-            <option value="<%= events.eventstatusid %>" selected><%= events.status_description %></option>
-            <% eventstatusoptions.forEach(function(option) { %>
-              <option value="<%= option.eventstatusid %>"><%= option.description %></option>
-            <% }); %>
-          </select>
+
           <!-- Event Time Container -->
       <div class="flex-container">
         <div class="form-group">
@@ -243,7 +228,7 @@
   
         <div class="form-group">
           <label for="eventDuration">Event Duration</label>
-          <input type="text" id="eventDuration" name="eventDuration" value="<%= events.eventduration.hours %> hours, <%= events.eventduration.minutes %> minutes" required>
+          <input type="text" id="eventDuration" name="eventDuration" value="<%= events.eventduration %>" required>
         </div>
       </div>
   
@@ -271,7 +256,7 @@
   
         <div class="form-group">
           <label for="totalproduced">Total Produced</label>
-          <input type="number" id="totalproduced" name="totalproduced" value="<%= events.totalproduced %>" required>
+          <input type="number" id="totalproduced" name="totalproduced" value="<%= events.totalproduced %>">
         </div>
       </div>
   
@@ -286,7 +271,7 @@
       <!-- Event Details -->
       <div class="form-group">
         <label for="eventdetails">Event Details</label>
-        <textarea id="eventdetails" name="eventdetails" required><%= events.eventdetails %></textarea>
+        <textarea id="eventdetails" name="eventdetails"><%= events.eventdetails %></textarea>
       </div>
   
       <!-- Event Status -->
