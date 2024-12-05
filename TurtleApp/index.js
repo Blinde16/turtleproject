@@ -619,7 +619,13 @@ app.post("/addVolunteer", (req,res) => {
           zip: zip
         })
         .returning('addressid') // Replace 'id' with the actual name of your address table's ID column
-        .then(([newAddressId]) => {
+        .then(([returningData]) => {
+          console.log("Address Insert Result:", returningData); // Debug log
+          if (!returningData || returningData.length === 0) {
+            throw new Error("Failed to retrieve address ID from database.");
+          }
+          const newAddressId = returningData.addressid || returningData;
+            console.log("New Address ID:", newAddressId); // Debug log
           // newAddressId contains the ID of the newly inserted address
           return knex('volunteer').insert({
             first_name: first_name,
