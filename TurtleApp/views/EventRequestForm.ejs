@@ -153,26 +153,6 @@
   <h2>Request an Event</h2>
   <form action="#" method="POST">
 
-    <!-- Contact Information -->
-    <!-- <div class="form-group">
-      <label for="name">First Name</label>
-      <input type="text" id="firstName" name="firstName" placeholder="Enter your First Name" required>
-    </div>
-
-    <div class="form-group">
-      <label for="name">Last Name</label>
-      <input type="text" id="lastName" name="lastName" placeholder="Enter your Last Name" required>
-    </div> -->
-<!-- 
-    <div class="form-group">
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" required>
-    </div>
-
-    <div class="form-group">
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
-    </div> -->
     <!-- Contact Name and Phone Number for the organizer/lead -->
       <div class="form-group">
       <label for="contact_first">First Name: </label>
@@ -217,27 +197,7 @@
         <label for="tertiaryDate">What is your preferred tertiary alternative date for the event that you would like to schedule?</label>
         <input type="date" id="tertiaryDate" name="tertiaryDate" required>
       </div>
-      <!-- <div class="form-group">
-      <label for="eventDateType">What is your preferred primary date for the event that you would like to schedule?</label>
-      <select id="eventDateType" name="eventDateType" required>
-        <% eventDates.forEach(eventdates => { %>
-            <option value="<%= eventdates.eventid %>"><%= eventdates.eventdate %></option>
-        <% }); %>
-    </select>
-    <label for="eventDateType">What is your preferred secondary date for the event that you would like to schedule?</label>
-      <select id="eventDateType" name="eventDateType" required>
-        <% eventDates.forEach(eventdates => { %>
-            <option value="<%= eventdates.eventid %>"><%= eventdates.eventdate %></option>
-        <% }); %>
-    </select>
-    <label for="eventDateType">What is your preferred tertiary alternative date for the event that you would like to schedule?</label>
-      <select id="eventDateType" name="eventDateType" required>
-        <% eventDates.forEach(eventdates => { %>
-            <option value="<%= eventdates.eventid %>"><%= eventdates.eventdate %></option>
-        <% }); %>
-    </select>
-      </div>
-   -->
+  
       <!-- Address -->
       <div class="form-group">
         <label for="streetAddress">Address of the event: </label>
