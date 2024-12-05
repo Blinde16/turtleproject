@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Slideshow Example</title>
+  <link href="TurtleApp/css/index.css" rel="stylesheet">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -271,27 +273,47 @@
   margin-bottom: 30px;
   }
 
-  .carousel {
-  display: flex;
-  overflow-x: hidden; /* Hide items that move out of view */
-  transition: transform 1s ease; /* Smooth transition for sliding */
+  /* Prevent horizontal scrolling */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
+ /* Ensure the carousel does not cause overflow */
+.carousel {
+    display: flex;
+    overflow-x: auto; /* This keeps the horizontal scrolling for the carousel, but limits it to its container */
+    max-width: 100%; /* Prevent carousel from overflowing the container */
+  }
+
+  /* Make sure carousel items don’t overflow */
 .carousel-item {
-flex-shrink: 0;
-width: 200px;
-height: 275px;
-background-color: #ddd;
-border-radius: 4px;
-text-align: center;
-display: flex;
-justify-content: center;
-align-items: center;
-}
+    flex-shrink: 0;
+    width: 200px; /* Maintain fixed width for items */
+    height: 275px;
+    background-color: #ddd;
+    border-radius: 4px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px; /* Add some margin between items */
+  }
 
 .carousel-item p {
 margin: 0;
 }
+
+ /* Optional: Additional styling to maintain page structure */
+ body {
+    box-sizing: border-box; /* Ensure padding and borders don't cause overflow */
+  }
+  
+  * {
+    box-sizing: inherit; /* Inherit the box model globally */
+  }
 
 
 
@@ -388,7 +410,7 @@ margin: 0;
         <div class="text-content">
           <h1>How you can help</h1>
           <b><p>"Every life has value, every person can serve", and you can take the next step to donate, make vests, and organize an event too!</p></b>
-          <P>Be a part of a powerful campaign that changes lives of those in need.</P>
+          <P>Link arms, lend a hand, and offer your time for a need that is growing in the community. Be a part of a powerful campaign that changes lives of those in need.</P>
           <br>
           <div class="action button-container">
             <form action="/VolunteerForm" method="GET">
@@ -504,47 +526,3 @@ margin: 0;
     <p>&copy; 2024 Turtle Shelter Project. All rights reserved.</p>
   </div>
 </div>
-
-
-<!-- Carousel Section 
-<div class="carousel-container" style="width: 100%; padding: 45px 0; background-color: #f1f1f1;">
-  <h1 style="text-align: center; font-size: 2rem; color: #525151; margin-bottom: 30px;">Testimonials</h1>
-  <div class="carousel" style="display: flex; overflow-x: auto; gap: 40px;">
-    <!-Carousel Item 1 
-    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: left; position: relative;">
-      <img src="path/to/your-image1.png" alt="John Doe" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-      <h3 style="position: absolute; bottom: 82px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">John Doe</h3>
-      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"This product changed my life. I am forever grateful! My body heat will be cherished forever!"</p>
-    </div>
-    <!-Carousel Item 2 
-    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: center; position: relative;">
-      <img src="path/to/your-image2.png" alt="Jane Smith" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-      <h3 style="position: absolute; bottom: 82px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Jane Smith</h3>
-      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"As soon as I threw one on, I felt like I was receiving a warm hug. There is truly nothing like these turtle shelters out there!"</p>
-    </div>
-    <!-Carousel Item 3 
-    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: center; position: relative;">
-      <img src="path/to/your-image3.png" alt="Sam Green" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-      <h3 style="position: absolute; bottom: 82px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Sam Green</h3>
-      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"I feel safe, I feel loved, and I know that this product was inspired to bless the lives of many including mine."</p>
-    </div>
-    <!-Carousel Item 4 
-    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: left; position: relative;">
-      <img src="path/to/your-image4.png" alt="Alice White" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-      <h3 style="position: absolute; bottom: 115px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Alice White</h3>
-      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"This shell is the best jacket that I've ever put on and it's so comfortable. It fits me well and sometimes I don't have to wear other layers. I never go anywhere without it!"</p>
-    </div>
-    <!-Carousel Item 5 
-    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: left; position: relative;">
-      <img src="path/to/your-image5.png" alt="Mick Rout" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-      <h3 style="position: absolute; top: 138px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Mick Rout</h3>
-      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"My life will never be the same again. I was so fortunate to receive a turtle shelter to call my own and it has helped me conquer the devastating frigid temperatures of Utah."</p>
-    </div>
-    <!-Carousel Item 6 
-    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: center; position: relative;">
-      <img src="path/to/your-image6.png" alt="Emma Cly" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
-      <h3 style="position: absolute; top: 126px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Emma Cly</h3>
-      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"I never have to worry about my body losing heat again. I can face my life with confidence and have the warmth I need to approach each new day! Thank you TSP!"</p>
-    </div>
-  </div>
-</div> -->
