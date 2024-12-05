@@ -114,9 +114,162 @@
 </body>
 </html>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slideshow Example</title>
+  <style>
+    /* Container for the slideshow */
+    .slideshow-container {
+      width: 100%;
+      max-width: 800px; /* Adjust the max width as needed */
+      margin: auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Hide the images initially */
+    .slides {
+      display: flex;
+      transition: transform 1s ease-in-out;
+    }
+
+    /* Style for each individual image */
+    .slide {
+      min-width: 100%;
+      height: auto;
+    }
+
+    /* Style for the navigation buttons */
+    .prev, .next {
+      position: absolute;
+      top: 50%;
+      width: auto;
+      padding: 16px;
+      margin-top: -22px;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      transition: 0.3s ease;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: none;
+      border-radius: 50%;
+      z-index: 100;
+    }
+
+    .prev {
+      left: 0;
+    }
+
+    .next {
+      right: 0;
+    }
+
+    .prev:hover, .next:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Optional: Add dots for navigation (indicators) */
+    .dot-container {
+      text-align: center;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .dot {
+      height: 15px;
+      width: 15px;
+      margin: 0 4px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.6s ease;
+    }
+
+    .active {
+      background-color: #717171;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Slideshow container -->
+<div class="slideshow-container">
+  <!-- Slides -->
+  <div class="slides">
+    <div class="slide"><img src="image1.jpg" alt="Image 1"></div>
+    <div class="slide"><img src="image2.jpg" alt="Image 2"></div>
+    <div class="slide"><img src="image3.jpg" alt="Image 3"></div>
+    <div class="slide"><img src="image4.jpg" alt="Image 4"></div>
+    <div class="slide"><img src="image5.jpg" alt="Image 5"></div>
+    <div class="slide"><img src="image6.jpg" alt="Image 6"></div>
+  </div>
+
+  <!-- Navigation arrows -->
+  <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+  <button class="next" onclick="moveSlide(1)">&#10095;</button>
+
+  <!-- Dots for navigation -->
+  <div class="dot-container">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+    <span class="dot" onclick="currentSlide(4)"></span>
+    <span class="dot" onclick="currentSlide(5)"></span>
+    <span class="dot" onclick="currentSlide(6)"></span>
+  </div>
+</div>
+
+<script>
+  let slideIndex = 1;
+
+  // Show the current slide
+  function showSlide(index) {
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    
+    if (index > slides.length) slideIndex = 1;
+    if (index < 1) slideIndex = slides.length;
+    
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+      dots[i].classList.remove('active');
+    }
+
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].classList.add('active');
+  }
+
+  // Move to a specific slide
+  function currentSlide(index) {
+    showSlide(slideIndex = index);
+  }
+
+  // Move to the next/previous slide
+  function moveSlide(n) {
+    showSlide(slideIndex += n);
+  }
+
+  // Automatically change slides every 3 seconds
+  setInterval(function() {
+    moveSlide(1);
+  }, 3000);
+
+  // Initialize the slideshow
+  showSlide(slideIndex);
+</script>
+
+</body>
+</html>
+
 
   
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -271,4 +424,4 @@
 </section>
 
 </body>
-</html>
+</html> -->
