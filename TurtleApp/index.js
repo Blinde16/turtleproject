@@ -18,7 +18,6 @@ const knex = require("knex")({
   connection: {
     host: "localhost",
     user: "postgres",
-    password: "Mamba925",
     password: "admin",
     database: "turtle",
     port: 5432,
@@ -57,9 +56,10 @@ app.get('/eventManagement', (req,res) => {
       'events.jenstory',
       'eventstatus.eventstatusid',
       'eventstatus.description as status_description',
-      'events.eventdetails'
-      
+      'events.eventdetails'  
     ) // returns an array of rows 
+    .orderBy('events.confirmedeventdate', 'desc')
+    .orderBy('events.eventstart', 'asc')
     .then(events => {
       // Render the index.ejs template and pass the data
       res.render('eventManagement', {events});
