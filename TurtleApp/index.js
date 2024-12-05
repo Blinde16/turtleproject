@@ -334,13 +334,9 @@ app.post('/EventRequestForm', async (req, res) => {
   try {
     // Extract data from the form submission
     const {
-      firstName,
-      lastName,
-      email,
-      phone,
       numParticipants,
       sewingPreference,
-      eventDateType: primaryDate,
+      primaryDate,
       streetAddress,
       city,
       state,
@@ -353,6 +349,23 @@ app.post('/EventRequestForm', async (req, res) => {
       eventduration,
       jenstory,
     } = req.body;
+    // Log the extracted form data to check their values
+    console.log('Form Data:', {
+      numParticipants,
+      sewingPreference,
+      primaryDate,
+      streetAddress,
+      city,
+      state,
+      zip,
+      SpaceSize,
+      contact_first,
+      contact_last,
+      contactphone,
+      eventstart,
+      eventduration,
+      jenstory,
+    });
 
     // Insert the address into the address table and retrieve the addressid
     const [addressResult] = await knex('address')
