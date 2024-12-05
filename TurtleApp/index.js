@@ -34,6 +34,7 @@ app.get("/", (req, res) => {
   res.render("index", {security});
 });
 
+// Event management get route
 app.get('/eventManagement', (req,res) => {
     try {
   const events = knex("events")
@@ -74,7 +75,7 @@ app.get('/eventManagement', (req,res) => {
     }
 })
 
-
+// Edit event get route
 app.get('/editevent/:eventid', (req, res) => {
   try {
     const eventid = req.params.eventid;
@@ -127,7 +128,7 @@ app.get('/editevent/:eventid', (req, res) => {
   }
 });
 
-
+// Edit event post route
 app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
   try {
     const {
@@ -215,8 +216,6 @@ app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
   }
 });
 
-
-
 // Route to handle viewing event details
 app.get('/eventdetails/:eventid', async (req, res) => {
   const eventId = req.params.eventid;
@@ -277,7 +276,7 @@ app.post('/deleteevent/:eventid', async (req, res) => {
   }
 });
 
-
+// Delete volunteer route
 app.post("/deletevolunteer/:id", (req,res) => {
   let id = req.params.id;
   knex("volunteer")
@@ -292,6 +291,7 @@ app.post("/deletevolunteer/:id", (req,res) => {
   });
 });
 
+// Event request get route
 app.get('/EventRequestForm', async (req, res) => {
     try {
         const sewingPreferences = await knex('sewingpreference').select('sewingpreferenceid', 'description');
@@ -315,7 +315,7 @@ app.get('/EventRequestForm', async (req, res) => {
     }
 });
 
-
+// Event request form route
 app.post('/EventRequestForm', async (req, res) => {
   try {
     // Extract data from the form submission
@@ -419,6 +419,7 @@ app.get('/addevent', async (req, res) => {
   }
 });
 
+// Add event post route for Jen
 app.post('/addevent', async (req, res) => {
   try {
     const {
@@ -501,12 +502,12 @@ app.post('/addevent', async (req, res) => {
   }
 });
 
+// Admin thank you route
 app.get('/admin-thank-you', (req, res) => {
   res.render('adminThankYou');
 });
 
-
-
+// Volunteer form route
 app.get('/VolunteerForm', async (req, res) => {
   try {
       // Fetch data concurrently using Promise.all
@@ -533,7 +534,7 @@ app.get('/VolunteerForm', async (req, res) => {
   }
 });
 
-
+// Volunteer management get route
 app.get('/volunteerManagement', (req, res) => {
     try {
     const volunteers = knex("volunteer")
@@ -572,6 +573,7 @@ app.get('/volunteerManagement', (req, res) => {
 
 const { getHeardAboutId, getSewingLevelId, getSewingPreferenceId, insertAddress } = require('./js/helpers');
 
+// Volunteer form post route
 app.post('/VolunteerFormSubmit', async (req, res) => {
   const { 
     firstName, 
@@ -634,11 +636,13 @@ app.post('/VolunteerFormSubmit', async (req, res) => {
     res.status(500).send('Error processing your request.');
   }
 });
-
+ 
+// User thank you route
 app.get('/thank-you', (req, res) => {
   res.render('thank-you');
 });
 
+// Edit volunteer get route
 app.get('/editvolunteer/:id', (req,res) => {
   let id = req.params.id
   knex("volunteer").join("heardabout", "heardabout.heardaboutid", "=", "volunteer.heardaboutid")
@@ -676,6 +680,7 @@ app.get('/editvolunteer/:id', (req,res) => {
   });
 });
 
+// Edit volunteer post route
 app.post('/editvolunteer/:volunteerid/:addressid', (req, res) => {
   const volunteerid = req.params.volunteerid;
   const addressid = req.params.addressid;
@@ -691,21 +696,19 @@ app.post('/editvolunteer/:volunteerid/:addressid', (req, res) => {
   const city = req.body.city;
   const state = req.body.state;
   
-
   // Update the Volunteer in the database
-// Update the Volunteer in the database
-knex('volunteer')
-  .where('volunteerid', volunteerid)
-  .update({
-    first_name: first_name,
-    last_name: last_name,
-    email: email,
-    phone_number: phone_number,
-    heardaboutid: heardaboutid,
-    hourspermonth: hours_per_month,
-    sewinglevelid: sewinglevelid,
-    sewingpreferenceid: sewingpreferenceid
-  })
+  knex('volunteer')
+    .where('volunteerid', volunteerid)
+    .update({
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      phone_number: phone_number,
+      heardaboutid: heardaboutid,
+      hourspermonth: hours_per_month,
+      sewinglevelid: sewinglevelid,
+      sewingpreferenceid: sewingpreferenceid
+    })
   .then(() => {
     // After updating the volunteer, update the address table
     return knex('address')
@@ -725,6 +728,7 @@ knex('volunteer')
   });
 });
 
+// Add volunteer get route
 app.get("/addVolunteer", (req,res) => {
   knex("volunteer").join("heardabout", "heardabout.heardaboutid", "=", "volunteer.heardaboutid")
   .join("sewinglevel", "sewinglevel.sewinglevelid", '=', 'volunteer.sewinglevelid')
@@ -761,153 +765,92 @@ app.get("/addVolunteer", (req,res) => {
   });
 });
 
+// Add volunteer post route
 app.post("/addVolunteer", (req,res) => {
-      // Extract form values from req.body
-      const first_name = req.body.first_name || ''; // Default to empty string if not provided
-      const last_name = req.body.last_name || ''; // Default to empty string if not provided
-      const email = req.body.email;
-      const phone_number = parseInt(req.body.phone_number);
-      const heardaboutid = parseInt(req.body.heard_about_id);
-      const hours_per_month = parseInt(req.body.hours_per_month);
-      const sewinglevelid = parseInt(req.body.sewing_level);
-      const sewingpreferenceid = parseInt(req.body.sewing_preference);
-      const city = req.body.city;
-      const state = req.body.state;
-      const zip = parseInt(req.body.zip);
-      // Insert the new Character into the database
-
-      console.log(
-        first_name,
-        last_name,
-        email,
-        phone_number,
-        heardaboutid,
-        hours_per_month,
-        sewinglevelid,
-        sewingpreferenceid,
-        city,
-        state,
-        zip
-      )
-      knex("address")
-        .insert({
-          city: city,
-          state: state,
-          zip: zip
-        })
-        .returning('addressid') // Replace 'id' with the actual name of your address table's ID column
-        .then(([returningData]) => {
-          console.log("Address Insert Result:", returningData); // Debug log
-          if (!returningData || returningData.length === 0) {
-            throw new Error("Failed to retrieve address ID from database.");
-          }
-          const newAddressId = returningData.addressid || returningData;
-            console.log("New Address ID:", newAddressId); // Debug log
-          // newAddressId contains the ID of the newly inserted address
-          return knex('volunteer').insert({
-            first_name: first_name,
-            last_name: last_name,
-            email: email,
-            phone_number: phone_number,
-            heardaboutid: heardaboutid,
-            hourspermonth: hours_per_month,
-            sewinglevelid: sewinglevelid,
-            sewingpreferenceid: sewingpreferenceid,
-            addressid: newAddressId // Use the correct variable here
-          });
-        })
-            .then(() => {
-              res.redirect('/volunteerManagement'); // Redirect to the volunteer list page after adding
-            })
-            .catch(error => {
-              console.error('Error adding Character:', error);
-              res.status(500).send('Internal Server Error');
-          })
-          
+  // Extract form values from req.body
+  const first_name = req.body.first_name || ''; // Default to empty string if not provided
+  const last_name = req.body.last_name || ''; // Default to empty string if not provided
+  const email = req.body.email;
+  const phone_number = parseInt(req.body.phone_number);
+  const heardaboutid = parseInt(req.body.heard_about_id);
+  const hours_per_month = parseInt(req.body.hours_per_month);
+  const sewinglevelid = parseInt(req.body.sewing_level);
+  const sewingpreferenceid = parseInt(req.body.sewing_preference);
+  const city = req.body.city;
+  const state = req.body.state;
+  const zip = parseInt(req.body.zip);
+  // Insert the new Character into the database
+  knex("address")
+    .insert({
+      city: city,
+      state: state,
+      zip: zip
+    })
+    .returning('addressid') // Replace 'id' with the actual name of your address table's ID column
+    .then(([returningData]) => {
+      console.log("Address Insert Result:", returningData); // Debug log
+      if (!returningData || returningData.length === 0) {
+        throw new Error("Failed to retrieve address ID from database.");
+      }
+      const newAddressId = returningData.addressid || returningData;
+        console.log("New Address ID:", newAddressId); // Debug log
+      // newAddressId contains the ID of the newly inserted address
+      return knex('volunteer').insert({
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        phone_number: phone_number,
+        heardaboutid: heardaboutid,
+        hourspermonth: hours_per_month,
+        sewinglevelid: sewinglevelid,
+        sewingpreferenceid: sewingpreferenceid,
+        addressid: newAddressId // Use the correct variable here
       });
+    })
+    .then(() => {
+      res.redirect('/volunteerManagement'); // Redirect to the volunteer list page after adding
+    })
+    .catch(error => {
+      console.error('Error adding Character:', error);
+      res.status(500).send('Internal Server Error');
+    })
+});
 
-      
+// Tableau dashboard get route
 app.get('/datadashboard', (req,res) => {
   res.render("datadashboard")
 })
 
+// Admin login get route
 app.get('/adminLogin', (req,res) => {
     res.render("adminLogin")
 })
 
+// Admin login post route
 app.post('/adminLogin', (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-        // Query the user table to find the record
-        const user = knex('users')
-            .select('*')
-            .where({ username:username, password:password }) // Replace with hashed password comparison in production
-            .first() // Returns the first matching record
-            .then(user => {
-              if (user) {
-                security = true;
-            } else {
-                security = false;
-            }
-            res.render('index', {security})
-            })
-            .catch(error => {
-              console.error('Error adding Character:', error);
-              res.status(500).send('Internal Server Error');
-          })
-  });
+  const username = req.body.username;
+  const password = req.body.password;
+    // Query the user table to find the record
+    const user = knex('users')
+      .select('*')
+      .where({ username:username, password:password }) // Replace with hashed password comparison in production
+      .first() // Returns the first matching record
+      .then(user => {
+        if (user) {
+          security = true;
+      } else {
+          security = false;
+      }
+      res.render('index', {security})
+      })
+      .catch(error => {
+        console.error('Error adding Character:', error);
+        res.status(500).send('Internal Server Error');
+      })
+});
 
-  app.get("/userManagement", (req,res) => {
-    knex('users')
-    .select(
-      'userid',
-      'username',
-      'password',
-      'email'
-    )
-    .then(userinfo => {
-      res.render('userManagement', {userinfo})
-    })
-  })
-
-  app.get("/editUser/:id", (req,res) => {
-const id = req.params.id;
-    knex('users')
-    .select(
-      "userid",
-      "username",
-      "password",
-      "email"
-    )
-    .where('userid',id)
-    .first()
-    .then(user => {
-      res.render("editUser", {user})
-    })
-  })
-
-  app.post("/editUser/:id", (req,res) => {
-    const id = req.params.id;
-    const username = req.body.username;
-    const password = req.body.password;
-    const email = req.body.email
-    knex('users')
-    .where('userid', id)
-    .update({
-      username: username,
-      password: password,
-      email:email
-  })
-  .then(() => {
-    res.redirect('/userManagement')
-  })
-  .catch(error => {
-    console.error('Error updating user', error);
-    res.status(500).send('Internal Server Error');
-  })
-  });
-
- app.get("/addUser", (req,res) => {
+// User management get route  
+app.get("/userManagement", (req,res) => {
   knex('users')
   .select(
     'userid',
@@ -916,16 +859,36 @@ const id = req.params.id;
     'email'
   )
   .then(userinfo => {
-    res.render('addUser', {userinfo})
+    res.render('userManagement', {userinfo})
   })
- });
+})
 
- app.post("/addUser", (req,res) => {
+// Edit user get route
+app.get("/editUser/:id", (req,res) => {
+  const id = req.params.id;
+  knex('users')
+  .select(
+    "userid",
+    "username",
+    "password",
+    "email"
+  )
+  .where('userid',id)
+  .first()
+  .then(user => {
+    res.render("editUser", {user})
+  })
+})
+
+// Edit user post route
+app.post("/editUser/:id", (req,res) => {
+  const id = req.params.id;
   const username = req.body.username;
   const password = req.body.password;
   const email = req.body.email
   knex('users')
-  .insert({
+  .where('userid', id)
+  .update({
     username: username,
     password: password,
     email:email
@@ -938,7 +901,41 @@ const id = req.params.id;
   res.status(500).send('Internal Server Error');
 })
 });
+
+// Add user get route
+app.get("/addUser", (req,res) => {
+knex('users')
+.select(
+  'userid',
+  'username',
+  'password',
+  'email'
+)
+.then(userinfo => {
+  res.render('addUser', {userinfo})
+})
+});
+// Add user post route
+app.post("/addUser", (req,res) => {
+const username = req.body.username;
+const password = req.body.password;
+const email = req.body.email
+knex('users')
+.insert({
+  username: username,
+  password: password,
+  email:email
+})
+.then(() => {
+  res.redirect('/userManagement')
+})
+.catch(error => {
+  console.error('Error updating user', error);
+  res.status(500).send('Internal Server Error');
+})
+});
  
+// Delete user post route
 app.post("/deleteUser/:id", (req,res) => {
   let id = req.params.id;
   knex('users')
