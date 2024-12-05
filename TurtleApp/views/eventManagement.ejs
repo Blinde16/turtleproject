@@ -120,9 +120,12 @@
 </style>
 
 <form action="/addevent" method="GET">
-  <button type="submit">Add Event</button>
+  <button type="submit" class="btn-view" style="display:inline;">Add Event</button>
 </form>
 
+<form action="/" method="GET">
+  <button type="submit" class="btn-edit" style="display:inline;">Return to Home Page</button>
+</form>
   <table>
     <thead>
       <tr>
@@ -194,9 +197,7 @@
       <% } %>
     </tbody>
   </table>
-  <form action="/" method="GET">
-    <button type="submit">Return to Home Page</button>
-</form>
+
 <script>
   // Check for the 'deletesuccess' parameter in the URL
   const urlParams = new URLSearchParams(window.location.search);
