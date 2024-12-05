@@ -1,72 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Event</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f9f9f9;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          position: relative; 
+        }
+      
+        .form-container {
+          background: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          width: 90%; /* Form takes 90% of the available width */
+          max-width: 1000px;  /* Increased max-width for larger screens */
+          box-sizing: border-box; /* Ensures padding is included in the width */
+          overflow: hidden;  /* Prevents form from overflowing */
+        }
+      
+        .form-container h2 {
+          margin-bottom: 20px;
+          font-size: 1.8em;  /* Increased font size for better visibility */
+          color: #333;
+          text-align: center;
+        }
+      
+        .flex-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;  /* Creates space between columns */
+        }
+      
+        .form-group {
+          flex: 1 1 calc(50% - 20px); /* Makes each input take half the width */
+          min-width: 250px;  /* Ensures inputs don't become too small */
+          margin-bottom: 15px; /* Adds space below each input field */
+        }
+      
+        .form-group label {
+          display: block;
+          font-weight: bold;
+          margin-bottom: 5px;
+          color: #555;
+        }
+      
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+          width: 100%;
+          padding: 12px;  /* Increased padding for larger inputs */
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 1.1em;  /* Slightly larger font for inputs */
+          color: #333;
+        }
+      
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+          outline: none;
+          border-color: #0066cc;
+          box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+        }
+      
+        .checkbox-group {
+          display: flex;
+          flex-direction: column;
+        }
+      
+        .checkbox-group label {
+          display: flex;
+          align-items: center;
+          margin-bottom: 5px;
+        }
+      
+        .checkbox-group input {
+          margin-right: 10px;
+        }
+      
+        .form-button {
+          background-color: #0066cc;
+          color: #ffffff;
+          padding: 12px 20px;  /* Increased padding for a larger button */
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 1.2em;  /* Larger font for the button */
+          display: block;
+          width: 100%; /* Make the button full width */
+          margin-top: 20px; /* Adds space above the button */
+        }
+      
+        .form-button:hover {
+          background-color: #005bb5;
+      }
+      </style> 
 </head>
 <body>
-    <h1>Create New Event</h1>
-    <form action="/addevent" method="POST">
-        <!-- First and Last Name -->
-        <label for="firstName">First Name:</label>
-        <input type="text" name="firstName" required><br><br>
+    <div class="container">
+        <h1>Create New Event</h1>
+        <form action="/addevent" method="POST">
+            <!-- First and Last Name -->
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" name="firstName" required>
+            </div>
 
-        <label for="lastName">Last Name:</label>
-        <input type="text" name="lastName" required><br><br>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" name="lastName" required>
+            </div>
 
-        <!-- Phone number -->
-        <label for="contactphone">Contact Phone:</label>
-        <input type="tel" id="contactphone" name="contactphone" placeholder="Enter contact phone" required />
+            <!-- Phone number -->
+            <div class="form-group">
+                <label for="contactphone">Contact Phone:</label>
+                <input type="tel" id="contactphone" name="contactphone" placeholder="Enter contact phone" required>
+            </div>
 
+            <!-- Number of Participants -->
+            <div class="form-group">
+                <label for="numParticipants">Number of Participants:</label>
+                <input type="number" name="numParticipants" required>
+            </div>
 
-        <!-- Number of Participants -->
-        <label for="numParticipants">Number of Participants:</label>
-        <input type="number" name="numParticipants" required><br><br>
+            <!-- Sewing Preference -->
+            <div class="form-group">
+                <label for="sewingPreference">Sewing Preference:</label>
+                <select name="sewingPreference" required>
+                    <% sewingPreferences.forEach(preference => { %>
+                        <option value="<%= preference.sewingpreferenceid %>"><%= preference.description %></option>
+                    <% }); %>
+                </select>
+            </div>
 
-        <!-- Sewing Preference -->
-        <label for="sewingPreference">Sewing Preference:</label>
-        <select name="sewingPreference" required>
-            <% sewingPreferences.forEach(preference => { %>
-                <option value="<%= preference.sewingpreferenceid %>"><%= preference.description %></option>
-            <% }); %>
-        </select><br><br>
+            <!-- Event Date (Interval) -->
+            <div class="form-group">
+                <label for="eventDate">Event Date (Interval):</label>
+                <input type="text" name="eventDate" placeholder="e.g., 2024-12-10 14:00:00" required>
+            </div>
 
-        <!-- Event Date (Interval) -->
-        <label for="eventDate">Event Date (Interval):</label>
-        <input type="text" name="eventDate" placeholder="e.g., 2024-12-10 14:00:00" required><br><br>
+            <!-- Event Start (Time) -->
+            <div class="form-group">
+                <label for="eventStart">Event Start (Time):</label>
+                <input type="time" name="eventStart" required>
+            </div>
 
-        <!-- Event Start (Time) -->
-        <label for="eventStart">Event Start (Time):</label>
-        <input type="time" name="eventStart" required><br><br>
+            <!-- Event Duration -->
+            <div class="form-group">
+                <label for="eventDuration">Event Duration:</label>
+                <input type="text" name="eventDuration" placeholder="e.g., 4 hours" required>
+            </div>
 
-        <!-- Event Duration -->
-        <label for="eventDuration">Event Duration:</label>
-        <input type="text" name="eventDuration" placeholder="e.g., 4 hours" required><br><br>
+            <!-- Address -->
+            <div class="form-group">
+                <label for="streetAddress">Street Address:</label>
+                <input type="text" name="streetAddress" required>
+            </div>
 
-        <!-- Address -->
-        <label for="streetAddress">Street Address:</label>
-        <input type="text" name="streetAddress" required><br><br>
+            <div class="form-group inline">
+                <label for="city">City:</label>
+                <input type="text" name="city" required>
+            </div>
 
-        <label for="city">City:</label>
-        <input type="text" name="city" required><br><br>
+            <div class="form-group inline">
+                <label for="state">State:</label>
+                <input type="text" name="state" maxlength="2" required>
+            </div>
 
-        <label for="state">State:</label>
-        <input type="text" name="state" maxlength="2" required><br><br>
+            <div class="form-group inline">
+                <label for="zip">ZIP Code:</label>
+                <input type="text" name="zip" required>
+            </div>
 
-        <label for="zip">ZIP Code:</label>
-        <input type="text" name="zip" required><br><br>
+            <div class="form-group">
+                <label for="spaceSize">Space Size:</label>
+                <input type="text" name="spaceSize" placeholder="e.g., Small, Medium, Large" required>
+            </div>
 
-        <label for="spaceSize">Space Size:</label>
-        <input type="text" name="spaceSize" placeholder="e.g., Small, Medium, Large" required><br><br>
+            <!-- JenStory -->
+            <div class="form-group">
+                <label for="jenStory">Jen Story:</label>
+                <select name="jenStory" required>
+                    <option value="True">Yes</option>
+                    <option value="False">No</option>
+                </select>
+            </div>
 
-        <!-- JenStory -->
-        <label for="jenStory">Jen Story:</label>
-        <select name="jenStory" required>
-            <option value="True">Yes</option>
-            <option value="False">No</option>
-        </select><br><br>
-
-        <!-- Submit Button -->
-        <button type="submit">Add Event</button>
-    </form>
+            <!-- Submit Button -->
+            <button type="submit">Add Event</button>
+        </form>
+    </div>
 </body>
 </html>

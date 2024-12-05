@@ -1,0 +1,327 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    padding: 5px;
+  }
+
+  /* Navbar Styling */
+  .navbar {
+    position: absolute; /* Ensure the navbar is always on top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* Push content to edges */
+    align-items: center; /* Vertically center items */
+    background-color: #4CAF50;
+    padding: 10px;
+    z-index: 10; /* Ensure navbar is above the banner */
+  }
+
+  /* Styling for the logo on the left */
+  .navbar .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar .logo img {
+    height: 60px; /* Adjust the height of the logo */
+    width: auto; /* Ensure the aspect ratio is maintained */
+  }
+
+  .navbar .logo span {
+    font-size: 1.5em;
+    color: white;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+
+  /* Navbar button form styling */
+  .navbar form {
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  /* Button styling */
+  .navbar button {
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* Hover effect for buttons */
+  .navbar button:hover {
+    background-color: #45a049;
+  }
+
+  /* Banner Styling */
+  .banner {
+    position: relative; /* Position elements inside the banner */
+    width: 100%;
+    height: 400px; /* Height of the banner */
+    background: url('your-banner-image.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column; /* Arrange items in a vertical column */
+    color: white; /* Text color */
+  }
+
+  .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 1; /* Ensure overlay is above the background image */
+  }
+
+  .banner .banner-content {
+    position: relative;
+    z-index: 2; /* Ensure content is above the overlay */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .banner h1 {
+    font-size: 36px; /* Adjust font size for the title */
+    margin: 0 0 20px; /* Add margin below the title */
+  }
+
+  .banner p {
+    font-size: 18px; /* Adjust font size for the description */
+    margin: 0 0 20px; /* Add margin below the paragraph */
+  }
+
+  .banner .button-container {
+    position: absolute;
+    bottom: 20px;
+    right: 100px;
+  }
+
+  .action button-container {
+  display: flex;
+  justify-content: center;  /* Centers the button horizontally */
+  width: 100%;
+  padding-top: 20px; /* Optional: Adjust if needed to position the button correctly */
+}
+
+  .banner button {
+    background-color: #ffffff;
+    color: #4CAF50;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .banner button:hover {
+    background-color: #45a049;
+    color: white;
+  }
+
+
+  /* Container for the slideshow */
+  .slideshow-container {
+    width: 100%;
+    max-width: 800px; /* Adjust the max width as needed */
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Hide the images initially */
+  .slides {
+    display: flex;
+    transition: transform 1s ease-in-out;
+  }
+
+  /* Style for each individual image */
+  .slide {
+    min-width: 100%;
+    height: auto;
+  }
+
+  /* Style for the navigation buttons */
+  .prev, .next {
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.3s ease;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    z-index: 100;
+  }
+
+  .prev {
+    left: 0;
+  }
+
+  .next {
+    right: 0;
+  }
+
+  .prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  /* Optional: Add dots for navigation (indicators) */
+  .dot-container {
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 4px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+  }
+
+  .active {
+    background-color: #717171;
+  }
+
+  .split-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #a09a9a;
+  border-radius: 0px;
+}
+
+.text-content {
+  width: 50%;
+  padding-right: 20px;
+}
+
+.text-content h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.text-content p {
+  font-size: 1rem;
+  color: #333;
+}
+
+.divider {
+  width: 100px; /* Divider width */
+  background-color: #ccc; /* Divider color */
+  height: 100%;
+  margin: 0 20px;
+}
+
+.image-content {
+  width: 45%;
+  display: flex;
+  justify-content: flex-end; /* Ensures image is aligned to the right */
+}
+
+.image-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-container {
+width: 100%;
+padding: 45px 0;
+background-color: #f1f1f1;
+}
+
+h1 {
+text-align: center;
+font-size: 2rem;
+color: #333;
+margin-bottom: 30px;
+}
+
+.carousel {
+display: flex;
+overflow-x: hidden; /* Hide items that move out of view */
+transition: transform 1s ease; /* Smooth transition for sliding */
+}
+
+.carousel-item {
+flex-shrink: 0;
+width: 200px;
+height: 275px;
+background-color: #ddd;
+border-radius: 4px;
+text-align: center;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.carousel-item p {
+margin: 0;
+}
+
+
+
+/* Prevent horizontal scrolling */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+/* Ensure the carousel does not cause overflow */
+.carousel {
+    display: flex;
+    overflow-x: auto; /* This keeps the horizontal scrolling for the carousel, but limits it to its container */
+    max-width: 100%; /* Prevent carousel from overflowing the container */
+  }
+
+  /* Make sure carousel items don’t overflow */
+.carousel-item {
+    flex-shrink: 0;
+    width: 200px; /* Maintain fixed width for items */
+    height: 275px;
+    background-color: #ddd;
+    border-radius: 4px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px; /* Add some margin between items */
+  }
+
+  /* Optional: Additional styling to maintain page structure */
+body {
+    box-sizing: border-box; /* Ensure padding and borders don't cause overflow */
+  }
+  
+  * {
+    box-sizing: inherit; /* Inherit the box model globally */
+  }
