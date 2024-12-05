@@ -34,46 +34,6 @@ app.get("/", (req, res) => {
   res.render("index", {security});
 });
 
-
-app.get('/eventManagementNew', (req, res) => {
-  try {
-  const volunteers = knex("events")
-  .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
-  .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
-  .join('contacts', 'events.contactid', '=', 'contacts.contactid')
-  .join("address", 'address.addressid', '=', 'events.addressid')
-  .join('itemsproduced', 'itemsproduced.eventid', '=', 'events.eventid')
-  .select(
-    'events.eventID as eventID',
-    'events.confirmedeventdate as confirmedeventdate',
-    'events.eventaddressid as eventaddressid',
-    'address.city as city',
-    'address.state as state',
-    'address.spacesize as spacesize',
-    'events.contactid as eventcontactid',
-    'contacts.contact_first as contactfirst',
-    'contacts.contact_last as contactlast',
-    'contacts.contactphone as contactphone',
-    'events.totalproduced as totalproduced',
-    'events.numparticipants as numparticipants',
-    'events.sewingpreferenceid as sewingpreferenceid',
-    'events.eventstart as eventstart',
-    'events.eventduration as eventduration',
-    'events.jenstory as jenstory',
-    'events.eventstatusid as eventstatusid',
-    'eventstatus.description as eventstatusdescription',
-    'events.eventdetails as eventdetials'
-  ) // returns an array of rows 
-  .then(events => {
-    res.render('eventManagementNew', {events})
-  });
-  } catch (error) {
-      console.error('Error fetching events:', error);
-      res.status(500).send('Internal Server Error');
-  }
-
-});
-
 app.get('/eventManagement', (req,res) => {
     try {
   const events = knex("events")
@@ -149,7 +109,7 @@ app.get('/editevent/:eventid', (req, res) => {
       .where('eventid', eventid)
       .first()
       .then(events => {
-        knex('sewingpreference').select('sewingpreferenceid', 'description').then(sewingPreferenceoptions => {
+        knex('sewingpreference').select('sewingpreferenceid', 'description').distinct().then(sewingPreferenceoptions => {
           knex('eventstatus').select('eventstatusid', 'description').then(eventstatusoptions => {
             knex('itemsproduced')
               .join('items', 'itemsproduced.itemid', '=', 'items.itemid')
@@ -176,7 +136,7 @@ app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
       lastname,
       phone,
       numParticipants,
-      sewingPreference,
+      sewingPreferenceid,
       totalproduced,
       streetaddress,
       city,
@@ -193,7 +153,7 @@ app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
       lastname,
       phone,
       numParticipants,
-      sewingPreference,
+      sewingPreferenceid,
       totalproduced,
       streetaddress,
       city,
@@ -206,21 +166,6 @@ app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
       eventdetails)
 
     const parsedPhone = phone.replace(/\D/g, ''); // Remove non-numeric characters
-
-    if (eventDuration) {
-      const eventDurationParts = eventDuration.split(',').map(part => parseInt(part.replace(/\D/g, ''), 10));
-    } else {
-      console.error('eventDuration is undefined or empty');
-    }
-    
-    const [eventHours, eventMinutes] = eventDurationParts || [0, 0];
-
-    // Construct the interval string (e.g., '4 hours', '4 hours 30 minutes')
-    let eventDurationString = `${eventHours} hours`;
-    if (eventMinutes > 0) {
-      eventDurationString += ` ${eventMinutes} minutes`;
-    }
-
     const eventid = parseInt(req.params.eventid, 10);  // Ensure eventid is a number
     const addressid = req.params.addressid;
     const contactid = req.params.contactid;
@@ -243,9 +188,9 @@ app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
         eventaddressid: addressid, // Use eventaddressid directly instead of addressid
         totalproduced: parseInt(totalproduced, 10) || 0,
         numparticipants: parseInt(numParticipants, 10) || 0,
-        sewingpreferenceid: parseInt(sewingPreference, 10) || null,
+        sewingpreferenceid: parseInt(sewingPreferenceid, 10) || null,
         eventstart: eventStart,
-        eventduration: eventDurationString, // Store as a string representing the interval
+        eventduration: eventDuration, // Store as a string representing the interval
         jenstory: jenStory === 'true',
         eventstatusid: parseInt(eventstatus, 10) || null,
         eventdetails: eventdetails
