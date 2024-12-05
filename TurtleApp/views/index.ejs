@@ -218,9 +218,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px;
+    padding: 20px;
     background-color: #a09a9a;
-    border-radius: 8px;
+    border-radius: 0px;
   }
 
   .text-content {
@@ -333,6 +333,7 @@ margin: 0;
       <div class="banner-content" style="position: relative; z-index: 2; color: white;">
         <h1>Welcome to The Turtle Shelter Project</h1>
         <p>Helping the homeless survive harsh winters with innovative technology.</p>
+        <p>One vest at a time.</p>
     </div>
     <div class="button-container" style="position: absolute; bottom: 20px; right: 165px; z-index: 2;">
         <button style="background-color: #ffffff; color: #4CAF50; border: none; padding: 15px 30px; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;" 
@@ -346,15 +347,26 @@ margin: 0;
     <!-- Main Content -->
     <div class="container">
       <h1>Who we are</h1>
-      <p>TSP is your organization dedicated to bringing homeless people the protection they need through high-tech winter vests.</p>
-      <p>One winter when Jen was homeless, 7 of her friends froze to death. After surmounting her own journey from the frigid cold, she was determined to figure out a solution to help others with this burden. She created an inexpensive high-tech solution with the help of a survival expert that helps SAVE lives and more importantly alleviate suffering.</p>
-      <p>There is no need for those in a state of emergency to have to pay so much on top of the burden of recovering.</p>
-      <br>
-      <h1>What we do</h1>
+      <div style="max-width: 1000px; display: inline-block; text-align: center; padding-left: 90px; padding-right: 45px; margin: 0 auto;">
+        <!-- Horizontal Bar -->
+        <hr style="border: 0; height: 3px; background-color: #ccc; width: 80%; margin-top: 10px; margin-bottom: 20px;">
+        <p>TSP is your organization dedicated to bringing homeless people the protection they need through high-tech winter vests.</p>
+        <p>One winter when Jen was homeless, 7 of her friends froze to death. After surmounting her own journey from the frigid cold, she was determined to figure out a solution to help others with this burden. She created an inexpensive high-tech solution with the help of a survival expert that helps SAVE lives and more importantly alleviate suffering.</p>
+        <p>There is no need for those in a state of emergency to have to pay so much on top of the burden of recovering.</p>
+      </div>
+      
+  <div class="container">
+    <h1>What we do</h1>
+    <div style="max-width: 1000px; display: inline-block; text-align: center; padding-left: 90px; padding-right: 45px; margin: 0 auto;">
+      <!-- Horizontal Bar -->
+      <hr style="border: 0; height: 4px; background-color: #ccc; width: 80%; margin-top: 10px; margin-bottom: 20px;">
       <p>We answer the call to spread warmth in the lives of the homeless who are vulnerable to harsh winters by creating portable "shelters" that they can carry with them, just like a turtle.</p>
       <p>Although increased homeless services, especially additional shelter availability, are necessary to accommodate the amplified need in the winter, life-threatening hypothermia can set in between 32-50 degrees, which is not cold enough for many winter shelters to open.</p>
       <p>Our technology is about more than just making sure that the wearer maintains heat from their core. The warmth that our vests provide restores confidence, energy, and hope.</p>
     </div>
+  </div>
+
+</div>
     <br>
     <div class="split-banner">
       <div class="text-content">
@@ -377,38 +389,123 @@ margin: 0;
         </div>
       </div>
 
+      
     <!-- Carousel Section -->
     <div class="carousel-container" style="width: 100%; padding: 45px 0; background-color: #f1f1f1;">
-      <h1 style="text-align: center; font-size: 2rem; color: #333; margin-bottom: 30px;">Testimonials</h1>
+      <h1 style="text-align: center; font-size: 2rem; color: #525151; margin-bottom: 30px;">Testimonials</h1>
       <div class="carousel" style="display: flex; overflow-x: auto; gap: 40px;">
-        <!-- Add carousel items here -->
-        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
-          <p>Item 1</p>
+        <!-- Carousel Item 1 -->
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-image: url('path/to/your-image1.png'); background-size: cover; background-position: center; border-radius: 4px; text-align: left; position: relative;">
+          <h3 style="position: absolute; bottom: 82px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">John Doe</h3>
+          <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"This product changed my life. I am forever grateful! My body heat will be cherished forever!"</p>
         </div>
-        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
-          <p>Item 2</p>
+        <!-- Carousel Item 2 -->
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-image: url('path/to/your-image2.png'); background-size: cover; background-position: center; border-radius: 4px; text-align: center; position: relative;">
+          <h3 style="position: absolute; bottom: 82px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Jane Smith</h3>
+          <p style="position: absolute; bottom: 20px; left: 5; right: 5; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"As soon as I threw one on, I felt like I was receiving a warm hug. There is truly nothing like these turtle shelters out there!"</p>
         </div>
-        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
-          <p>Item 3</p>
+        <!-- Carousel Item 3 -->
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-image: url('path/to/your-image3.png'); background-size: cover; background-position: center; border-radius: 4px; text-align: center; position: relative;">
+          <h3 style="position: absolute; bottom: 82px; left: 5px;  right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Sam Green</h3>
+          <p style="position: absolute; bottom: 20px; left: 5; right: 5; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"I feel safe, I feel loved, and I know that this product was inspired to bless the lives of many including mine."</p>
         </div>
-        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
-          <p>Item 4</p>
+        <!-- Carousel Item 4 -->
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-image: url('path/to/your-image4.png'); background-size: cover; background-position: center; border-radius: 4px; text-align: left; position: relative;">
+          <h3 style="position: absolute; bottom: 115px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Alice White</h3>
+          <p style="position: absolute; bottom: 20px; left: 5; right: 5; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"This shell is the best jacket that I've ever put on and its so comfortable. It fits me well and soometimes I don't have to wear other layers. I never go anwyhere without it!"</p>
         </div>
-        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
-          <p>Item 5</p>
+        <!-- Carousel Item 5 -->
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-image: url('path/to/your-image5.png'); background-size: cover; background-position: center; border-radius: 4px; text-align: left; position: relative;">
+          <h3 style="position: absolute; top: 138px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Mick Rout</h3>
+          <p style="position: absolute; bottom: 20px; left: 5; right: 5; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"My life will never be the same again. I was fo fortunate to receive a turtle shelter to call my own and it has helped me conquer the devastating frigied temperatures of Utah."</p>
         </div>
-        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-color: #ddd; border-radius: 4px; text-align: center;">
-          <p>Item 6</p>
+        <!-- Carousel Item 6 -->
+        <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; background-image: url('path/to/your-image6.png'); background-size: cover; background-position: center; border-radius: 4px; text-align: center; position: relative;">
+          <h3 style="position: absolute; top: 126px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Emma Cly</h3>
+          <p style="position: absolute; bottom: 20px; left: 5; right: 5; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"I never have to worry about my body losing heat again. I can face my life with confidence and have the warmth I need to approach each new day! Thank you TSP!"</p>
         </div>
-    </div>
-
-
       </div>
     </div>
 
+    <!-- Footer Section -->
+<div class="footer" style="background-color: #333; color: #fff; padding: 20px 0; text-align: left;">
+  <div class="footer-content" style="max-width: 1200px; margin: 0 auto; padding: 10px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
     
-    
-  
+    <!-- Company Info Section -->
+    <div class="footer-left" style="flex: 2; padding: 10px;">
+      <!-- Logo -->
+      <div class="footer-logo" style="padding-bottom: 10px;">
+        <img src="path/to/your-logo.png" alt="Your Company Logo" style="max-width: 150px; height: auto;">
+      </div>
+      
+      <!-- Company Name -->
+      <div class="footer-name" style="font-size: 1.2rem; padding-bottom: 10px;">
+        <h2>Turtle Shelter Project</h2>
+      </div>
+
+      <!-- Address Information -->
+      <div class="footer-address" style="font-size: 1rem;">
+        <p>Turtle Shelter Project,</p>
+        <p>PO Box 382, Kaysville</p>
+        <p>UT 84037</p>
+      </div>
+    </div>
+
+    <!-- Social Media Handles -->
+    <div class="footer-social" style="flex: 1; padding: 10px; font-size: 1rem; display: flex; flex-direction: column; justify-content: flex-start;">
+      <a href="https://www.facebook.com/yourcompany" style="color: #fff; margin: 5px 0; text-decoration: none;">Facebook</a>
+    </div>
+  </div>
+
+  <!-- Footer Bottom Text -->
+<div class="footer-bottom" style="padding-top: 10px; font-size: 0.8rem; text-align: center;">
+  <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+</div>
+
+
+
 </body>
 </html>
 
+<!-- Carousel Section 
+<div class="carousel-container" style="width: 100%; padding: 45px 0; background-color: #f1f1f1;">
+  <h1 style="text-align: center; font-size: 2rem; color: #525151; margin-bottom: 30px;">Testimonials</h1>
+  <div class="carousel" style="display: flex; overflow-x: auto; gap: 40px;">
+    <!-Carousel Item 1 
+    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: left; position: relative;">
+      <img src="path/to/your-image1.png" alt="John Doe" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      <h3 style="position: absolute; bottom: 82px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">John Doe</h3>
+      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"This product changed my life. I am forever grateful! My body heat will be cherished forever!"</p>
+    </div>
+    <!-Carousel Item 2 
+    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: center; position: relative;">
+      <img src="path/to/your-image2.png" alt="Jane Smith" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      <h3 style="position: absolute; bottom: 82px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Jane Smith</h3>
+      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"As soon as I threw one on, I felt like I was receiving a warm hug. There is truly nothing like these turtle shelters out there!"</p>
+    </div>
+    <!-Carousel Item 3 
+    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: center; position: relative;">
+      <img src="path/to/your-image3.png" alt="Sam Green" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      <h3 style="position: absolute; bottom: 82px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Sam Green</h3>
+      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"I feel safe, I feel loved, and I know that this product was inspired to bless the lives of many including mine."</p>
+    </div>
+    <!-Carousel Item 4 
+    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: left; position: relative;">
+      <img src="path/to/your-image4.png" alt="Alice White" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      <h3 style="position: absolute; bottom: 115px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Alice White</h3>
+      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"This shell is the best jacket that I've ever put on and it's so comfortable. It fits me well and sometimes I don't have to wear other layers. I never go anywhere without it!"</p>
+    </div>
+    <!-Carousel Item 5 
+    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: left; position: relative;">
+      <img src="path/to/your-image5.png" alt="Mick Rout" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      <h3 style="position: absolute; top: 138px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Mick Rout</h3>
+      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"My life will never be the same again. I was so fortunate to receive a turtle shelter to call my own and it has helped me conquer the devastating frigid temperatures of Utah."</p>
+    </div>
+    <!-Carousel Item 6 
+    <div class="carousel-item" style="flex-shrink: 0; width: 200px; height: 275px; border-radius: 4px; text-align: center; position: relative;">
+      <img src="path/to/your-image6.png" alt="Emma Cly" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+      <h3 style="position: absolute; top: 126px; left: 5px; right: 70px; color: #fff; font-size: 1.2rem; margin: 0; padding: 0 10px;">Emma Cly</h3>
+      <p style="position: absolute; bottom: 20px; left: 5px; right: 5px; color: #fff; font-size: 0.80rem; margin: 0; padding: 0 10px;">"I never have to worry about my body losing heat again. I can face my life with confidence and have the warmth I need to approach each new day! Thank you TSP!"</p>
+    </div>
+  </div>
+</div> -->
