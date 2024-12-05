@@ -76,62 +76,59 @@ app.get('/eventManagement', (req,res) => {
 
 app.get('/editevent/:eventid', (req, res) => {
   try {
-  const eventid = req.params.eventid;
-      knex('events')
-        .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
-        .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
-        .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
-        .join('address', 'events.eventaddressid', '=', 'address.addressid')
-        .select(
-          'events.eventid',
-          'events.confirmedeventdate',
-          'events.numparticipants',
-          'address.streetaddress',
-          'address.city',
-          'address.state',
-          'address.zip',
-          'address.spacesize',
-          'events.eventstart',
-          'events.eventduration',
-          'events.jenstory',
-          'events.eventdetails',
-          'eventcontacts.contact_first',
-          'eventcontacts.contact_last',
-          'eventcontacts.contactphone',
-          'sewingpreference.sewingpreferenceid',
-          'sewingpreference.description as sewing_description',
-          'eventstatus.eventstatusid',
-          'eventstatus.description as status_description',
-        )
-        .where('eventid', eventid)
-        .first()
+    const eventid = req.params.eventid;
+    knex('events')
+      .join('eventcontacts', 'events.contactid', '=', 'eventcontacts.contactid')
+      .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
+      .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
+      .join('address', 'events.eventaddressid', '=', 'address.addressid')
+      .select(
+        'events.eventid',
+        'events.confirmedeventdate',
+        'events.numparticipants',
+        'address.streetaddress',
+        'address.city',
+        'address.state',
+        'address.zip',
+        'address.spacesize',
+        'events.eventstart',
+        'events.eventduration',
+        'events.jenstory',
+        'events.eventdetails',
+        'eventcontacts.contact_first',
+        'eventcontacts.contact_last',
+        'eventcontacts.contactphone',
+        'sewingpreference.sewingpreferenceid',
+        'sewingpreference.description as sewing_description',
+        'eventstatus.eventstatusid',
+        'eventstatus.description as status_description',
+        'eventcontacts.contactid', // Add contactid
+        'address.addressid' // Add addressid
+      )
+      .where('eventid', eventid)
+      .first()
       .then(events => {
-        console.log(events)
         knex('sewingpreference').select('sewingpreferenceid', 'description').then(sewingPreferenceoptions => {
-          console.log(sewingPreferenceoptions)
           knex('eventstatus').select('eventstatusid', 'description').then(eventstatusoptions => {
-            console.log(eventstatusoptions)
-              knex('itemsproduced')
+            knex('itemsproduced')
               .join('items', 'itemsproduced.itemid', '=', 'items.itemid')
               .select('items.itemname', 'itemsproduced.itemid', 'itemsproduced.quantity')
               .where('itemsproduced.eventid', eventid)
               .then(iteminfo => {
-                console.log(iteminfo)
-                res.render('editevent', {events,sewingPreferenceoptions, eventstatusoptions, iteminfo})
-              })
-          })
-        })
-      }) // Fetch only the specific event by ID
-  }
-    catch (error) {
-      console.error('Error fetching event:', error);
-      res.status(500).send('Internal Server Error');
+                res.render('editevent', { events, sewingPreferenceoptions, eventstatusoptions, iteminfo });
+              });
+          });
+        });
+      });
+  } catch (error) {
+    console.error('Error fetching event:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
-app.post('/editevent', async (req, res) => {
+
+app.post('/editevent/:eventid/:addressid/:contactid', async (req, res) => {
   try {
-    // Extract data from the request body
     const {
       confirmedeventdate,
       firstname,
@@ -150,77 +147,78 @@ app.post('/editevent', async (req, res) => {
       eventstatus,
       eventdetails
     } = req.body;
+    console.log(confirmedeventdate,
+      firstname,
+      lastname,
+      phone,
+      numParticipants,
+      sewingPreference,
+      totalproduced,
+      streetaddress,
+      city,
+      state,
+      zip,
+      eventStart,
+      eventDuration,
+      jenStory,
+      eventstatus,
+      eventdetails)
 
-    // Parse data
     const parsedPhone = phone.replace(/\D/g, ''); // Remove non-numeric characters
-    const eventDurationParts = eventDuration.split(',').map(part => parseInt(part.replace(/\D/g, ''), 10));
+
+    if (eventDuration) {
+      const eventDurationParts = eventDuration.split(',').map(part => parseInt(part.replace(/\D/g, ''), 10));
+    } else {
+      console.error('eventDuration is undefined or empty');
+    }
+    
     const [eventHours, eventMinutes] = eventDurationParts || [0, 0];
 
-    // Step 1: Find the IDs based on user input
-    const contact = await knex('eventcontacts')
-      .select('contactid')
-      .where({ contact_first: firstname, contact_last: lastname, contactphone: parsedPhone })
-      .first();
-
-    if (!contact) {
-      return res.status(400).send('Contact not found');
+    // Construct the interval string (e.g., '4 hours', '4 hours 30 minutes')
+    let eventDurationString = `${eventHours} hours`;
+    if (eventMinutes > 0) {
+      eventDurationString += ` ${eventMinutes} minutes`;
     }
-    const contactid = contact.contactid;
 
-    const address = await knex('address')
-      .select('addressid')
-      .where({ streetaddress: streetaddress, city: city, state: state, zip: zip })
-      .first();
+    const eventid = parseInt(req.params.eventid, 10);  // Ensure eventid is a number
+    const addressid = req.params.addressid;
+    const contactid = req.params.contactid;
 
-    if (!address) {
-      return res.status(400).send('Address not found');
-    }
-    const addressid = address.addressid;
+    // TEST: Log eventid to ensure it's correct
+    console.log('eventid:', eventid);
 
-    const event = await knex('events')
-      .select('eventid')
-      .where({ addressid, contactid })
-      .first();
-
+    // Step 1: Check if the event exists
+    const event = await knex('events').where('eventid', eventid).first();
     if (!event) {
-      return res.status(400).send('Event not found');
+      console.log(`Event with id ${eventid} not found.`);
+      return res.status(404).send('Event not found');
     }
-    const eventid = event.eventid;
 
     // Step 2: Update the events table
-    await knex('events')
+    const result = await knex('events')
       .where('eventid', eventid)
       .update({
         confirmedeventdate: confirmedeventdate,
-        addressid: addressid,
+        eventaddressid: addressid, // Use eventaddressid directly instead of addressid
         totalproduced: parseInt(totalproduced, 10) || 0,
         numparticipants: parseInt(numParticipants, 10) || 0,
         sewingpreferenceid: parseInt(sewingPreference, 10) || null,
         eventstart: eventStart,
-        eventduration: JSON.stringify({ hours: eventHours, minutes: eventMinutes }), // Storing as JSON for clarity
+        eventduration: eventDurationString, // Store as a string representing the interval
         jenstory: jenStory === 'true',
         eventstatusid: parseInt(eventstatus, 10) || null,
         eventdetails: eventdetails
       });
 
-    // Step 3: Update the address table
-    await knex('address')
-      .where('addressid', addressid)
-      .update({
-        streetaddress: streetaddress,
-        city: city,
-        state: state,
-        zip: zip
-      });
+    console.log(`${result} rows updated`);  // Log how many rows were affected
 
-    // Step 4: Update the contact table
+    // Step 3: Update the contact table
     await knex('eventcontacts')
       .where('contactid', contactid)
       .update({
         contact_first: firstname,
         contact_last: lastname,
-        contactphone: parsedPhone,
-        addressid: addressid,  // Use the addressID we got above
+        contactphone: parsedPhone
       });
 
     // Redirect or respond with success
@@ -230,6 +228,8 @@ app.post('/editevent', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 
 // Route to handle viewing event details
 app.get('/eventdetails/:eventid', async (req, res) => {
@@ -729,22 +729,120 @@ app.get('/adminLogin', (req,res) => {
 app.post('/adminLogin', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    try {
         // Query the user table to find the record
-        const user = knex('user')
+        const user = knex('users')
             .select('*')
-            .where({ username, password }) // Replace with hashed password comparison in production
-            .first(); // Returns the first matching record
-        if (user) {
-            security = true;
-        } else {
-            security = false;
-        }
-    } catch (error) {
-        res.status(500).send('Database query failed: ' + error.message);
-    }
-    res.redirect("/")
+            .where({ username:username, password:password }) // Replace with hashed password comparison in production
+            .first() // Returns the first matching record
+            .then(user => {
+              if (user) {
+                security = true;
+            } else {
+                security = false;
+            }
+            res.render('index', {security})
+            })
+            .catch(error => {
+              console.error('Error adding Character:', error);
+              res.status(500).send('Internal Server Error');
+          })
   });
 
+  app.get("/userManagement", (req,res) => {
+    knex('users')
+    .select(
+      'userid',
+      'username',
+      'password',
+      'email'
+    )
+    .then(userinfo => {
+      res.render('userManagement', {userinfo})
+    })
+  })
+
+  app.get("/editUser/:id", (req,res) => {
+const id = req.params.id;
+    knex('users')
+    .select(
+      "userid",
+      "username",
+      "password",
+      "email"
+    )
+    .where('userid',id)
+    .first()
+    .then(user => {
+      res.render("editUser", {user})
+    })
+  })
+
+  app.post("/editUser/:id", (req,res) => {
+    const id = req.params.id;
+    const username = req.body.username;
+    const password = req.body.password;
+    const email = req.body.email
+    knex('users')
+    .where('userid', id)
+    .update({
+      username: username,
+      password: password,
+      email:email
+  })
+  .then(() => {
+    res.redirect('/userManagement')
+  })
+  .catch(error => {
+    console.error('Error updating user', error);
+    res.status(500).send('Internal Server Error');
+  })
+  });
+
+ app.get("/addUser", (req,res) => {
+  knex('users')
+  .select(
+    'userid',
+    'username',
+    'password',
+    'email'
+  )
+  .then(userinfo => {
+    res.render('addUser', {userinfo})
+  })
+ });
+
+ app.post("/addUser", (req,res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const email = req.body.email
+  knex('users')
+  .insert({
+    username: username,
+    password: password,
+    email:email
+})
+.then(() => {
+  res.redirect('/userManagement')
+})
+.catch(error => {
+  console.error('Error updating user', error);
+  res.status(500).send('Internal Server Error');
+})
+});
+ 
+app.post("/deleteUser/:id", (req,res) => {
+  let id = req.params.id;
+  knex('users')
+  .where('userid', id)
+  .del()
+  .then(() => {
+    res.redirect('/userManagement')
+  })
+  .catch(error => {
+    console.error('Error deleting volunteer:', error);
+    res.status(500).send('Internal Server Error');
+  });
+});
+ 
 // Start Server
 app.listen(port, () => console.log("Server listening on port", port));

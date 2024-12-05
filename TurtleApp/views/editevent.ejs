@@ -5,6 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inspired Contact Form</title>
   <style>
+    form {
+      width: 50%;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #F9F9F9;
+      font-size: 12px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    input[type="checkbox"], input[type="radio"] {
+      width: auto;
+      margin-right: 5px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45A049;
+    }
+  </style>
+  <!-- <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f9f9f9;
@@ -103,19 +139,18 @@
   
     .form-button:hover {
       background-color: #005bb5;
-    }
-  </style>
-  
-  
-
+  }
+  </style> -->
 </head>
 <body>
 
   <div class="form-container">
     <h2>Edit Event</h2>
     <form action="/editevent/<%= events.eventid %>/<%= events.addressid %>/<%= events.contactid %>" method="POST">
-  
-      <!-- Contact Information (Two columns layout) -->
+      <input type="hidden" name="addressid" value="<%= events.addressid %>">
+      <input type="hidden" name="contactid" value="<%= events.contactid %>"> 
+      
+      <!--Contact Information (Two columns layout) -->
       <div class="flex-container">
         <div class="form-group">
           <label for="confirmedeventdate">Confirmed Event Date</label>
@@ -135,15 +170,19 @@
         <div class="form-group">
           <label for="phone">Phone Number</label>
           <input type="tel" id="phone" name="phone" value="<%= (() => {
-            const cleaned = events.contactphone.replace(/\D/g, '');
+            let cleaned = '';
+            if (events.contactphone) {
+              cleaned = events.contactphone.replace(/\D/g, '');
+            }
             if (cleaned.length === 10) {
               return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
             } else if (cleaned.length === 7) {
               return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
             } else {
-              return row.contactphone;
+              return events.contactphone;
             }
           })() %>">
+          
         </div>
       </div>
   
@@ -165,12 +204,37 @@
         </div>
   
         <div class="form-group">
-          <label for="zip">Event Zip</label>
+          <label for="zip">Event Zip Code</label>
           <input type="text" id="zip" name="zip" value="<%= events.zip %>" required>
         </div>
       </div>
   
-      <!-- Event Time Container -->
+      <!-- Event Details and Preferences -->
+      <div class="flex-container">
+        <div class="form-group">
+          <label for="eventdetails">Event Details</label>
+          <textarea id="eventdetails" name="eventdetails" rows="5" required><%= events.eventdetails %></textarea>
+        </div>
+  
+        <div class="form-group">
+          <label for="sewingpreferenceid">Sewing Preference</label>
+          <select id="sewingpreferenceid" name="sewingpreferenceid" required>
+            <option value="<%= events.sewingpreferenceid %>" selected><%= events.sewing_description %></option>
+            <% sewingPreferenceoptions.forEach(function(option) { %>
+              <option value="<%= option.sewingpreferenceid %>"><%= option.description %></option>
+            <% }); %>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label for="eventstatusid">Event Status</label>
+          <select id="eventstatusid" name="eventstatusid" required>
+            <option value="<%= events.eventstatusid %>" selected><%= events.status_description %></option>
+            <% eventstatusoptions.forEach(function(option) { %>
+              <option value="<%= option.eventstatusid %>"><%= option.description %></option>
+            <% }); %>
+          </select>
+          <!-- Event Time Container -->
       <div class="flex-container">
         <div class="form-group">
           <label for="eventStart">Event Start Time</label>
@@ -239,9 +303,11 @@
   
       <!-- Submit Button -->
       <button type="submit" class="form-button">Submit</button>
+        </div>
+      </div>
   
     </form>
   </div>
-  
+
 </body>
 </html>
