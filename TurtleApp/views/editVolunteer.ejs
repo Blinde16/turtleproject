@@ -37,10 +37,26 @@
     button:hover {
       background-color: #45A049;
     }
+    .btn-view:hover {
+        background-color: #6CA6CD; /* Darker blue */
+    }
+    .btn-view {
+        background-color: #87CEEB; /* Light blue */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    h1 {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <h1 style="text-align: center;">Edit Volunteer</h1>
+  <a href="/volunteerManagement" class="btn-view">Back to Home</a>
   <form action="/editVolunteer/<%= volunteer.volunteerid %>/<%= volunteer.addressid %>" method="POST">
     <!-- Volunteer First Name -->
     <label for="first_name">First Name</label>
