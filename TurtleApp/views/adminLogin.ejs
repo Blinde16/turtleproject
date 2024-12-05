@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+    .btn-edit:hover {
+        background-color: #27408B; /* Darker royal blue */
+        }
+        .btn-view {
+            background-color: #87CEEB; /* Light blue */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
+    <h1 style="text-align:center;">Login</h1>
+    <a href="/" class="btn-view">Back to Home</a>
     <div style="width: 300px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #F9F9F9;">
         <form action="/adminLogin" method="POST">
             <!-- User Name -->

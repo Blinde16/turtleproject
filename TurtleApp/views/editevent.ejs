@@ -150,22 +150,22 @@
       <div class="flex-container">
         <div class="form-group">
           <label for="pockets">Pockets Produced</label>
-          <input type="number" id="pockets" name="pockets" value="<%= iteminfo.find(item => item.itemid === 1)?.quantity || 0 %>">
+          <input type="number" id="pockets" name="pockets" value="<%= iteminfo.find(item => item.itemid === 1)?.quantity || '' %>">
         </div>
   
         <div class="form-group">
           <label for="collars">Collars Produced</label>
-          <input type="number" id="collars" name="collars" value="<%= iteminfo.find(item => item.itemid === 2)?.quantity || 0 %>">
+          <input type="number" id="collars" name="collars" value="<%= iteminfo.find(item => item.itemid === 2)?.quantity || '' %>">
         </div>
   
         <div class="form-group">
           <label for="envelopes">Envelopes Produced</label>
-          <input type="number" id="envelopes" name="envelopes" value="<%= iteminfo.find(item => item.itemid === 3)?.quantity || 0 %>">
+          <input type="number" id="envelopes" name="envelopes" value="<%= iteminfo.find(item => item.itemid === 3)?.quantity || '' %>">
         </div>
   
         <div class="form-group">
           <label for="vests">Vests Produced</label>
-          <input type="number" id="vests" name="vests" value="<%= iteminfo.find(item => item.itemid === 4)?.quantity || 0 %>">
+          <input type="number" id="vests" name="vests" value="<%= iteminfo.find(item => item.itemid === 4)?.quantity || '' %>">
         </div>
   
         <div class="form-group">
