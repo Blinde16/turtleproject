@@ -717,7 +717,10 @@ app.post("/addVolunteer", (req,res) => {
           
       });
 
-
+      
+app.get('/datadashboard', (req,res) => {
+  res.render("datadashboard")
+})
 
 app.get('/adminLogin', (req,res) => {
     res.render("adminLogin")
