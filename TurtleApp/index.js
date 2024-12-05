@@ -33,6 +33,46 @@ app.get("/", (req, res) => {
   res.render("index", {security});
 });
 
+
+app.get('/eventManagementNew', (req, res) => {
+  try {
+  const volunteers = knex("events")
+  .join('sewingpreference', 'events.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
+  .join('eventstatus', 'events.eventstatusid', '=', 'eventstatus.eventstatusid')
+  .join('contacts', 'events.contactid', '=', 'contacts.contactid')
+  .join("address", 'address.addressid', '=', 'events.addressid')
+  .join('itemsproduced', 'itemsproduced.eventid', '=', 'events.eventid')
+  .select(
+    'events.eventID as eventID',
+    'events.confirmedeventdate as confirmedeventdate',
+    'events.eventaddressid as eventaddressid',
+    'address.city as city',
+    'address.state as state',
+    'address.spacesize as spacesize',
+    'events.contactid as eventcontactid',
+    'contacts.contact_first as contactfirst',
+    'contacts.contact_last as contactlast',
+    'contacts.contactphone as contactphone',
+    'events.totalproduced as totalproduced',
+    'events.numparticipants as numparticipants',
+    'events.sewingpreferenceid as sewingpreferenceid',
+    'events.eventstart as eventstart',
+    'events.eventduration as eventduration',
+    'events.jenstory as jenstory',
+    'events.eventstatusid as eventstatusid',
+    'eventstatus.description as eventstatusdescription',
+    'events.eventdetails as eventdetials'
+  ) // returns an array of rows 
+  .then(events => {
+    res.render('eventManagementNew', {events})
+  });
+  } catch (error) {
+      console.error('Error fetching events:', error);
+      res.status(500).send('Internal Server Error');
+  }
+
+});
+
 app.get('/eventManagement', (req,res) => {
     try {
   const events = knex("events")
@@ -730,7 +770,10 @@ app.post("/addVolunteer", (req,res) => {
           
       });
 
-
+      
+app.get('/datadashboard', (req,res) => {
+  res.render("datadashboard")
+})
 
 app.get('/adminLogin', (req,res) => {
     res.render("adminLogin")
