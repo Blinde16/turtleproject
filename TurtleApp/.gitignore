@@ -1,6 +1,5 @@
 node_modules/
-.DS_Store
 __MACOSX/
 .env
-*.log
-.git/
+*.zip
+.DS_Store
