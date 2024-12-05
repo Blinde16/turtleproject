@@ -555,9 +555,32 @@ app.post("/addVolunteer", (req,res) => {
       const sewingpreferenceid = parseInt(req.body.sewing_preference);
       const city = req.body.city;
       const state = req.body.state;
+      const zip = parseInt(req.body.zip);
       // Insert the new Character into the database
-      knex('volunteer')
-          .insert({
+
+      console.log(
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        heardaboutid,
+        hours_per_month,
+        sewinglevelid,
+        sewingpreferenceid,
+        city,
+        state,
+        zip
+      )
+      knex("address")
+        .insert({
+          city: city,
+          state: state,
+          zip: zip
+        })
+        .returning('addressid') // Replace 'id' with the actual name of your address table's ID column
+        .then(([newAddressId]) => {
+          // newAddressId contains the ID of the newly inserted address
+          return knex('volunteer').insert({
             first_name: first_name,
             last_name: last_name,
             email: email,
@@ -565,25 +588,19 @@ app.post("/addVolunteer", (req,res) => {
             heardaboutid: heardaboutid,
             hourspermonth: hours_per_month,
             sewinglevelid: sewinglevelid,
-            sewingpreferenceid: sewingpreferenceid
-          })
-          .then((newRecord) => {
-            let addressid = newRecord.addressid
-            return knex("address")
-            .where("addressid", addressid)
-            .insert({
-              city: city,
-              state: state
-            })
+            sewingpreferenceid: sewingpreferenceid,
+            addressid: newAddressId // Use the correct variable here
+          });
+        })
             .then(() => {
               res.redirect('/volunteerManagement'); // Redirect to the volunteer list page after adding
             })
-          })
-          .catch(error => {
+            .catch(error => {
               console.error('Error adding Character:', error);
               res.status(500).send('Internal Server Error');
-          });
-  });
+          })
+          
+      });
 
 
 
