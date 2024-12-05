@@ -301,7 +301,7 @@ margin: 0;
     <div class="navbar">
       <!-- Logo on the left side -->
       <div class="logo">
-        <img src="logo.png" alt="Turtle Shelter Logo">
+        <img src="/images/turtleshelterlogo.png" alt="Turtle Shelter Logo">
       </div>
   
       <!-- Navbar Buttons (aligned to the right) -->
@@ -309,17 +309,19 @@ margin: 0;
         <form action="/" method="GET">
           <button type="submit">Home</button>
         </form>
+        <% if (security == true) { %>
         <form action="/eventManagement" method="GET">
           <button type="submit">Event Management</button>
         </form>
+        <form action="/volunteerManagement" method="GET">
+          <button type="submit">Volunteer Management</button>
+        </form>
+        <% } %>
         <form action="/volunteerForm" method="GET">
           <button type="submit">Volunteer Form</button>
         </form>
         <form action="/EventRequestForm" method="GET">
           <button type="submit">Event Request</button>
-        </form>
-        <form action="/volunteerManagement" method="GET">
-          <button type="submit">Volunteer Management</button>
         </form>
         <form action="/adminLogin" method="GET">
           <button type="submit">Admin Login</button>
@@ -444,7 +446,7 @@ margin: 0;
     <div class="footer-left" style="flex: 2; padding: 10px;">
       <!-- Logo -->
       <div class="footer-logo" style="padding-bottom: 10px;">
-        <img src="path/to/your-logo.png" alt="Your Company Logo" style="max-width: 150px; height: auto;">
+        <img src="/images/turtleshelterlogo.png" alt="Turtle Shelter Logo" style="max-width: 150px; height: auto;">
       </div>
       
       <!-- Company Name -->
@@ -462,7 +464,7 @@ margin: 0;
 
     <!-- Social Media Handles -->
     <div class="footer-social" style="flex: 1; padding: 10px; font-size: 1rem; display: flex; flex-direction: column; justify-content: flex-start;">
-      <a href="https://www.facebook.com/yourcompany" style="color: #fff; margin: 5px 0; text-decoration: none;">Facebook</a>
+      <a href="https://www.facebook.com/turtleshelterproject" style="color: #fff; margin: 5px 0; text-decoration: none;">Facebook</a>
     </div>
     <div class="footer-social" style="flex: 1; padding: 10px; font-size: 1rem; display: flex; flex-direction: column; justify-content: flex-start;">
       <a href="https://www.instagram.com/yourcompany" style="color: #fff; margin: 5px 0; text-decoration: none;">Instagram</a>
@@ -471,7 +473,7 @@ margin: 0;
 
   <!-- Footer Bottom Text -->
 <div class="footer-bottom" style="padding-top: 10px; font-size: 0.8rem; text-align: center;">
-  <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+  <p>&copy; 2024 Turtle Shelter Project. All rights reserved.</p>
 </div>
 
 
