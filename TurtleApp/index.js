@@ -1,3 +1,8 @@
+// Hudson Roney, Blake Linde, Jason Nouanounou, Porter Lyman
+// This node application is a website for people to find out more about the turtle shelter project and for Jen (the founder)
+// to maintain records of volunteers and events for the turtle shelter project. People can also fill out forms to become a volunteer or request an event
+// December 6, 2024
+
 let express = require("express");
 let path = require("path");
 let app = express();
