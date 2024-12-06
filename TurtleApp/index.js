@@ -561,7 +561,9 @@ app.get('/volunteerManagement', async (req, res) => {
               'address.city as city',
               'address.state as state',
               'address.zip',
-          );
+          )
+          .orderBy([{ column: 'volunteer.last_name', order: 'asc' }, { column: 'volunteer.first_name', order: 'asc' }]); // Sort by last_name, then first_name
+
 
       // Fetch distinct sewing preferences
       const sewingPreferences = await knex('sewingpreference')
