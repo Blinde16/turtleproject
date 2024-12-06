@@ -407,7 +407,7 @@ app.get('/addevent', async (req, res) => {
       const contacts = await knex('eventcontacts').select('contactid', 'contact_first', 'contact_last', 'contactphone', 'addressid');
       
       // Render the Add Event page
-      res.render('AddEvent', {
+      res.render('addevent', {
           sewingPreferences,
           eventDates,
           addresses,
@@ -561,6 +561,7 @@ app.get('/volunteerManagement', (req, res) => {
       'address.state as state',
       'address.zip',
     ) // returns an array of rows 
+    .orderBy("volunteer.last_name", "asc").orderBy("volunteer.first_name", "asc")
     .then(volunteers => {
       res.render('volunteerManagement', {volunteers})
     });
