@@ -100,6 +100,9 @@
 <body>
 <h1>Events</h1>
 <a href="/" class="btn-view">Return to home</a>
+<form action="/addEvent" method="GET" style="display:inline;">
+  <button type="submit" class="btn-edit">Add Event</button>
+</form>
 <div class="filters">
     <input id="searchInput" type="text" placeholder="Search events..." onkeyup="filterTable()">
     <select id="statusFilter" onchange="filterTable()">
