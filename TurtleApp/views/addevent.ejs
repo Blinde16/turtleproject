@@ -61,14 +61,20 @@
   <a href="/eventManagement" class="btn-view">Back to Home</a>
     <div class="container">
         <form action="/addevent" method="POST">
-            <!-- First and Last Name -->
+            
+            <!-- Event Date (Interval) -->
             <div class="form-group">
-                <label for="firstName">First Name:</label>
+              <label for="eventDate">Event Date</label>
+              <input type="date" name="eventDate" required>
+          </div>
+          <!-- First and Last Name -->
+            <div class="form-group">
+                <label for="firstName">Contact First Name:</label>
                 <input type="text" name="firstName" placeholder="First Name" required>
             </div>
 
             <div class="form-group">
-                <label for="lastName">Last Name:</label>
+                <label for="lastName">Contact Last Name:</label>
                 <input type="text" name="lastName" placeholder="Last Name" required>
             </div>
 
@@ -94,12 +100,7 @@
                 </select>
             </div>
 
-            <!-- Event Date (Interval) -->
-            <div class="form-group">
-                <label for="eventDate">Event Date</label>
-                <input type="text" name="eventDate" placeholder="e.g., 2024-12-10 14:00:00" required>
-            </div>
-
+            
             <!-- Event Start (Time) -->
             <div class="form-group">
                 <label for="eventStart">Event Start Time</label>
@@ -125,7 +126,7 @@
 
             <div class="form-group inline">
                 <label for="state">State:</label>
-                <input type="text" name="state" placeholder="UT" maxlength="2" required>
+                <input type="text" name="state" placeholder="State" maxlength="2" required>
             </div>
 
             <div class="form-group inline">
@@ -134,7 +135,7 @@
             </div>
 
             <div class="form-group">
-                <label for="spaceSize">Space Size:</label>
+                <label for="spaceSize">Event Space Size:</label>
                 <input type="text" name="spaceSize" placeholder="e.g., Large gym, small living room, etc." required>
             </div>
 
