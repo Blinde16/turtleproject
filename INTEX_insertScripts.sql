@@ -191,7 +191,7 @@ FROM volunteer_data
 WHERE row_num > 1;
 
 -- Manually Insert 50 Event Records
-INSERT INTO Events (EventDate, AddressID, ContactID, TotalProduced, Participants, SewingPref, StartTime, Duration, JenStory, EventStatus, Details)
+INSERT INTO Events (ConfirmedEventDate, EventAddressID, ContactID, TotalProduced, NumParticipants, SewingPreferenceID, EventStart, EventDuration, JenStory, EventStatusID, EventDetails)
 VALUES
 ('2024-12-15', 1, 1, 100, 25, 1, '08:00', '02:00:00', TRUE, 1, 'BYU Campus'),
 ('2024-12-22', 2, 2, 110, 30, 2, '08:00', '02:00:00', TRUE, 2, 'Provo Recreation Center'),
@@ -227,14 +227,14 @@ VALUES
 ('2025-07-20', 32, 32, 410, 180, 2, '08:00', '02:00:00', TRUE, 2, 'Holladay Civic Center'),
 ('2025-07-27', 33, 33, 420, 185, 1, '08:00', '02:00:00', TRUE, 1, 'Timpanogos High School'),
 ('2025-08-03', 34, 34, 430, 190, 2, '08:00', '02:00:00', TRUE, 2, 'Saratoga Springs Center'),
-('2025-08-10', 35, 35, 440, 195, 1, '08:00', '02:00:00', TRUE, 1, 'Lindon Senior Center'),
-('2025-08-17', 36, 36, 450, 200, 2, '08:00', '02:00:00', TRUE, 2, 'North Ogden Event Hall'),
-('2025-08-24', 37, 37, 460, 205, 1, '08:00', '02:00:00', TRUE, 1, 'Woods Cross Civic Center'),
-('2025-08-31', 38, 38, 470, 210, 2, '08:00', '02:00:00', TRUE, 2, 'Centerville Events Room'),
-('2025-09-07', 39, 39, 480, 215, 1, '08:00', '02:00:00', TRUE, 1, 'Clinton City Hall'),
-('2025-09-14', 40, 40, 490, 220, 2, '08:00', '02:00:00', TRUE, 2, 'Harrisville Community Center'),
-('2025-09-21', 41, 41, 500, 225, 1, '08:00', '02:00:00', TRUE, 1, 'Riverdale Library'),
-('2025-09-28', 42, 42, 510, 230, 2, '08:00', '02:00:00', TRUE, 2, 'Mountain Green Hall'),
+('2025-08-10', 35, 35, 440, 195, 1, '08:00', '02:00:00', TRUE, 1, 'Kaysville Events Room'),
+('2025-08-17', 36, 36, 450, 200, 2, '08:00', '02:00:00', TRUE, 2, 'Bountiful City Center'),
+('2025-08-24', 37, 37, 460, 205, 1, '08:00', '02:00:00', TRUE, 1, 'Springdale Community Hall'),
+('2025-08-31', 38, 38, 470, 210, 2, '08:00', '02:00:00', TRUE, 2, 'Logan Senior Center'),
+('2025-09-07', 39, 39, 480, 215, 1, '08:00', '02:00:00', TRUE, 1, 'Brigham City Event Hall'),
+('2025-09-14', 40, 40, 490, 220, 2, '08:00', '02:00:00', TRUE, 2, 'St. George Convention Center'),
+('2025-09-21', 41, 41, 500, 225, 1, '08:00', '02:00:00', TRUE, 1, 'Cedar City Civic Center'),
+('2025-09-28', 42, 42, 510, 230, 2, '08:00', '02:00:00', TRUE, 2, 'Payson Senior Center'),
 ('2025-10-05', 43, 43, 520, 235, 1, '08:00', '02:00:00', TRUE, 1, 'Willard Senior Center'),
 ('2025-10-12', 44, 44, 530, 240, 2, '08:00', '02:00:00', TRUE, 2, 'Perry City Event Hall'),
 ('2025-10-19', 45, 45, 540, 245, 1, '08:00', '02:00:00', TRUE, 1, 'Kaysville Recreation Center'),
