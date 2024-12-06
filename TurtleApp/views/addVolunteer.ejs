@@ -37,23 +37,39 @@
     button:hover {
       background-color: #45A049;
     }
+    .btn-view:hover {
+        background-color: #6CA6CD; /* Darker blue */
+    }
+    .btn-view {
+        background-color: #87CEEB; /* Light blue */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    h1 {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <h1 style="text-align: center;">Add Volunteer</h1>
+  <a href="/volunteerManagement" class="btn-view">Back to Home</a>
   <form action="/addVolunteer" method="POST">
     <!-- Volunteer First Name -->
     <label for="first_name">First Name</label>
-    <input type="text" id="first_name" name="first_name" value="" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="first_name" name="first_name" value="" placeholder="First Name" required>
     <!-- Volunteer Last Name -->
     <label for="last_name">Last Name</label>
-    <input type="text" id="last_name" name="last_name" value="" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="last_name" name="last_name" value="" placeholder="Last Name" required>
     <!-- Volunteer Email -->
     <label for="email">Email</label>
-    <input type="text" id="email" name="email" value="" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="email" name="email" value="" placeholder="Email" required>
     <!-- Volunteer Phone Number -->
     <label for="phone_number">Phone Number</label>
-    <input type="number" id="phone_number" name="phone_number" value="" required>
+    <input type="tel" id="phone_number" name="phone_number" value="" placeholder="Phone Number" required>
     <!-- Volunteer Heard About -->
         <label for="heard_about_id">Heard About</label>
         <select id="heard_about_id" name="heard_about_id"> <!-- this is a dropdown list where we need to make an option for each option we want to show up-->
@@ -65,7 +81,7 @@
         </select>
     <!-- Volunteer Hours Per Month -->
     <label for="hours_per_month">Hours Per Month</label>
-    <input type="number" id="hours_per_month" name="hours_per_month" value="" required >
+    <input type="number" id="hours_per_month" name="hours_per_month" value="" placeholder="e.g, 40" required>
     <!-- Volunteer Sewing Level -->
     <label for="sewing_level">Sewing Level</label>
     <select id="sewing_level" name="sewing_level"> <!-- this is a dropdown list where we need to make an option for each option we want to show up-->
@@ -85,13 +101,13 @@
       <% }) %>
     </select>
     <label for="city">City</label>
-    <input type="text" id="city" name="city" value="" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="city" name="city" value="" placeholder="City" required>
     <!-- Address City (Radio Buttons) -->
     <label for="state">State</label>
-    <input type="text" id="state" name="state" value="" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="state" name="state" value="" placeholder="State" required>
     
     <label for="zip">Zip</label>
-    <input type="text" id="zip" name="zip" value="" required oninput="this.value = this.value.toUpperCase()">
+    <input type="text" id="zip" name="zip" value="" placeholder="Zip" required>
     
     <!-- Submit Button -->
     <button type="submit">Add Volunteer</button>

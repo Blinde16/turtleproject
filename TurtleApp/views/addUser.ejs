@@ -37,20 +37,36 @@
     button:hover {
       background-color: #45A049;
     }
+    .btn-view:hover {
+        background-color: #6CA6CD; /* Darker blue */
+    }
+    .btn-view {
+        background-color: #87CEEB; /* Light blue */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    h1 {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <h1 style="text-align: center;">Add User</h1>
+  <a href="/userManagement" class="btn-view">Back to Home</a>
   <form action="/addUser" method="POST">
     <!-- user username -->
     <label for="username">Username</label>
-    <input type="text" id="username" name="username" value="" required>
+    <input type="text" id="username" name="username" placeholder="username" required>
     <!-- user password -->
     <label for="password">Password</label>
-    <input type="password" id="password" name="password" value="" required>
+    <input type="password" id="password" name="password" placeholder="password" required>
     <!-- user Email -->
     <label for="email">Email</label>
-    <input type="text" id="email" name="email" value="" required>
+    <input type="text" id="email" name="email" placeholder="email" required>
     <!-- Submit Button -->
     <button type="submit">Add User</button>
   </form>
