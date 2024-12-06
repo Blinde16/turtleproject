@@ -17,73 +17,75 @@
       padding: 5px;
     }
 
-    /* Navbar Styling */
-    .navbar {
-      position: absolute; /* Ensure the navbar is always on top */
-      top: 0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-between; /* Push content to edges */
-      align-items: center; /* Vertically center items */
-      background-color: #4CAF50;
-      padding: 10px;
-      z-index: 10; /* Ensure navbar is above the banner */
-    }
+   /* Navbar Styling */
+.navbar {
+  position: absolute; /* Ensure the navbar is always on top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Push content to edges */
+  align-items: center; /* Vertically center items */
+  background-color: #4CAF50;
+  padding: 10px;
+  z-index: 10; /* Ensure navbar is above the banner */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Adds shaded effect at the bottom */
+}
 
-    /* Styling for the logo on the left */
-    .navbar .logo {
-      display: flex;
-      align-items: center;
-    }
+/* Styling for the logo on the left */
+.navbar .logo {
+  display: flex;
+  align-items: center;
+}
 
-    .navbar .logo img {
-      height: 60px; /* Adjust the height of the logo */
-      width: auto; /* Ensure the aspect ratio is maintained */
-    }
+.navbar .logo img {
+  height: 60px; /* Adjust the height of the logo */
+  width: auto; /* Ensure the aspect ratio is maintained */
+}
 
-    .navbar .logo span {
-      font-size: 1.5em;
-      color: white;
-      font-weight: bold;
-      margin-left: 10px;
-    }
+.navbar .logo span {
+  font-size: 1.5em;
+  color: white;
+  font-weight: bold;
+  margin-left: 10px;
+}
 
-    /* Navbar button form styling */
-    .navbar form {
-      display: inline-block;
-      margin-right: 15px;
-    }
+/* Navbar button form styling */
+.navbar form {
+  display: inline-block;
+  margin-right: 15px;
+}
 
-    /* Button styling */
-    .navbar button {
-      color: white;
-      background-color: #4CAF50;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+/* Button styling */
+.navbar button {
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-    /* Hover effect for buttons */
-    .navbar button:hover {
-      background-color: #45a049;
-    }
+/* Hover effect for buttons */
+.navbar button:hover {
+  background-color: #45a049;
+}
 
-    /* Banner Styling */
-    .banner {
-      position: relative; /* Position elements inside the banner */
-      width: 100%;
-      height: 400px; /* Height of the banner */
-      background: url('your-banner-image.jpg') no-repeat center center;
-      background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      flex-direction: column; /* Arrange items in a vertical column */
-      color: white; /* Text color */
-    }
+/* Banner Styling */
+.banner {
+  position: relative; /* Position elements inside the banner */
+  width: 100%;
+  height: 400px; /* Height of the banner */
+  background: url('your-banner-image.jpg') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column; /* Arrange items in a vertical column */
+  color: white; /* Text color */
+}
+
 
     .banner-overlay {
       position: absolute;
