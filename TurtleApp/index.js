@@ -407,7 +407,7 @@ app.get('/addevent', async (req, res) => {
       const contacts = await knex('eventcontacts').select('contactid', 'contact_first', 'contact_last', 'contactphone', 'addressid');
       
       // Render the Add Event page
-      res.render('AddEvent', {
+      res.render('addevent', {
           sewingPreferences,
           eventDates,
           addresses,
@@ -844,10 +844,12 @@ app.post('/adminLogin', (req, res) => {
       .then(user => {
         if (user) {
           security = true;
+          res.render('index', {security})
       } else {
           security = false;
+          res.render("adminLogin", {security})
       }
-      res.render('index', {security})
+      // res.render('index', {security})
       })
       .catch(error => {
         console.error('Error adding Character:', error);
