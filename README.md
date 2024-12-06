@@ -4,24 +4,46 @@ This project is a **Node.js-based web application** designed to manage volunteer
 
 ## Features
 
-### 1. **Volunteer Management**
+### 1. **Landing Page**
+   - welcome to the page (Who we are, what we do)
+   - Take action (linked to the volunteer request form)
+   - Testimonials
+   - social media links and information
+   - Copyright and main project location
+
+### 2. **Event Management**
+   - Display a table of scheduled events with key details like date, location, and number of participants         sorted by event date with the newest first.
+   - Add new events using a dedicated form.
+   - Edit event details such as contact information, event description, and participant numbers.
+   - View production details per event
+   - Delete events with confirmation prompts.
+   - Filter and search events by event status or date.
+     
+### 3. **Volunteer Management**
    - View all volunteers, sorted by last name and first name.
    - Add new volunteers to the database.
    - Edit volunteer details such as contact information, sewing preferences, and availability.
    - Delete volunteers with confirmation to prevent accidental removal.
    - Filter and search volunteers by sewing preference for easy data access.
 
-### 2. **Event Management**
-   - Display a table of scheduled events with key details like date, location, and number of participants.
-   - Add new events using a dedicated form.
-   - Edit event details such as contact information, event description, and participant numbers.
-   - Delete events with confirmation prompts.
-   - Filter and search events by event status or date.
+### 4. **User Management**
+   - Display a table current admin users.
+   - Add new users with a dedicated form.
+   - Edit user details for password reset or username changes.
+   - Delete users with confirmation prompts.
 
-### 3. **Dynamic Interactions**
+### 5. **Event Request Forms**
+   - Display a form for people to request an event asking for contact info, date, and sewing preference.
+   - Add new events using the dedicated form.
+
+### 6. **Volunteer Request Form**
+   - Display a form for people to request to be a volunteer asking for contact info, sewing level, and             sewing preference.
+   - Add new events using the dedicated form.
+
+### 7. **Dynamic Interactions**
    - Fully interactive tables with filtering and search functionalities for both volunteers and events.
    - Alerts for successful actions like deleting a record.
-   - Dropdown menus for selecting sewing preferences or event statuses dynamically populated from the database.
+   - Dropdown menus for selecting sewing preferences or event statuses dynamically populated from the             database.
 
 ## Installation
 
@@ -62,6 +84,7 @@ This project is a **Node.js-based web application** designed to manage volunteer
 - **Database:** PostgreSQL with Knex.js query builder
 
 ## Folder Structure
+```plain text
 .
 ├── css/                    # contains the index css styling
 ├── js/                     # contains javascript code to help with certain post routes
@@ -74,12 +97,12 @@ This project is a **Node.js-based web application** designed to manage volunteer
 ## Usage
 
 ### Volunteer Management
-1. Navigate to `/volunteerManagement`.
+1. Navigate to `Volunteer Management`.
 2. View and manage volunteer records.
 3. Add or edit volunteer details using the provided forms.
 
 ### Event Management
-1. Navigate to `/eventManagement`.
+1. Navigate to `Event Management`.
 2. View event schedules and details.
 3. Add new events or update existing ones.
 
