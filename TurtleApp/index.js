@@ -535,41 +535,47 @@ app.get('/VolunteerForm', async (req, res) => {
 });
 
 // Volunteer management get route
-app.get('/volunteerManagement', (req, res) => {
-    try {
-    const volunteers = knex("volunteer")
-    .join('sewingpreference', 'volunteer.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
-    .join('sewinglevel', 'volunteer.sewinglevelid', '=', 'sewinglevel.sewinglevelid')
-    .join('address', 'volunteer.addressid', '=', 'address.addressid')
-    .join('heardabout', 'volunteer.heardaboutid', '=', 'heardabout.heardaboutid')
-    .select(
-      'volunteer.volunteerid',
-      'sewinglevel.description as sewingleveldescription',
-      'volunteer.first_name',
-      'volunteer.last_name',
-      'volunteer.phone_number',
-      'volunteer.email',
-      'heardabout.heardaboutid',
-      'heardabout.description as heardaboutDescription',
-      'volunteer.hourspermonth',
-      'volunteer.sewinglevelid',
-      'sewingpreference.sewingpreferenceid',
-      'sewingpreference.description as sewing_description',
-      'address.addressid',
-      'address.streetaddress',
-      'address.city as city',
-      'address.state as state',
-      'address.zip',
-    ) // returns an array of rows 
-    .then(volunteers => {
-      res.render('volunteerManagement', {volunteers})
-    });
-    } catch (error) {
-        console.error('Error fetching events:', error);
-        res.status(500).send('Internal Server Error');
-    }
+app.get('/volunteerManagement', async (req, res) => {
+  try {
+      // Fetch volunteers with joins
+      const volunteers = await knex("volunteer")
+          .join('sewingpreference', 'volunteer.sewingpreferenceid', '=', 'sewingpreference.sewingpreferenceid')
+          .join('sewinglevel', 'volunteer.sewinglevelid', '=', 'sewinglevel.sewinglevelid')
+          .join('address', 'volunteer.addressid', '=', 'address.addressid')
+          .join('heardabout', 'volunteer.heardaboutid', '=', 'heardabout.heardaboutid')
+          .select(
+              'volunteer.volunteerid',
+              'sewinglevel.description as sewingleveldescription',
+              'volunteer.first_name',
+              'volunteer.last_name',
+              'volunteer.phone_number',
+              'volunteer.email',
+              'heardabout.heardaboutid',
+              'heardabout.description as heardaboutDescription',
+              'volunteer.hourspermonth',
+              'volunteer.sewinglevelid',
+              'sewingpreference.sewingpreferenceid',
+              'sewingpreference.description as sewing_description',
+              'address.addressid',
+              'address.streetaddress',
+              'address.city as city',
+              'address.state as state',
+              'address.zip',
+          );
 
+      // Fetch distinct sewing preferences
+      const sewingPreferences = await knex('sewingpreference')
+          .distinct('description')
+          .pluck('description'); // Extract the 'description' column values as an array
+
+      // Render the view with volunteers and sewing preferences
+      res.render('volunteerManagement', { volunteers, sewingPreferences });
+  } catch (error) {
+      console.error('Error fetching volunteers:', error);
+      res.status(500).send('Internal Server Error');
+  }
 });
+
 
 const { getHeardAboutId, getSewingLevelId, getSewingPreferenceId, insertAddress } = require('./js/helpers');
 

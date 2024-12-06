@@ -1,168 +1,182 @@
-<style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-}
-h1 {
-  text-align: center;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-th, td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: left;
-}
-th {
-  background-color: #f4f4f4;
-}
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-.actions button {
-  margin: 0 5px;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-/* Styling for the View button */
-.btn-view {
-    background-color: #87CEEB; /* Light blue */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 14px;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Management</title>
+    <style>
+        /* Reuse the provided styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .btn-view {
+            background-color: #87CEEB;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-edit {
+            background-color: #4169E1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-delete {
+            background-color: #FF6347;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-view:hover {
+            background-color: #6CA6CD;
+        }
+        .btn-edit:hover {
+            background-color: #27408B;
+        }
+        .btn-delete:hover {
+            background-color: #CD5C5C;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .search-bar input {
+            width: 300px;
+            padding: 8px;
+            font-size: 14px;
+        }
+        .filter-bar select {
+            padding: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Volunteer Management</h1>
 
-/* Styling for the Edit button */
-.btn-edit {
-    background-color: #4169E1; /* Royal blue */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 14px;
-}
+    <form action="/addVolunteer" method="GET" style="display:inline;">
+        <button type="submit" class="btn-view">Add Volunteer</button>
+    </form>
 
-/* Styling for the Delete button */
-.btn-delete {
-    background-color: #FF6347; /* Tomato red */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 14px;
-}
+    <form action="/" method="GET" style="display:inline;">
+        <button type="submit" class="btn-edit">Return to Home Page</button>
+    </form>
 
-/* Add hover effects */
-.btn-view:hover {
-    background-color: #6CA6CD; /* Darker blue */
-}
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by name, city, or state">
+        <div class="filter-bar">
+            <select id="sewingPreferenceFilter">
+                <option value="">Filter by Sewing Preference</option>
+                <% if (sewingPreferences.length > 0) { %>
+                    <% sewingPreferences.forEach(pref => { %>
+                        <option value="<%= pref %>"><%= pref %></option>
+                    <% }) %>
+                <% } %>
+            </select>
+        </div>
+    </div>
 
-.btn-edit:hover {
-    background-color: #27408B; /* Darker royal blue */
-}
+    <table id="volunteerTable">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Heard About</th>
+                <th>Hours Per Month</th>
+                <th>Sewing Level</th>
+                <th>Sewing Preference</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (volunteers.length > 0) { %>
+                <% volunteers.forEach(row => { %>
+                    <tr>
+                        <td><%= row.first_name %></td>
+                        <td><%= row.last_name %></td>
+                        <td><%= row.email %></td>
+                        <td><%= row.phone_number %></td>
+                        <td><%= row.city %></td>
+                        <td><%= row.state %></td>
+                        <td><%= row.heardaboutDescription %></td>
+                        <td><%= row.hourspermonth %></td>
+                        <td><%= row.sewingleveldescription %></td>
+                        <td><%= row.sewing_description %></td>
+                        <td>
+                            <form action="/editvolunteer/<%= row.volunteerid %>" method="GET" style="display:inline;">
+                                <button type="submit" class="btn-edit">Edit</button>
+                            </form>
+                            <form action="/deletevolunteer/<%= row.volunteerid %>" method="POST" style="display:inline;">
+                                <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="11">No data available</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
 
-.btn-delete:hover {
-    background-color: #CD5C5C; /* Darker red */
-}
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const table = document.getElementById('volunteerTable').getElementsByTagName('tbody')[0];
+        const filter = document.getElementById('sewingPreferenceFilter');
 
-.edit-btn:hover {
-  background-color: #f57c00;
-}
-.del-btn:hover {
-  background-color: #b71c1c;
-}
-.buttons {
-  margin-top: 20px;
-  text-align: center;
-}
-.buttons button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-}
-.download-btn {
-  background-color: #1976d2;
-  color: white;
-}
-.add-btn {
-  background-color: #388e3c;
-  color: white;
-}
-.download-btn:hover {
-  background-color: #1565c0;
-}
-.add-btn:hover {
-  background-color: #2e7d32;
-}
-</style>
-<h1 style="text-align: center;">Volunteer Management</h1>
+        searchInput.addEventListener('input', function () {
+            const searchValue = searchInput.value.toLowerCase();
+            Array.from(table.rows).forEach(row => {
+                const cells = row.cells;
+                const matches = Array.from(cells).some(cell => cell.innerText.toLowerCase().includes(searchValue));
+                row.style.display = matches ? '' : 'none';
+            });
+        });
 
-<form action="/addVolunteer" method="GET" style="display:inline;">
-  <button type="submit"  class="btn-view">Add Volunteer</button>
-</form>
-
-<form action="/" method="GET">
-<button type="submit" class="btn-edit" style="display:inline;">Return to Home Page</button>
-</form>
-
-  <table>
-    <thead>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Phone Number</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Heard About</th>
-        <th>Hours Per Month</th>
-        <th>Sewing Level</th>
-        <th>Sewing Preference</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if (volunteers.length > 0) { %>
-        <% volunteers.forEach(row => { %>
-          <tr>
-            <input type="hidden" value="<%= row.volunteerid%>">
-            <td><%= row.first_name %></td>
-            <td><%= row.last_name %></td>
-            <td><%= row.email %></td>
-            <td><%= row.phone_number %></td>
-            <td><%= row.city %></td>
-            <td><%= row.state %></td>
-            <td><%= row.heardaboutDescription %></td>
-            <td><%= row.hourspermonth %></td>
-            <td><%= row.sewingleveldescription %></td>
-            <td><%= row.sewing_description %></td>
-            <td>
-              <form action="/editvolunteer/<%= row.volunteerid %>" method="GET" style="display:inline;">
-                <button type="submit" class="btn-edit">Edit</button>
-              </form>
-              <form action="/deletevolunteer/<%= row.volunteerid %>" method="POST" style="display:inline;">
-                <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
-              </form>
-            </td>
-          </tr>
-        <% }) %>
-      <% } else { %>
-        <tr>
-          <td colspan="7">No data available</td>
-        </tr>
-      <% } %>
-    </tbody>
-  </table>
-</form>
+        // Filter functionality
+        filter.addEventListener('change', function () {
+            const selectedValue = filter.value;
+            Array.from(table.rows).forEach(row => {
+                const sewingPreference = row.cells[9].innerText;
+                row.style.display = !selectedValue || sewingPreference === selectedValue ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
