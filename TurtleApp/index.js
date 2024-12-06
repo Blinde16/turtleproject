@@ -839,10 +839,12 @@ app.post('/adminLogin', (req, res) => {
       .then(user => {
         if (user) {
           security = true;
+          res.render('index', {security})
       } else {
           security = false;
+          res.render("adminLogin", {security})
       }
-      res.render('index', {security})
+      // res.render('index', {security})
       })
       .catch(error => {
         console.error('Error adding Character:', error);
